@@ -18,3 +18,11 @@ After setting up the virtual environment and installing the dependencies, run `f
 
 ## Planning
 https://docs.google.com/document/d/1JdvDBkFgVDBZXozHc_ezFBkGSdvtZgIH5IuNkscTmVE/edit?usp=sharing
+
+## Our Team :)
+| Student Number | Name              | Github User Name | 
+| -------------- | ----------------- | ---------------- |
+| 23398223       | Jared Healy       | jh1236           |
+| 23460936       | Brigitte Gredziuk | aeoniaa          |
+| 23372032       | James Frayne      | Semuca           |
+| 23643117       | Heidi Leow        | sellsol          |
