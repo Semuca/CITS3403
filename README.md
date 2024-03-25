@@ -16,5 +16,5 @@ Please remember to export the required dependencies with `pip freeze > requireme
 After setting up the virtual environment and installing the dependencies, run `flask --app main run`
 - Alternatively, Visual Studio Code's launch.json the project can be run from the 'Run and Debug' tool (F5)
 
-## planning
+## Planning
 https://docs.google.com/document/d/1JdvDBkFgVDBZXozHc_ezFBkGSdvtZgIH5IuNkscTmVE/edit?usp=sharing
