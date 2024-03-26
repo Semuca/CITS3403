@@ -1,3 +1,6 @@
+# Database files should not be kept as part of the diff
+*.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
