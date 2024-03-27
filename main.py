@@ -1,36 +1,12 @@
 """This module is the entry point for the flask application"""
 
-import json
-import sqlite3
-from flask import Flask, render_template, Blueprint, request
+from flask import Flask, render_template, Blueprint
 
 app = Flask(__name__)
 bp = Blueprint('api', __name__)
 
-@bp.route('/login', methods=['POST'])
-def login():
-    # TODO (James): Schema validation for requests
-    data = request.get_json()
-    
-    # TODO (James): Constants for getting the database file
-    db = sqlite3.connect("databases/database.db")
-    cursor = db.cursor()
-    
-    res = cursor.execute(f"SELECT * FROM users WHERE username='{data["username"]}'")
-    
-    return res.fetchone()
-
-@bp.route('/register', methods=['POST'])
-def register():
-    db = sqlite3.connect("databases/database.db")
-    cursor = db.cursor()
-    
-    # TODO (James): Prevent duplicates from being entered
-    cursor.execute("INSERT INTO users VALUES ('username', 'password')")
-    
-    db.commit()
-    
-    return "CREATED USER"
+#! Importing endpoints into blueprint
+from api import bp
 
 app.register_blueprint(bp, url_prefix='/api')
 
