@@ -14,9 +14,10 @@ def create_user():
     cursor = db.cursor()
     
     # TODO (James): Prevent duplicates from being entered
-    cursor.execute(f"INSERT INTO users VALUES ('{data["username"]}', '{data["passwordHash"]}')")
+    cursor.execute(f"INSERT INTO users VALUES ('{data["username"]}', '{data["password"]}')")
     
     db.commit()
+    db.close()
     
     return "CREATED USER"
 

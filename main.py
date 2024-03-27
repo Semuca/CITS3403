@@ -3,9 +3,8 @@
 from flask import Flask, render_template, Blueprint
 
 app = Flask(__name__)
-bp = Blueprint('api', __name__)
 
-#! Importing endpoints into blueprint
+#! Importing blueprint endpoints
 from api import bp
 
 app.register_blueprint(bp, url_prefix='/api')
