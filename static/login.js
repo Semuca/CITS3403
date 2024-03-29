@@ -1,7 +1,7 @@
 function hash(str) {
     /**
      * COPIED DIRECTLY FROM https://stackoverflow.com/a/26057776
-     * TODO: Maybe we should rewrite this ourselves? not sure...
+     * TODO (Jared): Maybe we should rewrite this ourselves? not sure...
      */
     let hash = 0;
     if (str.length === 0) return hash;
@@ -15,6 +15,15 @@ function hash(str) {
 
 
 jQuery(() => {
+    //FUTURE (Jared): Remove this button
+    $("#tokenChecker").click(() => {
+        if (document.cookie.includes("token")) {
+            const token = document.cookie.split("token=")[1].split(";")[0]
+            alert("your token is " + token + ". Probably don't share that!!")
+        } else {
+            alert("You aren't logged in!")
+        }
+    })
     $("#pressLogin").click(() => {
         let body = JSON.stringify({
                 username: $("#username").val(),
@@ -32,7 +41,7 @@ jQuery(() => {
                         console.log(o)
                         const expiry = new Date(Date.now() + (25 * 60 * 60)) //set the cookie to expire in 24 hours
                         document.cookie += `token=${o.token}; expiry=${expiry}; path=/`
-                        document.location = "/"
+                        // document.location = "/"
                     }
                 )
             } else {
