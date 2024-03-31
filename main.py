@@ -1,6 +1,6 @@
 """This module is the entry point for the flask application"""
 
-from flask import Flask, render_template
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -15,10 +15,3 @@ def hello_world():
     """A test 'hello world' function"""
 
     return "<p>Hello, World!</p>"
-
-@app.route("/login")
-def login_page():
-    """The login page"""
-
-    user = {'username': 'Miguel'}
-    return render_template('login.html', title='Home', user=user)
