@@ -4,15 +4,14 @@ import secrets
 import sqlite3
 from flask import make_response
 
-from api import bp
-from common import validation
+from api import bp, helpers
 
 @bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
 
     # Get validated data
-    data = validation.request_body_from_schema(createUserBodySchema)
+    data = helpers.validation.request_body_from_schema(createUserBodySchema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
@@ -49,7 +48,7 @@ def login():
     """Endpoint to let a user log in"""
 
     # Get validated data
-    data = validation.request_body_from_schema(loginBodySchema)
+    data = helpers.validation.request_body_from_schema(loginBodySchema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
