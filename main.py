@@ -1,17 +1,25 @@
 """This module is the entry point for the flask application"""
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
+db = SQLAlchemy()
 
-#! Importing blueprint endpoints
-#pylint: disable=wrong-import-position
-from api import bp
+def createApp():
+    app = Flask(__name__)
+    app.config['TESTING'] = True #TODO remove?
 
-app.register_blueprint(bp, url_prefix='/api')
+    # Configure app for db
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    db.init_app(app) 
+    app.app_context().push()
 
-@app.route("/")
-def hello_world():
-    """A test 'hello world' function"""
+    # Importing blueprint endpoints, avoiding circular imports
+    #pylint: disable=wrong-import-position
+    from api import bp
 
-    return "<p>Hello, World!</p>"
+    app.register_blueprint(bp, url_prefix='/api')
+
+    return app
+
+app = createApp()
