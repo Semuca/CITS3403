@@ -4,16 +4,13 @@ import unittest
 
 from main import createTestApp, db
 from models.thread import Thread
- 
+
 class TestThread(unittest.TestCase):
     def setUp(self):
         # create app so db can be linked to it
         self.app = createTestApp()
         self.appContext = self.app.app_context()
-        self.appContext.push()     
-
-        # initialise tables in db   
-        db.create_all()
+        self.appContext.push()
 
     def tearDown(self):
         # stop db session and clear out all data
