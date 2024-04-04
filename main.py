@@ -6,20 +6,34 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 def createApp():
+    """Create and configure app"""
     app = Flask(__name__)
-    app.config['TESTING'] = True #TODO remove?
-
-    # Configure app for db
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    
+    # Bind sqlalchemy db to app
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{app.root_path}/prod.db'
     db.init_app(app) 
-    app.app_context().push()
 
     # Importing blueprint endpoints, avoiding circular imports
     #pylint: disable=wrong-import-position
     from api import bp
-
     app.register_blueprint(bp, url_prefix='/api')
 
     return app
+    
+def createTestApp():
+    """Create and configure app for testing purposes"""
+    app = Flask(__name__)
+    app.config['TESTING'] = True
+    
+    # Bind sqlalchemy test db to app
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{app.root_path}/test.db'
+    db.init_app(app) 
+
+    # Importing blueprint endpoints, avoiding circular imports
+    #pylint: disable=wrong-import-position
+    from api import bp
+    app.register_blueprint(bp, url_prefix='/api')
+
+    return app    
 
 app = createApp()
