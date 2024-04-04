@@ -23,7 +23,6 @@ class TestThread(unittest.TestCase):
         testThread = Thread(
             title='Exchange rare cards',
             description = "I'm looking for a green mage to improve defence. Anyone willing to trade one for an explode bot?",
-            createdAt='040404',
             userId=234090
         )
 
