@@ -41,7 +41,9 @@ def createTestApp():
     # Importing blueprint endpoints
     #pylint: disable=wrong-import-position
     from api import bp
+    from threads import threads_bp
     app.register_blueprint(bp, url_prefix='/api')
+    app.register_blueprint(threads_bp, url_prefix='/api')
 
     # Import and create dbs for models
     with app.app_context():

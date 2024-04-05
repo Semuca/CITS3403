@@ -1,8 +1,6 @@
 """Defines the thread object and provides functions to get and manipulate one"""
 
 from datetime import datetime
-from flask import request
-from sqlalchemy.orm import validates
 
 from main import db
 
@@ -16,47 +14,17 @@ class ThreadModel(db.Model):
 
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
-    userId = db.Column(db.Integer(), nullable=False)
-    #TODO add userId as foreign key to users table, also set in backend to current user
-
-    @validates('title')
-    def validate_title(self, key, value):
-        if value is None or value == '':
-            raise Exception(f"Required field '{key}' missing")
-        return value
-
-    @validates('description')
-    def validate_description(self, key, value):
-        if value is None or value == '':
-            raise Exception(f"Required field '{key}' missing")
-        return value
-
-    @validates('userId')
-    def validate_userId(self, key, value):
-        if value is None or value == '':
-            raise Exception(f"Required field '{key}' missing")
-        if not value.isdigit():
-            raise Exception(f"{key} field must be an integer")
-        return value
-
-    # def validate_json(json_thread):
-    #     for field, value in json_thread:
-
+    userId = db.Column(db.Integer(), nullable=False) #TODO add relationship to users table; set in backend to current user
 
     """Creates a thread from json"""
-    def from_json(self, json_thread):
+    def from_json(json_thread):
         # Get json thread information
         title = json_thread['title']
         description = json_thread['description']
         userId = json_thread['userId']
 
         # Try creating thread from info
-        try:
-            new_thread = ThreadModel(title=title, description=description, userId=userId)
-        except Exception as err:
-            raise Exception(err)
-
-        return new_thread
+        return ThreadModel(title=title, description=description, userId=userId)
 
     """Get json from already-created thread object"""
     def to_json(self):
@@ -68,4 +36,5 @@ class ThreadModel(db.Model):
             'userId': self.userId,
         }
         return json_thread
+
 

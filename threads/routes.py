@@ -3,17 +3,19 @@
 from flask import request, make_response
 
 from threads import threads_bp
+from helpers.json_schema_validation import validate_request_schema
 from models.thread import ThreadModel
-
 from main import db
 
 @threads_bp.route('/threads', methods=['POST'])
 def create_thread():
+    # Validate post request schema
+    data = validate_request_schema(create_thread_schema)
+    if isinstance(data, type("")):
+        return make_response({"error": "Request validation error", "errorMessage": data}, 400)
+
     # Create a thread object from parameters passed in
-    try:
-        new_thread = ThreadModel.from_json(request.json)
-    except Exception as err:
-        return make_response({"error": "Request validation error", "errorMessage": str(err)}, 400)
+    new_thread = ThreadModel.from_json(data)
 
     # Save to db
     db.session.add(new_thread)
@@ -21,6 +23,12 @@ def create_thread():
 
     # Return for successful creation of resource
     return make_response(new_thread.to_json(), 201)
+
+create_thread_schema = {
+    "title": "string",
+    "description": "string",
+    "userId": "int"
+}
 
 @threads_bp.route('/threads', methods=['GET'])
 def read_many_thread():

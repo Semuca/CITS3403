@@ -4,7 +4,7 @@ import secrets
 from flask import make_response
 
 from api import bp
-from api.helpers import validation
+from helpers.json_schema_validation import validate_request_schema
 from main import db
 from models.users import UserModel
 
@@ -13,7 +13,7 @@ def create_user():
     """Endpoint to register a user"""
 
     # Get validated data
-    data = validation.request_body_from_schema(createUserBodySchema)
+    data = validate_request_schema(createUserBodySchema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
@@ -49,7 +49,7 @@ def login():
     """Endpoint to let a user log in"""
 
     # Get validated data
-    data = validation.request_body_from_schema(loginBodySchema)
+    data = validate_request_schema(loginBodySchema)
     if isinstance(data, type("")):
         return make_response(
             {"error": "Request validation error",
