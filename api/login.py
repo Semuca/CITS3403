@@ -58,10 +58,11 @@ def login():
 
     # Find a user by that username and passwordHash
     res = UserModel.query.filter_by(username=data["username"],
-                                    passwordHash=data["password"]).first()
+                                    passwordHash=data["password"])
+
 
     # If the user is not found, return a 404
-    if res is None:
+    if res.first() is None:
         return make_response({"error": "Request validation error",
                               "errorMessage": "User not found"},
                              404)
@@ -70,9 +71,8 @@ def login():
     token = secrets.token_urlsafe()
 
     # Update the token against that user
-    UserModel.query.filter_by(username=data["username"],
-                              passwordHash=data["password"]).update(
-                                  {UserModel.authenticationToken: token})
+    res.update({UserModel.authenticationToken: token})
+    db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
