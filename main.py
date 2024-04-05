@@ -1,6 +1,6 @@
 """This module is the entry point for the flask application"""
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -51,3 +51,24 @@ def createTestApp():
     return app
 
 app = createApp()
+
+@app.route("/")
+def hello_world():
+    """A test 'hello world' function"""
+
+    return "<p>Hello, World!</p>"
+
+
+@app.route("/login")
+def login_page():
+    """The login page"""
+
+    user = {'username': 'Miguel'}
+    return render_template('login.html', title='Home', user=user)
+
+@app.route("/register")
+def signup_page():
+    """The login page"""
+
+    user = {'username': 'Miguel'}
+    return render_template('register.html', title='Home', user=user)

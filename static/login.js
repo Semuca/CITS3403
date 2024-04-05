@@ -38,10 +38,9 @@ jQuery(() => {
             if (r.ok) {
                 r.json().then(
                     o => {
-                        console.log(o)
                         const expiry = new Date(Date.now() + (25 * 60 * 60)) //set the cookie to expire in 24 hours
                         document.cookie += `token=${o.token}; expiry=${expiry}; path=/`
-                        // document.location = "/"
+                        document.location = "/"
                     }
                 )
             } else {
@@ -60,7 +59,18 @@ jQuery(() => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(r => {
-            location.reload()
+            if (r.ok) {
+                console.log(r);
+                r.json().then(
+                    o => {
+                        const expiry = new Date(Date.now() + (25 * 60 * 60)) //set the cookie to expire in 24 hours
+                        document.cookie += `token=${o.token}; expiry=${expiry}; path=/`
+                        document.location = "/"
+                    }
+                )
+            } else {
+                alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
+            }
         })
 
     })
