@@ -1,39 +1,40 @@
 """This module defines endpoints for user operations"""
 
 import secrets
-import sqlite3
 from flask import make_response
 
-from api import bp, helpers
+from api import bp
+from api.helpers import validation
+from main import db
+from models.users import UserModel
 
 @bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
 
     # Get validated data
-    data = helpers.validation.request_body_from_schema(createUserBodySchema)
+    data = validation.request_body_from_schema(createUserBodySchema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
-    # Open connection to db
-    db = sqlite3.connect("databases/database.db")
-    cursor = db.cursor()
-
     # Find if a user by that username already exists
-    res = cursor.execute(f"SELECT username FROM users WHERE username='{data["username"]}'")
+    res = UserModel.query.filter_by(username=data["username"]).first()
 
-    if (len(res.fetchall()) != 0):
-        return make_response({"error": "Request validation error", "errorMessage": "User already exists"}, 403)
+    if res is not None:
+        return make_response(
+            {"error": "Request validation error",
+             "errorMessage": "User already exists"},
+            403)
 
     # Create token
     token = secrets.token_urlsafe()
 
     # Add the user into the database
-    cursor.execute(f"INSERT INTO users VALUES ('{data["username"]}', '{data["password"]}', '{token}')")
-
-    # Commit the database and close
-    db.commit()
-    db.close()
+    user = UserModel(username=data["username"],
+                     passwordHash=data["password"],
+                     authenticationToken=token)
+    db.session.add(user)
+    db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
@@ -48,26 +49,30 @@ def login():
     """Endpoint to let a user log in"""
 
     # Get validated data
-    data = helpers.validation.request_body_from_schema(loginBodySchema)
+    data = validation.request_body_from_schema(loginBodySchema)
     if isinstance(data, type("")):
-        return make_response({"error": "Request validation error", "errorMessage": data}, 400)
-
-    # Open connection to db
-    # TODO (James): Constants for getting the database file
-    db = sqlite3.connect("databases/database.db")
-    cursor = db.cursor()
+        return make_response(
+            {"error": "Request validation error",
+             "errorMessage": data},
+            400)
 
     # Find a user by that username and passwordHash
-    res = cursor.execute(f"SELECT username FROM users WHERE username='{data["username"]}' AND passwordHash='{data["password"]}'")
+    res = UserModel.query.filter_by(username=data["username"],
+                                    passwordHash=data["password"]).first()
 
-    if len(res.fetchall()) == 0:
-        return make_response({"error": "Request validation error", "errorMessage": "User not found"}, 404)
+    # If the user is not found, return a 404
+    if res is None:
+        return make_response({"error": "Request validation error",
+                              "errorMessage": "User not found"},
+                             404)
 
     # Create token
     token = secrets.token_urlsafe()
 
     # Update the token against that user
-    cursor.execute(f"UPDATE users SET accessToken='{token}' WHERE username='{data["username"]}' AND passwordHash='{data["password"]}'")
+    UserModel.query.filter_by(username=data["username"],
+                              passwordHash=data["password"]).update(
+                                  {UserModel.authenticationToken: token})
 
     # Return with the token
     return make_response({"token": token})

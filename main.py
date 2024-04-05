@@ -22,6 +22,7 @@ def createApp():
     with app.app_context():
         #pylint: disable=wrong-import-position
         from models.thread import Thread
+        from models.users import UserModel
         db.create_all()
 
     return app
@@ -44,6 +45,7 @@ def createTestApp():
     with app.app_context():
         #pylint: disable=wrong-import-position
         from models.thread import Thread
+        from models.users import UserModel
         db.create_all()
 
     return app
