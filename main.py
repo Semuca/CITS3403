@@ -16,12 +16,14 @@ def createApp():
     # Importing blueprint endpoints
     #pylint: disable=wrong-import-position
     from api import bp
+    from threads import threads_bp
     app.register_blueprint(bp, url_prefix='/api')
+    app.register_blueprint(threads_bp, url_prefix='/api')
 
     # Import and create dbs for models
     with app.app_context():
         #pylint: disable=wrong-import-position
-        from models.thread import Thread
+        from models.thread import ThreadModel
         from models.users import UserModel
         db.create_all()
 
@@ -44,7 +46,7 @@ def createTestApp():
     # Import and create dbs for models
     with app.app_context():
         #pylint: disable=wrong-import-position
-        from models.thread import Thread
+        from models.thread import ThreadModel
         from models.users import UserModel
         db.create_all()
 

@@ -3,7 +3,7 @@
 import unittest
 
 from main import createTestApp, db
-from models.thread import Thread
+from models.thread import ThreadModel
 
 class TestThread(unittest.TestCase):
     def setUp(self):
@@ -20,7 +20,7 @@ class TestThread(unittest.TestCase):
 
     def testAddThread(self):
         # Create a new mock Thread object and save to db
-        testThread = Thread(
+        testThread = ThreadModel(
             title='Exchange rare cards',
             description = "I'm looking for a green mage to improve defence. Anyone willing to trade one for an explode bot?",
             userId=234090
@@ -30,7 +30,7 @@ class TestThread(unittest.TestCase):
         db.session.commit()
 
         # Query for threads in DB
-        createdThread = db.session.get(Thread, 1)
+        createdThread = db.session.get(ThreadModel, 1)
 
         # Assert that the created Thread object exists and has info
         self.assertIsNotNone(createdThread)
