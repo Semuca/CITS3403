@@ -1,24 +1,53 @@
 """This module is the entry point for the flask application"""
 
-from flask import Flask, render_template
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
+db = SQLAlchemy()
 
-#! Importing blueprint endpoints
-#pylint: disable=wrong-import-position
-from api import bp
+def createApp():
+    """Create and configure app"""
+    app = Flask(__name__)
 
-app.register_blueprint(bp, url_prefix='/api')
+    # Bind sqlalchemy db to app
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{app.root_path}/prod.db'
+    db.init_app(app)
 
-@app.route("/")
-def hello_world():
-    """A test 'hello world' function"""
+    # Importing blueprint endpoints
+    #pylint: disable=wrong-import-position
+    from api import bp
+    app.register_blueprint(bp, url_prefix='/api')
 
-    return "<p>Hello, World!</p>"
+    # Import and create dbs for models
+    with app.app_context():
+        #pylint: disable=wrong-import-position
+        from models.thread import Thread
+        from models.users import UserModel
+        db.create_all()
 
-@app.route("/login")
-def login_page():
-    """The login page"""
+    return app
 
-    user = {'username': 'Miguel'}
-    return render_template('login.html', title='Home', user=user)
+def createTestApp():
+    """Create and configure app for testing purposes"""
+    app = Flask(__name__)
+    app.config['TESTING'] = True
+
+    # Bind sqlalchemy test db to app
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{app.root_path}/test.db'
+    db.init_app(app)
+
+    # Importing blueprint endpoints
+    #pylint: disable=wrong-import-position
+    from api import bp
+    app.register_blueprint(bp, url_prefix='/api')
+
+    # Import and create dbs for models
+    with app.app_context():
+        #pylint: disable=wrong-import-position
+        from models.thread import Thread
+        from models.users import UserModel
+        db.create_all()
+
+    return app
+
+app = createApp()

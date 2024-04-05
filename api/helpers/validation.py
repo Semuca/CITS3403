@@ -16,7 +16,7 @@ def request_body_from_schema(schema):
     for attr, value in schema.items():
         if attr not in data.keys():
             # Required field not sent
-            return f"Required field '{attr}' not send"
+            return f"Required field '{attr}' not sent"
 
     for attr, value in data.items():
         if attr not in schema:
