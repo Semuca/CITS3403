@@ -4,6 +4,7 @@ from datetime import datetime
 
 from main import db
 
+# pylint: disable=too-few-public-methods
 class UserModel(db.Model):
     """Stores all users on the forum"""
 
