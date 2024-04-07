@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from main import db
+from databases.db import db
 
 # pylint: disable=too-few-public-methods
 class Thread(db.Model):
