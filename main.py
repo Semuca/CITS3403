@@ -63,12 +63,10 @@ def hello_world():
 def login_page():
     """The login page"""
 
-    user = {'username': 'Miguel'}
-    return render_template('login.html', title='Home', user=user)
+    return render_template('login.html', title='Home')
 
 @app.route("/register")
 def signup_page():
     """The login page"""
 
-    user = {'username': 'Miguel'}
-    return render_template('register.html', title='Home', user=user)
+    return render_template('register.html', title='Home')

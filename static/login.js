@@ -15,7 +15,7 @@ function hash(str) {
 
 
 jQuery(() => {
-    //FUTURE (Jared): Remove this button
+    //FUTURE (Jared): Remove this button since it's just for testing
     $("#tokenChecker").click(() => {
         if (document.cookie.includes("token")) {
             const token = document.cookie.split("token=")[1].split(";")[0]
