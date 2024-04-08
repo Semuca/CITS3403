@@ -7,7 +7,7 @@ from app.databases import db
 from app.models import UserModel
 from app.helpers import validate_request_schema
 
-from . import api_bp
+from .bp import api_bp
 
 @api_bp.route('/users', methods=['POST'])
 def create_user():
@@ -15,7 +15,7 @@ def create_user():
 
     # Get validated data
     data = validate_request_schema(create_user_schema)
-    if isinstance(data, type("")):
+    if isinstance(data, str):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Find if a user by that username already exists
@@ -51,7 +51,7 @@ def login():
 
     # Get validated data
     data = validate_request_schema(login_schema)
-    if isinstance(data, type("")):
+    if isinstance(data, str):
         return make_response(
             {"error": "Request validation error",
              "errorMessage": data},

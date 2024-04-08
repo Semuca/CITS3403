@@ -1,8 +1,8 @@
 """Main route views"""
 
-from flask import render_template
+from flask import Blueprint, render_template
 
-from . import main_bp
+main_bp = Blueprint('main_bp', __name__)
 
 @main_bp.route("/")
 def hello_world():

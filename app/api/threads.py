@@ -6,14 +6,14 @@ from app.databases import db
 from app.models import ThreadModel
 from app.helpers.json_schema_validation import validate_request_schema
 
-from . import api_bp
+from .bp import api_bp
 
 @api_bp.route('/threads', methods=['POST'])
 def create_thread():
     """Creates a thread object and saves it to the database"""
     # Validate post request schema
     data = validate_request_schema(create_thread_schema)
-    if isinstance(data, type("")):
+    if isinstance(data, str):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Create a thread object from parameters passed in

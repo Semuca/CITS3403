@@ -1,6 +1,6 @@
 # Makefile with some common commands for development
 
-help:		## Show this help
+help:		## Show this help display
 	@echo 'The following commands can be used with make:'
 	@echo ''
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
@@ -11,6 +11,9 @@ run: 		## Runs the main app
 
 test: 		## Runs all unit tests
 	python3 -m unittest -v
+
+lint:		## Runs pylint recursively for the app directory
+	pylint app
 
 setup: 		## Installs packages from requirements.txt
 	pip install -r requirements.txt

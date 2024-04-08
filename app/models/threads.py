@@ -4,6 +4,7 @@ from datetime import datetime
 
 from app.databases import db
 
+# pylint: disable=too-few-public-methods
 class ThreadModel(db.Model):
     """Represents a single post on the forum, stored in the 'threads' table in the DB"""
 

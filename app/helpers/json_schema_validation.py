@@ -3,6 +3,7 @@
 import re
 from flask import request
 
+# pylint: disable=too-many-return-statements
 def validate_request_schema(schema):
     """Validates the latest request against a schema parameter
     Returns:
@@ -26,16 +27,16 @@ def validate_request_schema(schema):
         # Validate data types
         match schema[attr]:
             case "username":
-                if (not type(value) == type("")) or (re.fullmatch(r'[\w-]+', value) is None):
+                if (not isinstance(value, str)) or (re.fullmatch(r'[\w-]+', value) is None):
                     return f"Invalid value '{value}' for field '{attr}'"
             case "password":
-                if (not type(value) == type("")) or (re.fullmatch(r'[\w-]+', value) is None):
+                if (not isinstance(value, str)) or (re.fullmatch(r'[\w-]+', value) is None):
                     return f"Invalid value '{value}' for field '{attr}'"
             case "string":
-                if (not type(value) == type("")) or (re.fullmatch(r'^[\w\s]+$', value) is None):
+                if (not isinstance(value, str)) or (re.fullmatch(r'^[\w\s]+$', value) is None):
                     return f"Invalid characters for string field '{attr}': '{value}'"
             case "int":
-                if not type(value) == type(1):
+                if not isinstance(value, int):
                     return f"Invalid type for integer field '{attr}': '{value}'"
             case _:
                 return f"Unknown type for field '{attr}': '{schema[attr]}'"
