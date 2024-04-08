@@ -24,7 +24,7 @@ def request_body_from_schema(schema):
             return f"Invalid field '{attr}'"
 
         if schema[attr] == "string":
-            if re.fullmatch(r'\w+', value) is None:
+            if re.fullmatch(r'[\w-]+', value) is None:
                 # Invalid value sent
                 return f"Invalid value '{value}' for field '{attr}'"
 
