@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from databases.db import db
+from app.databases import db
 
 # pylint: disable=too-few-public-methods
 class UserModel(db.Model):

@@ -24,7 +24,7 @@ After setting up the virtual environment and installing the dependencies, run `f
 
 To run specified test files:
 
--   run `python tests/<testName.py>` replacing testName.py with the file you want to run.
+-   run `python -m unittest tests/<testName.py>` replacing testName.py with the file you want to run.
 
 To run all test files in the tests directory:
 

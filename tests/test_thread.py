@@ -2,16 +2,16 @@
 
 import unittest
 
-from databases.db import db
-from main import create_test_app
-from models.thread import ThreadModel
+from app import create_app
+from app.databases import db
+from app.models import ThreadModel
 
 class TestThread(unittest.TestCase):
     """Tests thread database operations"""
 
     def setUp(self):
         # create app so db can be linked to it
-        self.app = create_test_app()
+        self.app = create_app('test')
         self.app_context = self.app.app_context()
         self.app_context.push()
 

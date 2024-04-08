@@ -3,12 +3,13 @@
 import secrets
 from flask import make_response
 
-from helpers.json_schema_validation import validate_request_schema
-from api.api_blueprint import bp
-from databases.db import db
-from models.users import UserModel
+from app.databases import db
+from app.models import UserModel
+from app.helpers import validate_request_schema
 
-@bp.route('/users', methods=['POST'])
+from . import api_bp
+
+@api_bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
 
@@ -44,7 +45,7 @@ createUserBodySchema = {
     "password": "password",
 }
 
-@bp.route('/login', methods=['POST'])
+@api_bp.route('/login', methods=['POST'])
 def login():
     """Endpoint to let a user log in"""
 
@@ -59,7 +60,6 @@ def login():
     # Find a user by that username and passwordHash
     res = UserModel.query.filter_by(username=data["username"],
                                     passwordHash=data["password"])
-
 
     # If the user is not found, return a 404
     if res.first() is None:

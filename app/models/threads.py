@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from databases.db import db
+from app.databases import db
 
 class ThreadModel(db.Model):
     """Represents a single post on the forum, stored in the 'threads' table in the DB"""
@@ -16,18 +16,8 @@ class ThreadModel(db.Model):
     description = db.Column(db.String(1000), nullable=False)
     userId = db.Column(db.Integer(), nullable=False) #to do add relationship to users table; set in backend to current user
 
-    """Creates a thread from json"""
-    def from_json(json_thread):
-        # Get json thread information
-        title = json_thread['title']
-        description = json_thread['description']
-        userId = json_thread['userId']
-
-        # Try creating thread from info
-        return ThreadModel(title=title, description=description, userId=userId)
-
-    """Get json from already-created thread object"""
     def to_json(self):
+        """Return json from already-created thread object"""
         json_thread = {
             'id': self.id,
             'title': self.title,

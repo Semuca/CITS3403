@@ -1,21 +1,25 @@
 """Defines endpoints for CRUD operations with threads"""
 
-from flask import request, make_response
+from flask import make_response
 
-from threads import threads_bp
-from helpers.json_schema_validation import validate_request_schema
-from models.thread import ThreadModel
-from databases.db import db
+from app.databases import db
+from app.models import ThreadModel
+from app.helpers.json_schema_validation import validate_request_schema
 
-@threads_bp.route('/threads', methods=['POST'])
+from . import api_bp
+
+@api_bp.route('/threads', methods=['POST'])
 def create_thread():
+    """Creates a thread object and saves it to the database"""
     # Validate post request schema
     data = validate_request_schema(create_thread_schema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Create a thread object from parameters passed in
-    new_thread = ThreadModel.from_json(data)
+    new_thread = ThreadModel(title=data['title'],
+        description=data['description'],
+        userId=data['userId'])
 
     # Save to db
     db.session.add(new_thread)
@@ -30,10 +34,12 @@ create_thread_schema = {
     "userId": "int"
 }
 
-@threads_bp.route('/threads', methods=['GET'])
+@api_bp.route('/threads', methods=['GET'])
 def read_many_thread():
+    """Reads a list thread objects from the database based on query parameters"""
+
     # Get a list of thread objects according to parameters
-    queried_threads = ThreadModel.query.all() # currently just gets all threads - sorting and filtering TODO
+    queried_threads = ThreadModel.query.all() # to-do sorting and filtering later
 
     # Return query result to client
     return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
