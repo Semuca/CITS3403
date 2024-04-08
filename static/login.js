@@ -1,7 +1,7 @@
 function hash(str) {
     /**
      * COPIED DIRECTLY FROM https://stackoverflow.com/a/26057776
-     * TODO (Jared): Maybe we should rewrite this ourselves? not sure...
+     * TODO (James): Possibly do hashing on the backend side- need to check with lecturer if it's allowed.
      */
     let hash = 0;
     if (str.length === 0) return hash;
