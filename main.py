@@ -2,8 +2,11 @@
 
 from flask import Flask
 
+# Imports api with all routes attached (as opposed to just importing the blank blueprint)
 from api import bp
 from databases.db import db
+
+# pylint: disable=unused-import
 import models
 
 def create_app():
