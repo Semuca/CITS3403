@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from main import db
+from databases.db import db
 
 class ThreadModel(db.Model):
     """Represents a single post on the forum, stored in the 'threads' table in the DB"""
@@ -14,7 +14,7 @@ class ThreadModel(db.Model):
 
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
-    userId = db.Column(db.Integer(), nullable=False) #TODO add relationship to users table; set in backend to current user
+    userId = db.Column(db.Integer(), nullable=False) #to do add relationship to users table; set in backend to current user
 
     """Creates a thread from json"""
     def from_json(json_thread):
@@ -36,5 +36,3 @@ class ThreadModel(db.Model):
             'userId': self.userId,
         }
         return json_thread
-
-
