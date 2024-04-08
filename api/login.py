@@ -3,9 +3,9 @@
 import secrets
 from flask import make_response
 
-from api import bp
+from api.api_blueprint import bp
 from api.helpers import validation
-from main import db
+from databases.db import db
 from models.users import UserModel
 
 @bp.route('/users', methods=['POST'])
