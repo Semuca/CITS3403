@@ -4,6 +4,7 @@ from flask import Flask
 
 from api import bp
 from databases.db import db
+import models
 
 def create_app():
     """Create and configure app"""
@@ -18,9 +19,6 @@ def create_app():
 
     # Import and create dbs for models
     with app.app_context():
-        #pylint: disable=wrong-import-position
-        # from models.thread import Thread
-        # from models.users import UserModel
         db.create_all()
 
     return app
@@ -39,9 +37,6 @@ def create_test_app():
 
     # Import and create dbs for models
     with app.app_context():
-        #pylint: disable=wrong-import-position
-        # from models.thread import Thread
-        # from models.users import UserModel
         db.create_all()
 
     return app
