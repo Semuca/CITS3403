@@ -1,4 +1,4 @@
-"""Defines the thread object and provides functions to get and manipulate one"""
+"""Defines the users object and provides functions to get and manipulate one"""
 
 from datetime import datetime
 

@@ -24,13 +24,20 @@ def validate_request_schema(schema):
             return f"Unexpected field '{attr}' sent"
 
         # Validate data types
-        if schema[attr] == "string":
-            if (not type(value) == type("")) or (re.fullmatch(r'^[\w\s]+$', value) is None):
-                return f"Invalid characters for string field '{attr}': '{value}'"
-        elif schema[attr] == "int":
-            if not type(value) == type(1):
-                return f"Invalid type for integer field '{attr}': '{value}'"
-        else:
-            return f"Unknown type for field '{attr}': '{schema[attr]}'"
+        match schema[attr]:
+            case "username":
+                if (not type(value) == type("")) or (re.fullmatch(r'[\w-]+', value) is None):
+                    return f"Invalid value '{value}' for field '{attr}'"
+            case "password":
+                if (not type(value) == type("")) or (re.fullmatch(r'[\w-]+', value) is None):
+                    return f"Invalid value '{value}' for field '{attr}'"
+            case "string":
+                if (not type(value) == type("")) or (re.fullmatch(r'^[\w\s]+$', value) is None):
+                    return f"Invalid characters for string field '{attr}': '{value}'"
+            case "int":
+                if not type(value) == type(1):
+                    return f"Invalid type for integer field '{attr}': '{value}'"
+            case _:
+                return f"Unknown type for field '{attr}': '{schema[attr]}'"
 
     return data

@@ -5,7 +5,7 @@ from flask import request, make_response
 from threads import threads_bp
 from helpers.json_schema_validation import validate_request_schema
 from models.thread import ThreadModel
-from main import db
+from databases.db import db
 
 @threads_bp.route('/threads', methods=['POST'])
 def create_thread():

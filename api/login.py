@@ -40,8 +40,8 @@ def create_user():
     return make_response({"token": token})
 
 createUserBodySchema = {
-    "username": "string",
-    "password": "string",
+    "username": "username",
+    "password": "password",
 }
 
 @bp.route('/login', methods=['POST'])
@@ -78,6 +78,6 @@ def login():
     return make_response({"token": token})
 
 loginBodySchema = {
-    "username": "string",
-    "password": "string",
+    "username": "username",
+    "password": "password",
 }
