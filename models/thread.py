@@ -2,8 +2,9 @@
 
 from datetime import datetime
 
-from main import db
+from databases.db import db
 
+# pylint: disable=too-few-public-methods
 class Thread(db.Model):
     """Represents a single post on the forum, stored in the 'threads' table in the DB"""
 
@@ -13,4 +14,4 @@ class Thread(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     createdAt = db.Column(db.DateTime(), default=datetime.now, nullable=False)
-    userId = db.Column(db.Integer(), nullable=False) #TODO add as foreign key to users table
+    userId = db.Column(db.Integer(), nullable=False) #to do add as foreign key to users table
