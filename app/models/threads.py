@@ -9,20 +9,24 @@ class ThreadModel(db.Model):
 
     __tablename__ = "threads"
 
+    # Auto-initialised fields
     id = db.Column(db.Integer(), primary_key=True)
-    createdAt = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
 
+    # Set fields
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
-    userId = db.Column(db.Integer(), nullable=False) #to do add relationship to users table; set in backend to current user
+    user_id = db.Column(db.Integer(), nullable=False)
+    # to-do: user id should be automatically set for current user, as foreign key for users table
 
+    # Currently here for testing purposes, to return representation of threads
     def to_json(self):
         """Return json from already-created thread object"""
         json_thread = {
             'id': self.id,
             'title': self.title,
             'description': self.description,
-            'createdAt': self.createdAt,
-            'userId': self.userId,
+            'createdAt': self.created_at,
+            'userId': self.user_id,
         }
         return json_thread

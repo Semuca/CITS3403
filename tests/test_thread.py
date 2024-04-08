@@ -29,7 +29,7 @@ class TestThread(unittest.TestCase):
             title='Exchange rare cards',
             description = """I'm looking for a green mage to improve defence.
                             Anyone willing to trade one for an explode bot?""",
-            userId=234090
+            user_id=234090
         )
 
         db.session.add(test_thread)
@@ -41,7 +41,7 @@ class TestThread(unittest.TestCase):
         # Assert that the created Thread object exists and has info
         self.assertIsNotNone(created_thread)
         self.assertEqual(created_thread.title, 'Exchange rare cards')
-        self.assertEqual(created_thread.userId, 234090)
+        self.assertEqual(created_thread.user_id, 234090)
 
 if __name__ == '__main__':
     unittest.main()

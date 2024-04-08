@@ -14,7 +14,7 @@ def create_user():
     """Endpoint to register a user"""
 
     # Get validated data
-    data = validate_request_schema(createUserBodySchema)
+    data = validate_request_schema(create_user_schema)
     if isinstance(data, type("")):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
@@ -32,15 +32,15 @@ def create_user():
 
     # Add the user into the database
     user = UserModel(username=data["username"],
-                     passwordHash=data["password"],
-                     authenticationToken=token)
+                     password_hash=data["password"],
+                     authentication_token=token)
     db.session.add(user)
     db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
 
-createUserBodySchema = {
+create_user_schema = {
     "username": "username",
     "password": "password",
 }
@@ -50,16 +50,16 @@ def login():
     """Endpoint to let a user log in"""
 
     # Get validated data
-    data = validate_request_schema(loginBodySchema)
+    data = validate_request_schema(login_schema)
     if isinstance(data, type("")):
         return make_response(
             {"error": "Request validation error",
              "errorMessage": data},
             400)
 
-    # Find a user by that username and passwordHash
+    # Find a user by that username and password hash
     res = UserModel.query.filter_by(username=data["username"],
-                                    passwordHash=data["password"])
+                                    password_hash=data["password"])
 
     # If the user is not found, return a 404
     if res.first() is None:
@@ -71,13 +71,13 @@ def login():
     token = secrets.token_urlsafe()
 
     # Update the token against that user
-    res.update({UserModel.authenticationToken: token})
+    res.update({UserModel.authentication_token: token})
     db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
 
-loginBodySchema = {
+login_schema = {
     "username": "username",
     "password": "password",
 }

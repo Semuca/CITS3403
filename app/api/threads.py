@@ -19,7 +19,7 @@ def create_thread():
     # Create a thread object from parameters passed in
     new_thread = ThreadModel(title=data['title'],
         description=data['description'],
-        userId=data['userId'])
+        user_id=data['userId'])
 
     # Save to db
     db.session.add(new_thread)

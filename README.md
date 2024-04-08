@@ -6,17 +6,29 @@
 -   Activate the virtual environment folder using `source .venv/bin/activate`. You will know this has worked if a **(.venv)** prefix has appeared in your CLI.
 -   Install project dependencies, as described below.
 
+## Makefile
+
+The makefile contains some useful commands for processes listed below.
+
+To see what commands are available via the makefile, run `make help`.
+
 ## Project dependencies
 
 Python version: 3.12.2 (Latest)
 
 Install dependencies using `pip install -r requirements.txt`.
 
+-   This command will also be run with `make setup`.
+
 Whenever a dependency has been added, it must be exported using `pip freeze > requirements.txt`.
+
+-   This command will also be run with `make new_setup`.
 
 ## Running the project
 
 After setting up the virtual environment and installing the dependencies, run `flask --app main run`
+
+-   This command will also be run with `make run`.
 
 -   Alternatively, Visual Studio Code's launch.json the project can be run from the 'Run and Debug' tool (F5)
 
@@ -29,6 +41,8 @@ To run specified test files:
 To run all test files in the tests directory:
 
 -   run `python -m unittest`.
+
+-   The above command will also be run with `make test`
 
 If you would like to see what tests are being run, use the `-v` flag with the commands above.
 
