@@ -25,5 +25,4 @@ clean_cache: 	## Clean pycaches
 	rm -rf __pycache__
 
 clean_dbs: 	## Removes database files
-	rm app/databases/test.db
-	rm app/databases/dev.db
+	rm app/databases/*.db
