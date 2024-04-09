@@ -3,18 +3,19 @@
 import secrets
 from flask import make_response
 
-from api.api_blueprint import bp
-from api.helpers import validation
-from databases.db import db
-from models.users import UserModel
+from app.databases import db
+from app.models import UserModel
+from app.helpers import validate_request_schema
 
-@bp.route('/users', methods=['POST'])
+from .bp import api_bp
+
+@api_bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
 
     # Get validated data
-    data = validation.request_body_from_schema(createUserBodySchema)
-    if isinstance(data, type("")):
+    data = validate_request_schema(create_user_schema)
+    if isinstance(data, str):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Find if a user by that username already exists
@@ -31,35 +32,34 @@ def create_user():
 
     # Add the user into the database
     user = UserModel(username=data["username"],
-                     passwordHash=data["password"],
-                     authenticationToken=token)
+                     password_hash=data["password"],
+                     authentication_token=token)
     db.session.add(user)
     db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
 
-createUserBodySchema = {
-    "username": "string",
-    "password": "string",
+create_user_schema = {
+    "username": "username",
+    "password": "password",
 }
 
-@bp.route('/login', methods=['POST'])
+@api_bp.route('/login', methods=['POST'])
 def login():
     """Endpoint to let a user log in"""
 
     # Get validated data
-    data = validation.request_body_from_schema(loginBodySchema)
-    if isinstance(data, type("")):
+    data = validate_request_schema(login_schema)
+    if isinstance(data, str):
         return make_response(
             {"error": "Request validation error",
              "errorMessage": data},
             400)
 
-    # Find a user by that username and passwordHash
+    # Find a user by that username and password hash
     res = UserModel.query.filter_by(username=data["username"],
-                                    passwordHash=data["password"])
-
+                                    password_hash=data["password"])
 
     # If the user is not found, return a 404
     if res.first() is None:
@@ -71,13 +71,13 @@ def login():
     token = secrets.token_urlsafe()
 
     # Update the token against that user
-    res.update({UserModel.authenticationToken: token})
+    res.update({UserModel.authentication_token: token})
     db.session.commit()
 
     # Return with the token
     return make_response({"token": token})
 
-loginBodySchema = {
-    "username": "string",
-    "password": "string",
+login_schema = {
+    "username": "username",
+    "password": "password",
 }
