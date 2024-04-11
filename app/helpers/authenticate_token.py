@@ -11,7 +11,7 @@ def get_user_by_token():
     """
 
     # Expected value of Authorization header: 'Bearer <token>'
-    authorization_header = request.headers.get('Authorization').split(' ')
+    authorization_header = request.headers.get('Authorization').split()
 
     if len(authorization_header) != 2:
         return None
