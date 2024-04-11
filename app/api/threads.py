@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import get_user_by_token, validate_request_schema
+from app.helpers import get_user_id_by_token, validate_request_schema
 
 from .bp import api_bp
 
@@ -18,7 +18,7 @@ def create_thread():
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Authorize request
-    request_user_id = get_user_by_token()
+    request_user_id = get_user_id_by_token()
 
     if request_user_id is None:
         return make_response({"error": "Authorization error",
@@ -47,7 +47,7 @@ def read_many_thread():
     """Reads a list thread objects from the database based on query parameters"""
 
     # Authorize request
-    request_user_id = get_user_by_token()
+    request_user_id = get_user_id_by_token()
 
     if request_user_id is None:
         return make_response({"error": "Authorization error",

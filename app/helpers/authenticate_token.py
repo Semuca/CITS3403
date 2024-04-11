@@ -3,7 +3,7 @@
 from flask import request
 from app.models import UserModel
 
-def get_user_by_token():
+def get_user_id_by_token():
     """Gets a user id by the token
     Returns:
         A user id if the token is stored against a user
