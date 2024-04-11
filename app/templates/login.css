@@ -1,0 +1,99 @@
+/**
+COLOR THEME CODES
+252422 = dark
+403d39 = mid
+ccc5b9 = light
+fffcf2 = white
+4f5d75 = navy
+50b2c0 = cyan
+eb5e28 = orange
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#fffcf2;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    align-content: center;
+    justify-content: center;
+}
+
+.loginForm {
+    width: 360px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ccc5b9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.loginForm h2 {
+    color: #252422;
+    margin-top: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.loginForm input[type="text"],
+.loginForm input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc5b9;
+    border-radius: 3px;
+}
+
+.loginForm p {
+    text-align: center;
+}
+
+#username, #password {
+    background-color: #fffcf2;
+}
+
+#pressLogin {
+    width: 100%;
+    padding: 10px;
+    background-color: #4f5d75;
+    color: #fffcf2;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#pressLogin:hover {
+    background-color: #50b2c0;
+}
+
+.passwordToggleIcon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-30%);
+    cursor: pointer;
+}
+
+.passwordToggleIcon i {
+    font-size: 20px;
+    line-height: 1;
+    color: #767676;
+    transition: color 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.passwordToggleIcon i:hover {
+    color: #252422;
+}

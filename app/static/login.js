@@ -13,6 +13,16 @@ function hash(str) {
     return hash;
 }
 
+/**
+ * function togglePasswordVisibility() {
+    var pwd = document.getElementById("passwordToggleIcon");
+    if (pwd.type === "password") {
+        pwd.type = "text";
+    } else {
+        pwd.type = "password";
+    }
+} 
+ */
 
 jQuery(() => {
     //FUTURE (Jared): Remove this button since it's just for testing
