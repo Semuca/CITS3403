@@ -32,6 +32,6 @@ def forum_page():
 
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
-    """The trade forum page"""
+    """The single thread page"""
 
     return auth_redirect(render_template('thread.html', thread_id=thread_id))
