@@ -1,0 +1,26 @@
+.body {
+    background-color:#fffcf2;
+}
+
+#username, #password {
+    background-color: #fffcf2;
+}
+
+#pressRegister {
+    width: 100%;
+    padding: 10px;
+    background-color: #4f5d75;
+    color: #fffcf2;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#pressRegister:hover {
+    background-color: #50b2c0;
+}
+
+.card {
+    border-radius: 15px;
+    background-color:#fffcf2;
+}
