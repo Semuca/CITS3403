@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import get_user_id_by_token, validate_request_schema
+from app.helpers import get_user_id_by_auth_header, validate_request_schema
 
 from .bp import api_bp
 
@@ -19,7 +19,7 @@ def create_thread():
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
     # Authorize request
-    request_user_id = get_user_id_by_token()
+    request_user_id = get_user_id_by_auth_header()
 
     if request_user_id is None:
         return make_response(
@@ -49,7 +49,7 @@ def read_many_thread():
     """Reads a list thread objects from the database based on query parameters"""
 
     # Authorize request
-    request_user_id = get_user_id_by_token()
+    request_user_id = get_user_id_by_auth_header()
 
     if request_user_id is None:
         return make_response(

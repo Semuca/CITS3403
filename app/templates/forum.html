@@ -15,20 +15,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='login.js') }}" type="module"></script>
-    <title>Sign up Barebones</title>
+    <script src="{{ url_for('static', filename='forum.js') }}" type="module"></script>
+    <title>Forum</title>
 </head>
 
 <body>
-    <p>Sign up</p>
-    <label for="username">Username</label>
-    <input id="username">
-    <br>
-    <label for="password">Password</label>
-    <input id="password">
-    <br>
-    <br>
-    <button id="pressCreate">Sign up</button>
-    <br>
-    <br>
+    <div>
+        <label for="title">Enter the title: </label>
+        <input type="text" id="title" required />
+        <label for="description">Enter the description: </label>
+        <input type="text" id="description" required />
+        <input id="submit" type="submit" value="Post thread" />
+    </div>
+    <div id="threads">
+
+    </div>
 </body>
