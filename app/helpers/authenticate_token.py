@@ -12,7 +12,7 @@ def get_user_id_by_token():
 
     # Expected value of Authorization header: 'Bearer <token>'
     authorization_header = request.headers.get('Authorization')
-    if (authorization_header is None):
+    if authorization_header is None:
         return None
 
     split_authorization_header = authorization_header.split()
