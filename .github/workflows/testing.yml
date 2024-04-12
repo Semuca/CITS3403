@@ -22,7 +22,7 @@ jobs:
                   pip install Flask-SQLAlchemy
             - name: Analysing the code with pylint
               run: |
-                  pylint --rcfile=pylintrc $(git ls-files '*.py')
+                  pylint --rcfile=.pylintrc $(git ls-files 'app/*.py')
             - name: Running unit tests
               run: |
                   python3 -m unittest -v
