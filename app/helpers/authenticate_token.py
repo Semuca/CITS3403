@@ -3,7 +3,7 @@
 from flask import redirect, request
 from app.models import UserModel
 
-def auth_redirect(successful_result):
+def redirect_wrapper(successful_result):
     """Wrapper function to redirect to the login page if the user is not authenticated
     Returns:
         The parameter successful_result if the user is authenticated

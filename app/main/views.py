@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template
 
-from app.helpers import auth_redirect
+from app.helpers import redirect_wrapper
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -28,10 +28,10 @@ def signup_page():
 def forum_page():
     """The trade forum page"""
 
-    return auth_redirect(render_template('forum.html'))
+    return redirect_wrapper(render_template('forum.html'))
 
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
 
-    return auth_redirect(render_template('thread.html', thread_id=thread_id))
+    return redirect_wrapper(render_template('thread.html', thread_id=thread_id))
