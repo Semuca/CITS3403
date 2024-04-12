@@ -1,4 +1,4 @@
-"""This module provides validation help function for api endpoints"""
+"""This module provides validation helper functions for api endpoints"""
 
 import re
 from flask import request
