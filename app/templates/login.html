@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='login.js') }}"></script>
+    <script src="{{ url_for('static', filename='login.js') }}" type="module"></script>
     <title>Log in Barebones</title>
 </head>
 
@@ -31,6 +31,4 @@
     <button id="pressLogin">Log in</button>
     <br>
     <br>
-    {# FUTURE (Jared): remove this button since it's just for testing #}
-    <button id="tokenChecker">Check what the token is!</button>
 </body>

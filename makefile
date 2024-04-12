@@ -9,6 +9,9 @@ help:		## Show this help display
 run: 		## Runs the main app
 	flask --app main run
 
+debug: 		## Runs the main app in debug mode
+	flask --app main run --debug
+
 test: 		## Runs all unit tests
 	python3 -m unittest -v
 
