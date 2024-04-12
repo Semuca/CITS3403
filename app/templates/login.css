@@ -23,43 +23,6 @@ body {
     background-color:#fffcf2;
 }
 
-.container {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    align-content: center;
-    justify-content: center;
-}
-
-.loginForm {
-    width: 360px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #ccc5b9;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.loginForm h2 {
-    color: #252422;
-    margin-top: 20px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.loginForm input[type="text"],
-.loginForm input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc5b9;
-    border-radius: 3px;
-}
-
-.loginForm p {
-    text-align: center;
-}
-
 #username, #password {
     background-color: #fffcf2;
 }

@@ -25,15 +25,6 @@ function hash(str) {
  */
 
 jQuery(() => {
-    //FUTURE (Jared): Remove this button since it's just for testing
-    $("#tokenChecker").click(() => {
-        if (document.cookie.includes("token")) {
-            const token = document.cookie.split("token=")[1].split(";")[0]
-            alert("your token is " + token + ". Probably don't share that!!")
-        } else {
-            alert("You aren't logged in!")
-        }
-    })
     $("#pressLogin").click(() => {
         let body = JSON.stringify({
                 username: $("#username").val(),
