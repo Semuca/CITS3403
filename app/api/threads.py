@@ -69,7 +69,7 @@ def read_by_id_thread(thread_id):
     """Reads the details of a thread object by its id"""
 
     # Authorize request
-    request_user_id = get_user_id_by_token()
+    request_user_id = get_user_id_by_auth_header()
 
     if request_user_id is None:
         return make_response(
@@ -79,6 +79,12 @@ def read_by_id_thread(thread_id):
 
     # Get a thread object from the db according to given id
     queried_thread = db.session.get(ThreadModel, thread_id)
+
+    if queried_thread is None:
+        return make_response(
+            {"error": "Request validation error",
+             "errorMessage": "Thread not found"},
+             404)
 
     # Return query result to client
     return make_response(ThreadModel.to_json(queried_thread), 200)
