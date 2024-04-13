@@ -1,3 +1,5 @@
+import { CookieManager } from "./helpers/cookie_manager.js";
+
 function hash(str) {
     /**
      * COPIED DIRECTLY FROM https://stackoverflow.com/a/26057776
@@ -15,24 +17,20 @@ function hash(str) {
 
 jQuery(() => {
     $("#pressLogin").click(() => {
-        let body = JSON.stringify({
+        const body = JSON.stringify({
                 username: $("#username").val(),
                 password: (hash($("#password").val())).toString()
             }
         )
+
         fetch("/api/login", {
             method: "POST", body: body, headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(r => {
             if (r.ok) {
-                r.json().then(
-                    o => {
-                        const expiry = new Date(Date.now() + (25 * 60 * 60)) //set the cookie to expire in 24 hours
-                        document.cookie += `token=${o.token}; expiry=${expiry}; path=/`
-                        document.location = "/"
-                    }
-                )
+                r.json().then(o => CookieManager.setCookie("token", o.token))
+                window.location = "/forum";
             } else {
                 alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
             }
@@ -50,14 +48,8 @@ jQuery(() => {
             }
         }).then(r => {
             if (r.ok) {
-                console.log(r);
-                r.json().then(
-                    o => {
-                        const expiry = new Date(Date.now() + (25 * 60 * 60)) //set the cookie to expire in 24 hours
-                        document.cookie += `token=${o.token}; expiry=${expiry}; path=/`
-                        document.location = "/"
-                    }
-                )
+                r.json().then(o => CookieManager.setCookie("token", o.token));
+                window.location = "/forum";
             } else {
                 alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
             }

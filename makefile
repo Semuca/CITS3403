@@ -9,11 +9,14 @@ help:		## Show this help display
 run: 		## Runs the main app
 	flask --app main run
 
+debug: 		## Runs the main app in debug mode
+	flask --app main run --debug
+
 test: 		## Runs all unit tests
 	python3 -m unittest -v
 
 lint:		## Runs pylint recursively for the app directory
-	pylint app
+	pylint --rcfile=.pylintrc app
 
 setup: 		## Installs packages from requirements.txt
 	pip install -r requirements.txt
