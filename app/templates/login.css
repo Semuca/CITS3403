@@ -40,23 +40,3 @@ body {
 #pressLogin:hover {
     background-color: #50b2c0;
 }
-
-.passwordToggleIcon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-30%);
-    cursor: pointer;
-}
-
-.passwordToggleIcon i {
-    font-size: 20px;
-    line-height: 1;
-    color: #767676;
-    transition: color 0.3s ease-in-out;
-    margin-bottom: 20px;
-}
-
-.passwordToggleIcon i:hover {
-    color: #252422;
-}
