@@ -1,0 +1,47 @@
+/**
+COLOR THEME CODES
+252422 = dark
+403d39 = mid
+ccc5b9 = light
+fffcf2 = white
+4f5d75 = navy
+50b2c0 = cyan
+eb5e28 = orange
+*/
+
+.btnCustom {
+  text-transform: uppercase;
+  padding: 1.5rem 3rem;
+  letter-spacing: 0.1rem;
+}
+
+.navbarCustom {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: #252422;
+}
+
+.navbarCustom .navbar-brand .fa-hat-wizard{
+    color: #4f5d75;
+}
+
+.navbarCustom .navbar-brand {
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  color: #252422;
+}
+
+.navbarCustom .navbar-nav .nav-item .nav-link {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+header.title {
+  padding-top: calc(7rem + 72px);
+  padding-bottom: 7rem;
+  background: linear-gradient(0deg, #eb5e28 0%, #50b2c0 100%);
+}
