@@ -30,17 +30,19 @@ class BaseApiTest(unittest.TestCase):
 
 class TestLogin(BaseApiTest):
     """Tests log in endpoint - POST api/login"""
+    def setUp(self):
+        super().setUp()
 
-    def test_valid_login(self):
-        """Tests that logging in with the right credentials returns the right token"""
-
-        # Assemble
         db.session.add(UserModel(
             username="PurpleGuy",
             password_hash="Password123"
         ))
         db.session.commit()
 
+    def test_valid_login(self):
+        """Tests that logging in with the right credentials returns the right token"""
+
+        # Assemble
         body = {
             "username": "PurpleGuy",
             "password": "Password123"
@@ -61,12 +63,6 @@ class TestLogin(BaseApiTest):
         """Tests that logging in with the wrong password returns a user not found error"""
 
         # Assemble
-        db.session.add(UserModel(
-            username="PurpleGuy",
-            password_hash="Password123"
-        ))
-        db.session.commit()
-
         body = {
             "username": "PurpleGuy",
             "password": "somethingElse"
@@ -81,15 +77,9 @@ class TestLogin(BaseApiTest):
         self.assertEqual(user.authentication_token, None, f"Token should not be set in db {user.authentication_token}")
 
     def test_nonexistant_user(self):
-        """Tests that trying to log in to a user that does not exist does not return an error"""
+        """Tests that trying to log in to a user that does not exist returns an error"""
 
         # Assemble
-        db.session.add(UserModel(
-            username="PurpleGuy",
-            password_hash="Password123"
-        ))
-        db.session.commit()
-
         body = {
             "username": "FreddyFozbar",
             "password": "REVENGE"
