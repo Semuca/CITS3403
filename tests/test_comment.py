@@ -44,7 +44,7 @@ class TestThreadModel(unittest.TestCase):
 
         # Create a new mock Thread object and save to db
         test_comment = CommentModel(
-            data="Do you have any with rank above B? I will trade",
+            comment_text="Do you have any with rank above B? I will trade",
             thread_id=1,
             user_id=1
         )
@@ -55,7 +55,7 @@ class TestThreadModel(unittest.TestCase):
         created_comment = db.session.get(CommentModel, 1)
 
         self.assertIsNotNone(created_comment)
-        self.assertEqual(created_comment.data, "Do you have any with rank above B? I will trade")
+        self.assertEqual(created_comment.comment_text, "Do you have any with rank above B? I will trade")
         self.assertEqual(created_comment.user_id, 1)
         self.assertEqual(created_comment.thread_id, 1)
 
@@ -64,7 +64,7 @@ class TestThreadModel(unittest.TestCase):
 
         self.assertIsNotNone(created_thread)
         self.assertEqual(len(created_thread.children), 1)
-        self.assertEqual(created_thread.children[0].data, "Do you have any with rank above B? I will trade")
+        self.assertEqual(created_thread.children[0].comment_text, "Do you have any with rank above B? I will trade")
         self.assertEqual(created_thread.children[0].user_id, 1)
         self.assertEqual(created_thread.children[0].thread_id, 1)
 

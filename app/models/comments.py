@@ -15,7 +15,7 @@ class CommentModel(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
 
     # Set fields
-    data = db.Column(db.Text(), nullable=False)
+    comment_text = db.Column(db.Text(), nullable=False)
     thread_id = db.Column(db.Integer(), db.ForeignKey("threads.id"), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
     # to-do: user id should be automatically set for current user, as foreign key for users table
@@ -28,6 +28,6 @@ class CommentModel(db.Model):
             'userId': self.user_id,
             'threadId': self.thread_id,
             'createdAt': self.created_at,
-            'data': self.data,
+            'commentText': self.comment_text,
         }
         return json_comment

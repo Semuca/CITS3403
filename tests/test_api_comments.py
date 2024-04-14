@@ -61,13 +61,13 @@ class TestCreate(BaseApiTest):
 
         # Posts a couple of create comment requests
         req_body_1 = {
-            "data": "Do you have any with rank above B I will trade"
+            "commentText": "Do you have any with rank above B I will trade"
         }
         res_1 = self.client.post("/api/threads/1/comments", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 201, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
-            "data": "If u like anything in my inventory I am down to trade"
+            "commentText": "If u like anything in my inventory I am down to trade"
         }
         res_2 = self.client.post("/api/threads/1/comments", headers=get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 201, f"Status code is wrong with message {res_2.data}")
@@ -79,11 +79,11 @@ class TestCreate(BaseApiTest):
         self.assertIsNotNone(created_comment_1)
         self.assertIsNotNone(created_comment_2)
 
-        self.assertEqual(created_comment_1.data, "Do you have any with rank above B I will trade")
+        self.assertEqual(created_comment_1.comment_text, "Do you have any with rank above B I will trade")
         self.assertEqual(created_comment_1.user_id, 1)
         self.assertEqual(created_comment_1.thread_id, 1)
 
-        self.assertEqual(created_comment_2.data, "If u like anything in my inventory I am down to trade")
+        self.assertEqual(created_comment_2.comment_text, "If u like anything in my inventory I am down to trade")
         self.assertEqual(created_comment_2.user_id, 1)
         self.assertEqual(created_comment_2.thread_id, 1)
 
@@ -91,15 +91,15 @@ class TestCreate(BaseApiTest):
         test_thread = db.session.get(ThreadModel, 1)
 
         self.assertEqual(len(test_thread.children), 2)
-        self.assertEqual(test_thread.children[0].data, "Do you have any with rank above B I will trade")
-        self.assertEqual(test_thread.children[1].data, "If u like anything in my inventory I am down to trade")
+        self.assertEqual(test_thread.children[0].comment_text, "Do you have any with rank above B I will trade")
+        self.assertEqual(test_thread.children[1].comment_text, "If u like anything in my inventory I am down to trade")
 
     def test_create_for_nonexistent_thread(self):
         """Tests that creating a comment for a nonexistent thread gets the right error response"""
 
         # Posts a create comment request to a nonexistent thread
         req_body = {
-            "data": "Do you have any with rank above B I will trade"
+            "commentText": "Do you have any with rank above B I will trade"
         }
         res_1 = self.client.post("/api/threads/3/comments", headers=get_api_headers(), data=json.dumps(req_body))
         res_2 = self.client.post("/api/threads/awawa/comments", headers=get_api_headers(), data=json.dumps(req_body))
@@ -136,12 +136,12 @@ class TestReadMany(BaseApiTest):
 
         # Create a couple of comments directly with the database
         test_comment_1 = CommentModel(
-            data="Do you have any with rank above B? I will trade",
+            comment_text="Do you have any with rank above B? I will trade",
             thread_id=1,
             user_id=1
         )
         test_comment_2 = CommentModel(
-            data="If u like anything in my inventory I'm down to trade",
+            comment_text="If u like anything in my inventory I'm down to trade",
             thread_id=1,
             user_id=1
         )
@@ -162,11 +162,11 @@ class TestReadMany(BaseApiTest):
         res_json_data = json.loads(res.data)
         self.assertEqual(len(res_json_data), 2, f"Data sent back is '{res.data}'")
 
-        self.assertEqual(res_json_data[0]["data"], 'Do you have any with rank above B? I will trade', f"Json data sent back is '{res_json_data[0]["data"]}'")
+        self.assertEqual(res_json_data[0]["commentText"], 'Do you have any with rank above B? I will trade', f"Json data sent back is '{res_json_data[0]["commentText"]}'")
         self.assertEqual(res_json_data[0]["threadId"], 1, f"Json data sent back is '{res_json_data[0]["threadId"]}'")
         self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
 
-        self.assertEqual(res_json_data[1]["data"], "If u like anything in my inventory I'm down to trade", f"Json data sent back is '{res_json_data[1]["data"]}'")
+        self.assertEqual(res_json_data[1]["commentText"], "If u like anything in my inventory I'm down to trade", f"Json data sent back is '{res_json_data[1]["commentText"]}'")
         self.assertEqual(res_json_data[1]["threadId"], 1, f"Json data sent back is '{res_json_data[1]["threadId"]}'")
         self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
 

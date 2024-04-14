@@ -37,7 +37,7 @@ def create_comment(thread_id):
     new_comment = CommentModel(
         user_id=request_user_id,
         thread_id=thread_id,
-        data=data['data']
+        comment_text=data['commentText']
     )
 
     # Save to db
@@ -48,7 +48,7 @@ def create_comment(thread_id):
     return make_response(new_comment.to_json(), 201)
 
 create_comment_schema = {
-    "data": "text"
+    "commentText": "text"
 }
 
 @api_bp.route('/threads/<int:thread_id>/children', methods=['GET'])
