@@ -1,4 +1,4 @@
-"""Unit tests for thread endpoints"""
+"""Unit tests for users endpoints"""
 
 import unittest
 import json
