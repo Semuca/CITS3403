@@ -18,7 +18,6 @@ class CommentModel(db.Model):
     comment_text = db.Column(db.Text(), nullable=False)
     thread_id = db.Column(db.Integer(), db.ForeignKey("threads.id"), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
-    # to-do: user id should be automatically set for current user, as foreign key for users table
 
     # Currently here for testing purposes, to return representation of comments
     def to_json(self):
