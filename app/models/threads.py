@@ -17,8 +17,7 @@ class ThreadModel(db.Model):
     # Set fields
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
-    user_id = db.Column(db.Integer(), nullable=False)
-    # to-do: user id should be automatically set for current user, as foreign key for users table
+    user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
 
     # Relationships
     children = db.relationship("CommentModel", backref="thread")
