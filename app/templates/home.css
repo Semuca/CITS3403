@@ -1,13 +1,12 @@
-/**
-COLOR THEME CODES
-252422 = dark
-403d39 = mid
-ccc5b9 = light
-fffcf2 = white
-4f5d75 = navy
-50b2c0 = cyan
-eb5e28 = orange
-*/
+:root {
+  --darkGrey: #252422;
+  --midGrey: #403d39;
+  --lightGrey: #ccc5b9;
+  --white: #fffcf2;
+  --orange: #eb5e28;
+  --cyan: #50b2c0;
+  --navy: #4f5d75;
+}
 
 .btnCustom {
   text-transform: uppercase;
@@ -18,11 +17,11 @@ eb5e28 = orange
 .navbarCustom {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: #252422;
+  background-color: var(--darkGrey);
 }
 
 .navbarCustom .navbar-brand .fa-hat-wizard{
-    color: #4f5d75;
+    color: var(--navy)
 }
 
 .navbarCustom .navbar-brand {
@@ -30,7 +29,7 @@ eb5e28 = orange
   font-size: 1rem;
   letter-spacing: 0.1rem;
   font-weight: 700;
-  color: #252422;
+  color: var(--darkGrey);
 }
 
 .navbarCustom .navbar-nav .nav-item .nav-link {
@@ -43,5 +42,5 @@ eb5e28 = orange
 header.title {
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  background: linear-gradient(0deg, #eb5e28 0%, #50b2c0 100%);
+  background: linear-gradient(0deg, var(--orange) 0%, var(--cyan) 100%);
 }
