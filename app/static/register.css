@@ -19,7 +19,7 @@
 #pressRegister {
     width: 100%;
     padding: 10px;
-    background-color: var(--navy);
+    background-color: var(--cyan);
     color: var(--white);
     border: none;
     border-radius: 3px;
@@ -27,7 +27,7 @@
 }
 
 #pressRegister:hover {
-    background-color: var(--cyan);
+    background-color: var(--navy);
 }
 
 .card {

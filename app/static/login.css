@@ -29,7 +29,7 @@ body {
 #pressLogin {
     width: 100%;
     padding: 10px;
-    background-color: var(--navy);
+    background-color: var(--cyan);
     color: var(--white);
     border: none;
     border-radius: 3px;
@@ -37,5 +37,5 @@ body {
 }
 
 #pressLogin:hover {
-    background-color: var(--cyan);
+    background-color: var(--navy);
 }
