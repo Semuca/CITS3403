@@ -15,7 +15,6 @@ function hash(str) {
     return hash;
 }
 
-
 jQuery(() => {
     $("#pressLogin").click(() => {
         const body = JSON.stringify({

@@ -1,0 +1,36 @@
+:root {
+    --darkGrey: #252422;
+    --midGrey: #403d39;
+    --lightGrey: #ccc5b9;
+    --white: #fffcf2;
+    --orange: #eb5e28;
+    --cyan: #50b2c0;
+    --navy: #4f5d75;
+}
+
+.body {
+    background-color: var(--white);
+}
+
+#username, #password {
+    background-color: var(--white);
+}
+
+#pressRegister {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--cyan);
+    color: var(--white);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#pressRegister:hover {
+    background-color: var(--navy);
+}
+
+.card {
+    border-radius: 15px;
+    background-color:var(--white);
+}
