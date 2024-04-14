@@ -39,8 +39,8 @@ def create_thread():
     return make_response(new_thread.to_json(), 201)
 
 create_thread_schema = {
-    "title": "string",
-    "description": "string"
+    "title": "text",
+    "description": "text"
 }
 
 @api_bp.route('/threads', methods=['GET'])

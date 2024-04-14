@@ -94,6 +94,18 @@ class TestCreate(BaseApiTest):
         self.assertEqual(test_thread.children[0].data, "Do you have any with rank above B I will trade")
         self.assertEqual(test_thread.children[1].data, "If u like anything in my inventory I am down to trade")
 
+    def test_create_for_nonexistent_thread(self):
+        """Tests that creating a comment for a nonexistent thread gets the right error response"""
+
+        # Posts a create comment request to a nonexistent thread
+        req_body = {
+            "data": "Do you have any with rank above B I will trade"
+        }
+        res = self.client.post("/api/threads/3/comments", headers=get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/awawa/comments", headers=get_api_headers(), data=json.dumps(req_body))
+        self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
+        self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
+
 class TestReadMany(BaseApiTest):
     """Tests comments read many endpoint - GET api/threads/{thread_id}/children"""
 
@@ -167,3 +179,15 @@ class TestReadMany(BaseApiTest):
 
         res_json_data = json.loads(res.data)
         self.assertEqual(len(res_json_data), 0, f"Data sent back is '{res.data}'")
+
+    def test_get_from_nonexistent_thread(self):
+        """Tests that getting from a nonexistent thread gets the right error response"""
+
+        res_1 = self.client.get("/api/threads/3/children", headers=get_api_headers())
+        res_2 = self.client.get("/api/threads/awawa/children", headers=get_api_headers())
+        self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message '{res_1.data}'")
+        self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message '{res_2.data}'")
+
+if __name__ == '__main__':
+    unittest.main()
+

@@ -228,7 +228,7 @@ class TestReadById(BaseApiTest):
         """Tests that getting with a nonexistent thread ids gets the right error response"""
 
         res_1 = self.client.get("/api/threads/3", headers=get_api_headers())
-        res_2 = self.client.get("/api/thread/awawa", headers=get_api_headers())
+        res_2 = self.client.get("/api/threads/awawa", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message '{res_1.data}'")
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message '{res_2.data}'")
 

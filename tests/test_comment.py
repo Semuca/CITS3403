@@ -1,4 +1,4 @@
-"""Unit test file for thread.py"""
+"""Unit test file for the comment model"""
 
 import unittest
 
