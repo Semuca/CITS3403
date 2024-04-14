@@ -101,10 +101,10 @@ class TestCreate(BaseApiTest):
         req_body = {
             "data": "Do you have any with rank above B I will trade"
         }
-        res = self.client.post("/api/threads/3/comments", headers=get_api_headers(), data=json.dumps(req_body))
-        res = self.client.post("/api/threads/awawa/comments", headers=get_api_headers(), data=json.dumps(req_body))
-        self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
-        self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
+        res_1 = self.client.post("/api/threads/3/comments", headers=get_api_headers(), data=json.dumps(req_body))
+        res_2 = self.client.post("/api/threads/awawa/comments", headers=get_api_headers(), data=json.dumps(req_body))
+        self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
+        self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message {res_2.data}")
 
 class TestReadMany(BaseApiTest):
     """Tests comments read many endpoint - GET api/threads/{thread_id}/children"""
@@ -190,4 +190,3 @@ class TestReadMany(BaseApiTest):
 
 if __name__ == '__main__':
     unittest.main()
-
