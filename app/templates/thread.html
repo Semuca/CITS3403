@@ -15,9 +15,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script id="threadScript" type="module" src="{{ url_for('static', filename='thread.js') }}" data-thread-id="{{ thread_id }}"></script>
     <title>Thread</title>
 </head>
 
 <body>
-    <p>Single thread view for {{ thread_id }} goes here</p>
+    <a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Back</a>
+    <h1 id="title"></h1>
+    <h5 id="description"></h5>
+    <div id="children"></div>
+    <div>
+        <label for="commentText">Type a comment here: </label>
+        <input type="text" id="commentText" required />
+        <input id="submit" type="submit" value="Post comment" />
+    </div>
 </body>
