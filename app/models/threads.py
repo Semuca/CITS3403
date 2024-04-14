@@ -20,6 +20,9 @@ class ThreadModel(db.Model):
     user_id = db.Column(db.Integer(), nullable=False)
     # to-do: user id should be automatically set for current user, as foreign key for users table
 
+    # Relationships
+    children = db.relationship("CommentModel", backref="thread")
+
     # Currently here for testing purposes, to return representation of threads
     def to_json(self):
         """Return json from already-created thread object"""
@@ -29,5 +32,6 @@ class ThreadModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'userId': self.user_id,
+            'children': [c.to_json() for c in self.children],
         }
         return json_thread

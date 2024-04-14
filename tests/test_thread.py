@@ -1,7 +1,6 @@
 """Unit test file for thread.py"""
 
 import unittest
-import json
 
 from app import create_app
 from app.databases import db
