@@ -1,13 +1,12 @@
-/**
-COLOR THEME CODES
-252422 = dark
-403d39 = mid
-ccc5b9 = light
-fffcf2 = white
-4f5d75 = navy
-50b2c0 = cyan
-eb5e28 = orange
-*/
+:root {
+    --darkGrey: #252422;
+    --midGrey: #403d39;
+    --lightGrey: #ccc5b9;
+    --white: #fffcf2;
+    --orange: #eb5e28;
+    --cyan: #50b2c0;
+    --navy: #4f5d75;
+}
 
 * {
     margin: 0;
@@ -20,23 +19,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:#fffcf2;
+    background-color: var(--white);
 }
 
 #username, #password {
-    background-color: #fffcf2;
+    background-color: var(--white);
 }
 
 #pressLogin {
     width: 100%;
     padding: 10px;
-    background-color: #4f5d75;
-    color: #fffcf2;
+    background-color: var(--navy);
+    color: var(--white);
     border: none;
     border-radius: 3px;
     cursor: pointer;
 }
 
 #pressLogin:hover {
-    background-color: #50b2c0;
+    background-color: var(--cyan);
 }
