@@ -7,10 +7,10 @@ from app.helpers import redirect_wrapper
 main_bp = Blueprint('main_bp', __name__)
 
 @main_bp.route("/")
-def hello_world():
-    """A test 'hello world' function"""
+def home_page():
+    """The home page"""
 
-    return "<p>Hello, World!</p>"
+    return render_template('home.html')
 
 @main_bp.route("/login")
 def login_page():
