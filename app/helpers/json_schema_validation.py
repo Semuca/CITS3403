@@ -32,7 +32,7 @@ def validate_request_schema(schema):
             case "password":
                 if (not isinstance(value, str)) or (re.fullmatch(r'[\w-]+', value) is None):
                     return f"Invalid value '{value}' for field '{attr}'"
-            case "string":
+            case "text":
                 if (not isinstance(value, str)) or (re.fullmatch(r'^[\w\s]+$', value) is None):
                     return f"Invalid characters for string field '{attr}': '{value}'"
             case "int":

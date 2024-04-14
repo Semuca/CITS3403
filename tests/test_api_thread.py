@@ -44,9 +44,9 @@ class TestCreate(BaseApiTest):
         db.session.add(test_user)
 
     def tearDown(self):
-        return super().tearDown()
+        super().tearDown()
 
-    def test_create(self):
+    def test_valid_create(self):
         """Tests that threads can be created from the endpoint"""
 
         # Posts a couple of create thread requests
@@ -68,8 +68,8 @@ class TestCreate(BaseApiTest):
         created_thread_1 = db.session.get(ThreadModel, 1)
         created_thread_2 = db.session.get(ThreadModel, 2)
 
-        self.assertIsNotNone(created_thread_1, "Created thread is none in db")
-        self.assertIsNotNone(created_thread_2, "Created thread is none in db")
+        self.assertIsNotNone(created_thread_1)
+        self.assertIsNotNone(created_thread_2)
 
         self.assertEqual(created_thread_1.title, "hello", "Created thread has wrong information")
         self.assertEqual(created_thread_1.description, "Heya new here", "Created thread has wrong information")
@@ -139,7 +139,7 @@ class TestReadMany(BaseApiTest):
     def tearDown(self):
         return super().tearDown()
 
-    def test_get_threads(self):
+    def test_valid_read_many(self):
         # Post a get request for all the threads
         res = self.client.get("/api/threads", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
@@ -156,7 +156,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res_json_data[1]["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data[1]["description"]}'")
         self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
 
-    def test_get_no_threads(self):
+    def test_get_from_empty_database(self):
         # Empty the database
         db.session.query(ThreadModel).delete()
 
@@ -201,7 +201,7 @@ class TestReadById(BaseApiTest):
     def tearDown(self):
         super().tearDown()
 
-    def test_get_thread(self):
+    def test_get_valid_thread(self):
         """Test that threads can be received from the endpoint"""
 
         # Post a get request for first thread
@@ -228,7 +228,7 @@ class TestReadById(BaseApiTest):
         """Tests that getting with a nonexistent thread ids gets the right error response"""
 
         res_1 = self.client.get("/api/threads/3", headers=get_api_headers())
-        res_2 = self.client.get("/api/thread/awawa", headers=get_api_headers())
+        res_2 = self.client.get("/api/threads/awawa", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message '{res_1.data}'")
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message '{res_2.data}'")
 

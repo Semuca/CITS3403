@@ -1,7 +1,6 @@
 """Defines endpoints for CRUD operations with threads"""
 
 from flask import make_response
-from sqlalchemy import select
 
 from app.databases import db
 from app.models import ThreadModel
@@ -18,9 +17,9 @@ def create_thread():
     if isinstance(data, str):
         return make_response({"error": "Request validation error", "errorMessage": data}, 400)
 
+    # pylint: disable=duplicate-code
     # Authorize request
     request_user_id = get_user_id_by_auth_header()
-
     if request_user_id is None:
         return make_response(
             {"error": "Authorization error",
@@ -40,17 +39,17 @@ def create_thread():
     return make_response(new_thread.to_json(), 201)
 
 create_thread_schema = {
-    "title": "string",
-    "description": "string"
+    "title": "text",
+    "description": "text"
 }
 
 @api_bp.route('/threads', methods=['GET'])
 def read_many_thread():
-    """Reads a list thread objects from the database based on query parameters"""
+    """Reads a list of threads from the database based on query parameters"""
 
+    # pylint: disable=duplicate-code
     # Authorize request
     request_user_id = get_user_id_by_auth_header()
-
     if request_user_id is None:
         return make_response(
             {"error": "Authorization error",
@@ -58,7 +57,7 @@ def read_many_thread():
              401)
 
     # Get a list of thread objects according to parameters
-    queried_threads = db.session.execute(select(ThreadModel)).scalars().all() # to-do sorting and filtering later
+    queried_threads = db.session.scalars(db.select(ThreadModel)).all() # to-do sorting and filtering later
 
     # Return query result to client
     return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
@@ -68,6 +67,7 @@ def read_many_thread():
 def read_by_id_thread(thread_id):
     """Reads the details of a thread object by its id"""
 
+    # pylint: disable=duplicate-code
     # Authorize request
     request_user_id = get_user_id_by_auth_header()
 
