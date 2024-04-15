@@ -14,31 +14,6 @@
   letter-spacing: 0.1rem;
 }
 
-.navbarCustom {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  background-color: var(--darkGrey);
-}
-
-.navbarCustom .navbar-brand .fa-hat-wizard{
-    color: var(--navy)
-}
-
-.navbarCustom .navbar-brand {
-  text-transform: uppercase;
-  font-size: 1rem;
-  letter-spacing: 0.1rem;
-  font-weight: 700;
-  color: var(--darkGrey);
-}
-
-.navbarCustom .navbar-nav .nav-item .nav-link {
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1rem;
-}
-
 header.title {
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
