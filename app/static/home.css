@@ -15,7 +15,7 @@
 }
 
 header.title {
-  padding-top: calc(7rem + 72px);
+  padding-top: calc(7rem);
   padding-bottom: 7rem;
   background: linear-gradient(0deg, var(--orange) 0%, var(--cyan) 100%);
 }
