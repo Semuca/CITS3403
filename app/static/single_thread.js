@@ -1,9 +1,9 @@
-import { CookieManager } from "./helpers/cookie_manager.js";
+import {CookieManager} from "./helpers/cookie_manager";
 
-const threads = [];
-
-$(document).ready(() => {
-    fetch("/api/threads", {
+jQuery(() => {
+    let split = location.href.split("/")
+    let id = split[split.length - 1]
+    fetch(`/api/threads/${id}`, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
             "Content-type": "application/json; charset=UTF-8"
@@ -12,16 +12,12 @@ $(document).ready(() => {
         if (r.ok) {
             r.json().then(
                 o => {
-                    threads.push(o);
-                    o.forEach(thread => {
-                        $("#threads").append(`<li><a href="/thread/${thread.id}">${thread.title}</a></li>`)
-                    });
+                    $("#title").textContent = o.title
+                    $("#description").textContent = o.description
                 }
             )
         } else {
             alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
         }
     })
-
-
-});
+})
