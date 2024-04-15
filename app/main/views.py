@@ -39,7 +39,7 @@ def forum_page():
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
-    # TODO (Jared): Find a way to get this information without breaking the space time continuim
+    # TODO (Jared): Find a way to get this information without breaking the space time continuum
     from app import db, ThreadModel
     thread = db.session.get(ThreadModel, thread_id)
     comments = [i.comment_text for i in db.session.scalars(
