@@ -1,95 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+{% extends "base.html" %}
 
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}"/>
-        
-        
-        <title>Home Page</title>
-    </head>
-    <body id="page-top">
-        <nav class="navbar navbar-expand-lg navbar-dark navbarCustom fixed-top">
+{% block headBlock %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}"/>
+    <title>Home Page</title>
+{% endblock %}
+
+{% block bodyBlock %}
+    <header class="title text-center text-white">
+        <div class="titleContent">
             <div class="container px-5">
-                <a class="navbar-brand" href="#page-top"><i class="fa-solid fa-hat-wizard me-3"></i>projectName</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.home_page') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.signup_page') }}">Sign Up</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.login_page') }}">Log In</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Forum</a></li>
-                    </ul>
-                </div>
+                <i class="titleIcon fa-solid fa-hat-wizard fa-4x me-3 pt-5 mt-xl-4" style="color: #4f5d75"></i>
+                <h1 class="titleHeading mb-0">projectName</h1>
+                <h2 class="titleSubheading mb-0">great subtitle</h2>
+                <a class="btn btn-primary btnCustom rounded-pill mt-5" href="#scroll">Learn More</a>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <header class="title text-center text-white">
-            <div class="titleContent">
-                <div class="container px-5">
-                    <i class="titleIcon fa-solid fa-hat-wizard fa-4x me-3 pt-5 mt-xl-4" style="color: #4f5d75"></i>
-                    <h1 class="titleHeading mb-0">projectName</h1>
-                    <h2 class="titleSubheading mb-0">great subtitle</h2>
-                    <a class="btn btn-primary btnCustom rounded-pill mt-5" href="#scroll">Learn More</a>
+    <section id="scroll">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
                 </div>
-            </div>
-        </header>
-
-        <section id="scroll">
-            <div class="container px-5">
-                <div class="row gx-5 align-items-center">
-                    <div class="col-lg-6 order-lg-2">
-                        <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
-                    </div>
-                    <div class="col-lg-6 order-lg-1">
-                        <div class="p-5">
-                            <h2 class="display-4">What is projectName?</h2>
-                            <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
-                        </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">What is projectName?</h2>
+                        <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <div class="container px-5">
-                <div class="row gx-5 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="p-5">
-                            <h2 class="display-4">Instructions on how to play the game</h2>
-                            <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
-                        </div>
+    <section>
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">Instructions on how to play the game</h2>
+                        <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <div class="container px-5">
-                <div class="row gx-5 align-items-center">
-                    <div class="col-lg-6 order-lg-2">
-                        <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
-                    </div>
-                    <div class="col-lg-6 order-lg-1">
-                        <div class="p-5">
-                            <h2 class="display-4">Another info section</h2>
-                            <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
-                        </div>
+    <section>
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226" alt="..." /></div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Another info section</h2>
+                        <p>This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.This is an amazingly descriptive paragraph about this project.</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <footer class="py-5 bg-black">
-            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; projectName 2024</p></div>
-        </footer>
-    </body>
-</html>
+        </div>
+    </section>
+{% endblock %}
