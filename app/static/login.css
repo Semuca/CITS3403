@@ -12,8 +12,8 @@ body {
     background-color: var(--white);
 }
 
-#loginText {
-    padding-top: 10px;
+#main {
+    padding-top: 50px;
 }
 
 #username, #password {
@@ -32,8 +32,4 @@ body {
 
 #pressLogin:hover {
     background-color: var(--navy);
-}
-
-#sideImage {
-    padding-top: 50px;
 }
