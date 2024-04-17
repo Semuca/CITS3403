@@ -14,7 +14,18 @@ $(document).ready(() => {
                 o => {
                     threads.push(o);
                     o.forEach(thread => {
-                        $("#threads").append(`<li><a href="/thread/${thread.id}">${thread.title}</a></li>`)
+                        $("#threads").append(`
+                            <div class="card mb-2"> 
+                                <div class="card-body p-2 p-sm-3"> 
+                                    <div class="media forum-item"> 
+                                        <div class="media-body"> 
+                                            <a href="/thread/${thread.id}">${thread.title}</a>
+                                            <p class="text-secondary">${thread.description}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
                     });
                 }
             )
@@ -36,7 +47,19 @@ $(document).ready(() => {
             if (r.ok) {
                 r.json().then(o => {
                     threads.push(o);
-                    $("#threads").append(`<li><a href="/thread/${o.id}">${o.title}</a></li>`);
+                    $("#threads").append(`
+                        <div class="card mb-2"> 
+                            <div class="card-body p-2 p-sm-3"> 
+                                <div class="media forum-item"> 
+                                    <div class="media-body"> 
+                                        <a href="/thread/${thread.id}">${thread.title}</a>
+                                        <p class="text-secondary">${thread.description}</p>
+                                    </div> 
+                                </div>
+                            </div> 
+                        </div>
+                    `);
+                    $('#threadCreationModal').modal('hide');
                 });
             } else {
                 alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
