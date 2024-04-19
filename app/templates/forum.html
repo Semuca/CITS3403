@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block headBlock %}
-    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='forum.css') }}">   
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='forum.css') }}">
     <script src="{{ url_for('static', filename='forum.js') }}" type="module"></script>
     <title>Forum</title>
 {% endblock %}
@@ -62,7 +62,7 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="submit">Post</button>
+                                <button type="submit" class="btn btn-primary" id="submit" data-dismiss="modal">Post</button>
                             </div>
                         </form>
                     </div>

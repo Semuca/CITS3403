@@ -15,10 +15,10 @@ $(document).ready(() => {
                     threads.push(o);
                     o.forEach(thread => {
                         $("#threads").append(`
-                            <div class="card mb-2"> 
-                                <div class="card-body p-2 p-sm-3"> 
-                                    <div class="media forum-item"> 
-                                        <div class="media-body"> 
+                            <div class="card mb-2">
+                                <div class="card-body p-2 p-sm-3">
+                                    <div class="media forum-item">
+                                        <div class="media-body">
                                             <a href="/thread/${thread.id}">${thread.title}</a>
                                             <p class="text-secondary">${thread.description}</p>
                                         </div>
@@ -45,18 +45,18 @@ $(document).ready(() => {
             })
         }).then(r => {
             if (r.ok) {
-                r.json().then(o => {
-                    threads.push(o);
+                r.json().then(thread => {
+                    threads.push(thread);
                     $("#threads").append(`
-                        <div class="card mb-2"> 
-                            <div class="card-body p-2 p-sm-3"> 
-                                <div class="media forum-item"> 
-                                    <div class="media-body"> 
+                        <div class="card mb-2">
+                            <div class="card-body p-2 p-sm-3">
+                                <div class="media forum-item">
+                                    <div class="media-body">
                                         <a href="/thread/${thread.id}">${thread.title}</a>
                                         <p class="text-secondary">${thread.description}</p>
-                                    </div> 
+                                    </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     `);
                     $('#threadCreationModal').modal('hide');
