@@ -1,9 +1,11 @@
 """This module provides authentication helper functions for api endpoints"""
 
-from flask import redirect, request
+from typing import Callable
+from flask import Response, make_response, redirect, request
+from app.helpers.json_schema_validation import validate_request_schema
 from app.models import UserModel
 
-def redirect_wrapper(successful_result):
+def redirect_wrapper(successful_result: Response) -> Response:
     """Wrapper function to redirect to the login page if the user is not authenticated
     Returns:
         The parameter successful_result if the user is authenticated
@@ -17,7 +19,7 @@ def redirect_wrapper(successful_result):
 
     return successful_result
 
-def get_user_id_by_auth_header():
+def get_user_id_by_auth_header() -> str | None:
     """Gets a user id by the Authorization header
     Returns:
         A user id if the token is stored against a user
@@ -38,7 +40,7 @@ def get_user_id_by_auth_header():
 
     return get_user_id_by_token(token)
 
-def get_user_id_by_token(token):
+def get_user_id_by_token(token: str) -> str | None:
     """Gets a user id by the token
     Returns:
         A user id if the token is stored against a user
@@ -48,3 +50,44 @@ def get_user_id_by_token(token):
     res = UserModel.query.filter_by(authentication_token=token).first()
 
     return res.id if res is not None else None
+
+def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
+    """Performs the necessary checks for an authenticated endpoint"""
+
+    # Authorize request
+    request_user_id = get_user_id_by_auth_header()
+
+    if request_user_id is None:
+        return make_response(
+            {"error": "Authorization error",
+             "errorMessage": "Authorization token not valid"},
+             401)
+
+    # Get validated data
+    if schema is None:
+        return func(None, request_user_id)
+
+    data = validate_request_schema(schema)
+    if isinstance(data, str):
+        return make_response(
+            {"error": "Request validation error",
+             "errorMessage": data},
+            400)
+
+    return func(data, request_user_id)
+
+def unauthenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str]], Response]) -> Response:
+    """Performs the necessary checks for an unauthenticated endpoint"""
+
+    # Get validated data
+    if schema is None:
+        return func(None)
+
+    data = validate_request_schema(schema)
+    if isinstance(data, str):
+        return make_response(
+            {"error": "Request validation error",
+             "errorMessage": data},
+            400)
+
+    return func(data)
