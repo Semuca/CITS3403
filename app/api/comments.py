@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import get_user_id_by_auth_header, validate_request_schema
+from app.helpers import authenticated_endpoint_wrapper
 
 from .bp import api_bp
 
@@ -12,40 +12,29 @@ from .bp import api_bp
 def create_comment(thread_id):
     """Creates a comment object for a thread and saves it to the database"""
 
-    # Validate post request schema
-    data = validate_request_schema(create_comment_schema)
-    if isinstance(data, str):
-        return make_response({"error": "Request validation error", "errorMessage": data}, 400)
+    def func(data, request_user_id):
+        # Check that a thread with this id does exist
+        if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "Thread not found"},
+                404)
 
-    # pylint: disable=duplicate-code
-    # Authorize request
-    request_user_id = get_user_id_by_auth_header()
-    if request_user_id is None:
-        return make_response(
-            {"error": "Authorization error",
-             "errorMessage": "Authorization token not valid"},
-             401)
+        # Create a comment object from parameters passed in
+        new_comment = CommentModel(
+            user_id=request_user_id,
+            thread_id=thread_id,
+            comment_text=data['commentText']
+        )
 
-    # Check that a thread with this id does exist
-    if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
-        return make_response(
-            {"error": "Request validation error",
-             "errorMessage": "Thread not found"},
-             404)
+        # Save to db
+        db.session.add(new_comment)
+        db.session.commit()
 
-    # Create a comment object from parameters passed in
-    new_comment = CommentModel(
-        user_id=request_user_id,
-        thread_id=thread_id,
-        comment_text=data['commentText']
-    )
+        # Return for successful creation of resource
+        return make_response(new_comment.to_json(), 201)
 
-    # Save to db
-    db.session.add(new_comment)
-    db.session.commit()
-
-    # Return for successful creation of resource
-    return make_response(new_comment.to_json(), 201)
+    return authenticated_endpoint_wrapper(create_comment_schema, func)
 
 create_comment_schema = {
     "commentText": "text"
@@ -55,28 +44,22 @@ create_comment_schema = {
 def read_many_comment(thread_id):
     """Reads a list of comments from the database for the thread"""
 
-    # pylint: disable=duplicate-code
-    # Authorize request
-    request_user_id = get_user_id_by_auth_header()
-    if request_user_id is None:
-        return make_response(
-            {"error": "Authorization error",
-             "errorMessage": "Authorization token not valid"},
-             401)
+    def func(*_):
+        # Check that a thread with this id does exist
+        if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "Thread not found"},
+                404)
 
-    # Check that a thread with this id does exist
-    if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
-        return make_response(
-            {"error": "Request validation error",
-             "errorMessage": "Thread not found"},
-             404)
+        # Get a list of comment objects in the thread in order of creation
+        queried_comments = db.session.scalars(
+            db.select(CommentModel)
+            .where(CommentModel.thread_id == thread_id)
+            .order_by(CommentModel.created_at.asc())
+        ).all()
 
-    # Get a list of comment objects in the thread in order of creation
-    queried_comments = db.session.scalars(
-        db.select(CommentModel)
-        .where(CommentModel.thread_id == thread_id)
-        .order_by(CommentModel.created_at.asc())
-    ).all()
+        # Return query result to client
+        return make_response([CommentModel.to_json(t) for t in queried_comments], 200)
 
-    # Return query result to client
-    return make_response([CommentModel.to_json(t) for t in queried_comments], 200)
+    return authenticated_endpoint_wrapper(None, func)

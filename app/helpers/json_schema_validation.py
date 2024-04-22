@@ -4,7 +4,7 @@ import re
 from flask import request
 
 # pylint: disable=too-many-return-statements
-def validate_request_schema(schema):
+def validate_request_schema(schema: dict[str, str]) -> dict[str, str] | str:
     """Validates the latest request against a schema parameter
     Returns:
         An error message string if an error has occurred
@@ -29,7 +29,7 @@ def validate_request_schema(schema):
             case "username":
                 if (not isinstance(value, str)) or (re.fullmatch(r'[\w-]+', value) is None):
                     return f"Invalid value '{value}' for field '{attr}'"
-            case "password":
+            case "hash":
                 if (not isinstance(value, str)) or (re.fullmatch(r'[\w-]+', value) is None):
                     return f"Invalid value '{value}' for field '{attr}'"
             case "text":

@@ -19,7 +19,9 @@ class TestThreadModel(unittest.TestCase):
         test_user = UserModel(
             username="test",
             password_hash="test",
-            authentication_token="authtest"
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple"
         )
         db.session.add(test_user)
 
