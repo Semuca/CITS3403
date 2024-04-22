@@ -1,0 +1,33 @@
+body {
+    background-color: val(--midGrey);  
+    color : val(--orange);  
+}
+
+.inner-wrapper {
+    position: relative;
+    height: calc(100vh - 3.5rem);
+}
+
+
+#searchbar {
+    background-color: var(--cyan);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    background-color: val(--orange);
+    background-clip: border-box;
+    border: 0 solid val(--darkGrey);
+    border-radius: .25rem;
+}
+
+#newDiscussion {
+    background-color: var(--cyan);
+}
+
+#newDiscussion:hover {
+    background-color: var(--navy);
+}

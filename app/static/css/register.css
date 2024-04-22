@@ -1,16 +1,3 @@
-:root {
-    --darkGrey: #252422;
-    --midGrey: #403d39;
-    --lightGrey: #ccc5b9;
-    --white: #fffcf2;
-    --orange: #eb5e28;
-    --cyan: #50b2c0;
-    --navy: #4f5d75;
-}
-
-.body {
-    background-color: var(--white);
-}
 
 #username, #password {
     background-color: var(--white);
@@ -33,4 +20,9 @@
 .card {
     border-radius: 15px;
     background-color:var(--white);
+}
+
+#main {
+    padding-top: 60px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226');
 }
