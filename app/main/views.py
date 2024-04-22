@@ -1,4 +1,5 @@
 """Main route views"""
+from random import Random
 
 from flask import Blueprint, render_template
 
@@ -47,5 +48,9 @@ def thread_page(thread_id):
         .where(CommentModel.thread_id == thread_id)
         .order_by(CommentModel.created_at.asc())
     ).all()
+    # TODO (JARED): Fix this so it truly chooses your username
+    rand = Random()
+    for i in comments:
+        i.username = rand.choice(["aeoniaa", "sellsol", "Semuca", "Jh1236", "fakename863", "b4d_at_c0d1ng"])
     thread.comments = comments
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread))

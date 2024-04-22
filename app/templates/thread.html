@@ -1,43 +1,38 @@
 {% extends "base.html" %}
-
 {% block headBlock %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='thread.css') }}"/>
-    <script id="threadScript" type="module" src="{{ url_for('static', filename='thread.js') }}" data-thread-id="{{ thread_id }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
+
+    <script id="threadScript" type="module" src="{{ url_for('static', filename='js/thread.js') }}"
+            data-thread-id="{{ thread_id }}"></script>
     <title>Thread</title>
 {% endblock %}
 
-<body>
-<div class="jumbotron text-center" style="margin-bottom:0"><h1 id="title"> {{ thread.title }}</h1>
-    <p id="description"> {{ thread.description }}</p>
-</div>
-<div class="container" style="margin-top:30px">
-    <div class="list-group" id="children">
-        {% for i in thread.comments %}
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ i.user_id }}</h5>
-                    <small>{{ i.created_at }}</small>
-                </div>
-                <p class="mb-1">{{ i.comment_text }}</p>
-                <small>Donec id elit non mi porta.</small>
-            </a>
-        {% endfor %}
-
-    </div>
-    <div>
-        <label for="commentText">Type a comment here: </label>
-        <input type="text" id="commentText" required/>
-        <input id="submit" type="submit" value="Post comment"/>
 {% block bodyBlock %}
-    <div class="container content">
-        <a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Back</a>
-        <h1 id="title"></h1>
-        <h5 id="description"></h5>
-        <div id="children"></div>
-        <div>
-            <label for="commentText">Type a comment here: </label>
-            <input type="text" id="commentText" required />
-            <input id="submit" type="submit" value="Post comment" />
+    <section class="vh-100">
+        <div class="container" style="margin-top:30px">
+            <div class="jumbotron container" style="margin-bottom:0"><h1 id="title"> {{ thread.title }}</h1>
+                <p id="description"> {{ thread.description }}</p>
+            </div>
+            <div class="list-group" id="children" style="margin-top:30px">
+                {% for i in thread.comments %}
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ i.username }}</h5>
+                            <small>{{ i.created_at }}</small>
+                        </div>
+                        <p class="mb-1">{{ i.comment_text }}</p>
+                    </a>
+                    <hr style="color:#FFF;">
+                {% endfor %}
+                <div style="margin:15px">
+                    <label for="commentText" style="color: white">Type a comment here: </label>
+                    <input type="text" id="commentText" style="width: 80%" required/>
+                    <input id="submit" type="submit" value="Post comment"/>
+                </div>
+            </div>
+            <a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Back</a>
         </div>
-    </div>
+    </section>
 {% endblock %}

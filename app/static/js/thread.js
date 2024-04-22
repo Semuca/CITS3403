@@ -18,7 +18,8 @@ $(document).ready(() => {
         }).then(r => {
             if (r.ok) {
                 r.json().then(o => {
-                    $("#children").append(`<li>${o.commentText}</li>`)
+                    //easier to reload the page and let the server deal with adding a new comment...
+                    location.reload()
                 });
             } else {
                 alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
