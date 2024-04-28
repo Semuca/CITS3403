@@ -5,7 +5,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import UserModel
-from app.helpers import unauthenticated_endpoint_wrapper, authenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, remove_none_from_dictionary, unauthenticated_endpoint_wrapper
 
 from .bp import api_bp
 
@@ -48,18 +48,22 @@ create_user_schema = {
     "securityQuestionAnswer": "hash",
 }
 
-@api_bp.route('/users/questions', methods=['POST'])
-def change_questions_authenticated():
+@api_bp.route('/users', methods=['PUT'])
+def edit_user():
     """Endpoint to let an authenticated user
-    change their security questions"""
+    change their information"""
 
     def func(data, request_user_id):
         # Find a user by that username and security question hash
         res = UserModel.query.filter_by(id=request_user_id)
 
+        update_body = { UserModel.description: data.get("description"),
+                        UserModel.password_hash: data.get("password"),
+                        UserModel.security_question: data.get("securityQuestion"),
+                        UserModel.security_question_answer: data.get("securityQuestionAnswer")}
+
         # Update the token against that user
-        res.update({UserModel.security_question: data["securityQuestion"],
-                    UserModel.security_question_answer: data["securityQuestionAnswer"]})
+        res.update(remove_none_from_dictionary(update_body))
         db.session.commit()
 
         # Return successful response
@@ -68,27 +72,8 @@ def change_questions_authenticated():
     return authenticated_endpoint_wrapper(change_questions_authenticated_schema, func)
 
 change_questions_authenticated_schema = {
-    "securityQuestion": "int",
-    "securityQuestionAnswer": "hash",
-}
-
-@api_bp.route('/users/password', methods=['POST'])
-def change_password_authenticated():
-    """Endpoint to let an authenticated user change their password"""
-
-    def func(data, request_user_id):
-        # Find a user by that username and security question hash
-        res = UserModel.query.filter_by(id=request_user_id)
-
-        # Update the token against that user
-        res.update({UserModel.password_hash: data["password"]})
-        db.session.commit()
-
-        # Return successful response
-        return make_response()
-
-    return authenticated_endpoint_wrapper(change_password_authenticated_schema, func)
-
-change_password_authenticated_schema = {
-    "password": "hash",
+    "description": {"type": "text", "required": False},
+    "password": {"type": "hash", "required": False},
+    "securityQuestion": {"type": "int", "required": False},
+    "securityQuestionAnswer": {"type": "hash", "required": False},
 }
