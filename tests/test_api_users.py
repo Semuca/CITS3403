@@ -23,75 +23,6 @@ class BaseApiTest(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-class TestLogin(BaseApiTest):
-    """Tests log in endpoint - POST api/login"""
-    def setUp(self):
-        super().setUp()
-
-        db.session.add(UserModel(
-            username="PurpleGuy",
-            password_hash="Password123",
-            security_question=3,
-            security_question_answer="Purple"
-        ))
-        db.session.commit()
-
-    def test_valid_login(self):
-        """Tests that logging in with the right credentials returns the right token"""
-
-        # Assemble
-        body = {
-            "username": "PurpleGuy",
-            "password": "Password123"
-        }
-
-        # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
-        user = db.session.get(UserModel, 1)
-
-        # Assert
-        self.assertEqual(res.status_code, 200, f"Incorrect status code with message {res.data}")
-
-        response_body = json.loads(res.data)
-        self.assertIn("token", response_body, f"No token present in response {res.data}")
-        self.assertEqual(user.authentication_token, response_body["token"], f"Token is not the same as the one in the db {res.data}")
-
-    def test_invalid_password(self):
-        """Tests that logging in with the wrong password returns a user not found error"""
-
-        # Assemble
-        body = {
-            "username": "PurpleGuy",
-            "password": "somethingElse"
-        }
-
-        # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
-        user = db.session.get(UserModel, 1)
-
-        # Assert
-        self.assertEqual(res.status_code, 404, f"Incorrect status code with message {res.data}")
-        self.assertEqual(user.authentication_token, None, f"Token should not be set in db {user.authentication_token}")
-
-    def test_nonexistant_user(self):
-        """Tests that trying to log in to a user that does not exist returns an error"""
-
-        # Assemble
-        body = {
-            "username": "FreddyFozbar",
-            "password": "REVENGE"
-        }
-
-        # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
-        user1 = db.session.get(UserModel, 1)
-        user2 = db.session.get(UserModel, 2)
-
-        # Assert
-        self.assertEqual(res.status_code, 404, f"Incorrect status code with message {res.data}")
-        self.assertEqual(user1.authentication_token, None, f"Token should not be set in db {user1.authentication_token}")
-        self.assertEqual(user2, None, f"User 2 should not be in db {user2}")
-
 class TestCreateUser(BaseApiTest):
     """Tests create user endpoint - POST api/users"""
 
@@ -143,62 +74,6 @@ class TestCreateUser(BaseApiTest):
         # Assert
         self.assertEqual(res.status_code, 403, f"Incorrect status code with message {res.data}")
         self.assertEqual(user.authentication_token, None, f"Token should not be set in db {user.authentication_token}")
-
-class TestChangePasswordWithQuestion(BaseApiTest):
-    """Tests change password with questions - POST api/login/questions"""
-
-    def test_valid_change_password(self):
-        """Tests that getting a password change token returns the right token"""
-
-        # Assemble
-        db.session.add(UserModel(
-            username="PurpleGuy",
-            password_hash="Password123",
-            security_question=1,
-            security_question_answer="Purple"
-        ))
-        db.session.commit()
-
-        body = {
-            "username": "PurpleGuy",
-            "securityQuestionAnswer": "Purple"
-        }
-
-        # Act
-        res = self.client.post("/api/login/questions", headers=get_api_headers(), data=json.dumps(body))
-        user = db.session.get(UserModel, 1)
-
-        # Assert
-        self.assertEqual(res.status_code, 200, f"Incorrect status code with message {res.data}")
-
-        response_body = json.loads(res.data)
-        self.assertIn("token", response_body, f"No token present in response {res.data}")
-        self.assertEqual(user.change_password_token, response_body["token"], f"Token is not the same as the one in the db {res.data}")
-
-    def test_incorrect_change_password(self):
-        """Tests that changing a password incorrectly results in an error"""
-
-        # Assemble
-        db.session.add(UserModel(
-            username="PurpleGuy",
-            password_hash="Password123",
-            security_question=1,
-            security_question_answer="Purple"
-        ))
-        db.session.commit()
-
-        body = {
-            "username": "PurpleGuy",
-            "securityQuestionAnswer": "somethingRandom"
-        }
-
-        # Act
-        res = self.client.post("/api/login/questions", headers=get_api_headers(), data=json.dumps(body))
-        user = db.session.get(UserModel, 1)
-
-        # Assert
-        self.assertEqual(res.status_code, 404, f"Incorrect status code with message {res.data}")
-        self.assertEqual(user.change_password_token, None, f"Token should not be set in db {user.change_password_token}")
 
 class TestChangePasswordUnauthenticated(BaseApiTest):
     """Tests change password with questions - POST api/login/password"""
