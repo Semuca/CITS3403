@@ -1,9 +1,11 @@
 """This module provides authentication helper functions for api endpoints"""
 
+import json
 from typing import Callable
 from flask import Response, make_response, redirect, request
+from app.databases import db
 from app.helpers.json_schema_validation import validate_request_schema
-from app.models import UserModel
+from app.models import LogModel, UserModel
 
 def redirect_wrapper(successful_result: Response) -> Response:
     """Wrapper function to redirect to the login page if the user is not authenticated
@@ -64,17 +66,27 @@ def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[
              401)
 
     # Get validated data
-    if schema is None:
-        return func(None, request_user_id)
+    data = None
+    if schema is not None:
+        data = validate_request_schema(schema)
+        if isinstance(data, str):
+            return make_response(
+                {"error": "Request validation error",
+                 "errorMessage": data},
+                 400)
 
-    data = validate_request_schema(schema)
-    if isinstance(data, str):
-        return make_response(
-            {"error": "Request validation error",
-             "errorMessage": data},
-            400)
+    response = func(data, request_user_id)
 
-    return func(data, request_user_id)
+    # Log the request
+    new_log = LogModel(user_id=request_user_id,
+                       url=request.full_path,
+                       request_body=None if data is None else json.dumps(data),
+                       response_code=response.status_code,
+                       error_response_body=response.data if (response.status_code >= 400) else None)
+    db.session.add(new_log)
+    db.session.commit()
+
+    return response
 
 def unauthenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str]], Response]) -> Response:
     """Performs the necessary checks for an unauthenticated endpoint"""
