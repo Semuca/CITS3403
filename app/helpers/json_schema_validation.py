@@ -11,7 +11,10 @@ def validate_request_schema(schema: dict[str, str | dict[str, str]]) -> dict[str
         A (JSON-like) dictionary of the body if validation has passed
     """
 
-    data = request.get_json()
+    if request.method == "GET":
+        data = request.args.to_dict()
+    else: # Post request
+        data = request.get_json()
 
     # First, validate that the request body has all the schema properties
     for attr, value in schema.items():
@@ -43,7 +46,9 @@ def validate_request_schema(schema: dict[str, str | dict[str, str]]) -> dict[str
                 if (not isinstance(value, str)) or (re.fullmatch(r'^[\w\s]+$', value) is None):
                     return f"Invalid characters for string field '{attr}': '{value}'"
             case "int":
-                if not isinstance(value, int):
+                if isinstance(value, str) and value.isdigit():
+                    data[attr] = int(value)
+                elif not isinstance(value, int):
                     return f"Invalid type for integer field '{attr}': '{value}'"
             case _:
                 return f"Unknown type for field '{attr}': '{schema_type}'"
