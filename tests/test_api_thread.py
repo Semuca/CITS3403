@@ -165,6 +165,60 @@ class TestReadMany(BaseApiTest):
         res_json_data = json.loads(res.data)
         self.assertEqual(len(res_json_data), 0, f"Data sent back is '{res.data}'")
 
+    def test_get_with_pagination(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 12):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1
+            )
+            db.session.add(new_thread)
+        db.session.commit()
+
+        # Post a get request for first 8 threads
+        res = self.client.get("/api/threads?page=1&perPage=8", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+
+        # Check that the first 8 threads are returned with the right information
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 8, f"Data sent back is of length '{len(res_json_data)}'")
+        self.assertEqual(res_json_data[0]["title"], 'hello', f"Json data sent back is '{res_json_data[0]["title"]}'")
+        self.assertEqual(res_json_data[4]["description"], 'description5', f"Json data sent back is '{res_json_data[4]["description"]}'")
+        self.assertEqual(res_json_data[7]["title"], 'thread8', f"Json data sent back is '{res_json_data[7]["title"]}'")
+
+        # Post a get request for last 4 threads
+        res = self.client.get("/api/threads?page=2&perPage=8", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+
+        # Check that the last 4 threads are returned with the right information
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 3, f"Data sent back is of length '{len(res_json_data)}'")
+        self.assertEqual(res_json_data[0]["title"], 'thread9', f"Json data sent back is '{res_json_data[0]["title"]}'")
+        self.assertEqual(res_json_data[1]["description"], 'description10', f"Json data sent back is '{res_json_data[1]["description"]}'")
+
+    def test_default_pagination(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 12):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1
+            )
+            db.session.add(new_thread)
+        db.session.commit()
+
+        # Post a get request for first 10 threads
+        res = self.client.get("/api/threads", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+
+        # Check that the first 10 threads are returned with the right information
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 10, f"Data sent back is of length '{len(res_json_data)}")
+        self.assertEqual(res_json_data[0]["title"], 'hello', f"Json data sent back is '{res_json_data[0]["title"]}'")
+        self.assertEqual(res_json_data[4]["description"], 'description5', f"Json data sent back is '{res_json_data[4]["description"]}'")
+        self.assertEqual(res_json_data[9]["title"], 'thread10', f"Json data sent back is '{res_json_data[9]["title"]}'")
+
 class TestReadById(BaseApiTest):
     """Tests threads read by id endpoint - GET api/threads/{id}"""
 

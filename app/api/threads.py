@@ -36,15 +36,23 @@ create_thread_schema = {
 def read_many_thread():
     """Reads a list of threads from the database based on query parameters"""
 
-    def func(*_):
-        # Get a list of thread objects according to parameters
-        queried_threads = db.session.scalars(db.select(ThreadModel)).all()
+    def func(data, _):
+        page = data.get("page", 1)
+        per_page = data.get("perPage", 10)
+
+        # Get a paginated list of thread objects according to parameters
+        query = db.select(ThreadModel)
+        queried_threads = db.paginate(query, page=page, per_page=per_page).items
 
         # Return query result to client
         return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
 
-    return authenticated_endpoint_wrapper(None, func)
+    return authenticated_endpoint_wrapper(read_many_thread_schema, func)
 
+read_many_thread_schema = {
+    "page": {"type": "int", "required": False},
+    "perPage": {"type": "int", "required": False},
+}
 
 @api_bp.route('/threads/<int:thread_id>', methods=['GET'])
 def read_by_id_thread(thread_id):
