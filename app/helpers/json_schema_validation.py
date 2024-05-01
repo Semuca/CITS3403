@@ -44,25 +44,25 @@ def validate_request_schema(schema: dict[str, str | dict[str, str]]) -> dict[str
 
     return data
 
-def validate_username(value):
+def validate_username(value: any) -> str | None:
     """Validates a username string"""
     if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None:
         return None
     return value
 
-def validate_hash(value):
+def validate_hash(value: any) -> str | None:
     """Validates a hash string"""
     if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None:
         return None
     return value
 
-def validate_text(value):
+def validate_text(value: any) -> str | None:
     """Validates a general text string"""
     if not isinstance(value, str) or re.fullmatch(r'^[\w\s]+$', value) is None:
         return None
     return value
 
-def validate_int(value):
+def validate_int(value: any) -> int | None:
     """Validates an integer or string that represents a digit"""
     # Parse string to int if it is a digit
     if isinstance(value, str) and value.isdigit():
