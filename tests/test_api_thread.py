@@ -7,14 +7,7 @@ from app import create_app
 from app.databases import db
 from app.models import UserModel, ThreadModel
 
-def get_api_headers():
-    """Gets basic headers for testing api requests"""
-    return {
-        'Authorization': 'Bearer ' + "authtest",
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
-    }
-
+from .helpers import get_api_headers
 class BaseApiTest(unittest.TestCase):
     def setUp(self):
         # create app so db can be linked to it
@@ -39,7 +32,9 @@ class TestCreate(BaseApiTest):
         test_user = UserModel(
             username="test",
             password_hash="test",
-            authentication_token="authtest"
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple"
         )
         db.session.add(test_user)
 
@@ -116,7 +111,9 @@ class TestReadMany(BaseApiTest):
         test_user = UserModel(
             username="test",
             password_hash="test",
-            authentication_token="authtest"
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple"
         )
         db.session.add(test_user)
 
@@ -178,7 +175,9 @@ class TestReadById(BaseApiTest):
         test_user = UserModel(
             username="test",
             password_hash="test",
-            authentication_token="authtest"
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple"
         )
         db.session.add(test_user)
 

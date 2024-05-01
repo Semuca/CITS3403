@@ -12,6 +12,10 @@ class UserModel(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(200))
     password_hash = db.Column(db.String(200), nullable=False)
     authentication_token = db.Column(db.String(200))
+    change_password_token = db.Column(db.String(200))
+    security_question = db.Column(db.String(200), nullable=False)
+    security_question_answer = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
