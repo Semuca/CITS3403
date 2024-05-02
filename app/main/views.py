@@ -4,6 +4,7 @@ from random import Random
 from flask import Blueprint, render_template
 
 from app.helpers import redirect_wrapper
+from app.helpers.DatabaseManager import get_comments_by_thread_id, get_thread_by_id
 from app.models import CommentModel
 
 main_bp = Blueprint('main_bp', __name__)
@@ -40,17 +41,11 @@ def forum_page():
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
-    # TODO (Jared): Find a way to get this information without breaking the space time continuum
-    from app import db, ThreadModel
-    thread = db.session.get(ThreadModel, thread_id)
-    comments = db.session.scalars(
-        db.select(CommentModel)
-        .where(CommentModel.thread_id == thread_id)
-        .order_by(CommentModel.created_at.asc())
-    ).all()
+    thread = get_thread_by_id(thread_id)
+    comments = get_comments_by_thread_id(thread_id)
     # TODO (JARED): Fix this so it truly chooses your username
     rand = Random()
     for i in comments:
         i.username = rand.choice(["aeoniaa", "sellsol", "Semuca", "Jh1236", "fakename863", "b4d_at_c0d1ng"])
-    thread.comments = comments
-    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread))
+    comments = comments
+    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
