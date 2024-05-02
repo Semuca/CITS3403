@@ -1,6 +1,5 @@
-body {
-    background-color: val(--midGrey);  
-    color : val(--orange);  
+body{
+    background: val(--navy);  
 }
 
 .inner-wrapper {
@@ -8,20 +7,8 @@ body {
     height: calc(100vh - 3.5rem);
 }
 
-
 #searchbar {
     background-color: var(--cyan);
-}
-
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    word-wrap: break-word;
-    background-color: val(--orange);
-    background-clip: border-box;
-    border: 0 solid val(--darkGrey);
-    border-radius: .25rem;
 }
 
 #newDiscussion {
@@ -31,3 +18,133 @@ body {
 #newDiscussion:hover {
     background-color: var(--navy);
 }
+
+.forum-content {
+    padding: 25px;
+    border-radius: 4px
+}
+
+.forum-content:after,
+.forum-content:before {
+    content: '';
+    display: table;
+    clear: both
+}
+
+.forum-content .tab-content,
+.forum-content .tab-pane {
+    background: 0 0
+}
+
+.thread {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative
+}
+
+.thread:before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    width: 5px;
+    background: var(--navy);
+    left: 20%;
+    margin-left: -2.5px
+}
+
+.thread>li {
+    position: relative;
+    min-height: 50px;
+    padding: 20px 0
+}
+
+.thread .thread-time {
+    position: absolute;
+    left: 0;
+    width: 18%;
+    text-align: right;
+    top: 30px
+}
+
+.thread .thread-time .date,
+.thread .thread-time .time {
+    display: block;
+    font-weight: 600
+}
+
+.thread .thread-time .date {
+    line-height: 16px;
+    font-size: 12px
+}
+
+.thread .thread-time .time {
+    line-height: 24px;
+    font-size: 20px;
+    color: var(--navy);
+}
+
+.thread .thread-body {
+    margin-left: 23%;
+    margin-right: 17%;
+    background: var(--white);
+    position: relative;
+    padding: 20px 25px;
+    border-radius: 6px
+}
+
+.thread .thread-body:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border: 10px solid transparent;
+    border-right-color: var(--white);
+    left: -20px;
+    top: 20px
+}
+
+.thread .thread-body>div+div {
+    margin-top: 15px
+}
+
+.thread .thread-body>div+div:last-child {
+    margin-bottom: -20px;
+    padding-bottom: 20px;
+    border-radius: 0 0 6px 6px
+}
+
+.thread-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--white);
+    line-height: 30px
+}
+
+.thread-header .thread-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--darkGrey);
+}
+
+.thread img {
+    max-width: 100%;
+    display: block;
+}
+
+.thread-content {
+    letter-spacing: .25px;
+    line-height: 18px;
+    font-size: 13px;
+}
+
+.thread-content:after,
+.thread-content:before {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.thread-title {
+    margin-top: 0;
+}
+
