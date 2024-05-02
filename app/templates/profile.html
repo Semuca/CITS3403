@@ -28,13 +28,14 @@
                             <li>
                                 <div class="timeline-time">
                                     <span class="date">{{ i.created_at.date() }}</span>
-                                    {# HACK (Jared): stop using cursed __str__ method #}
+                                    {# HACK (Jared): stop using cursed __str__ method #} 
+                                    <!-- TODO remove comment. -->
                                     <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
                                 </div>
                                 <div class="timeline-body">
                                     <div class="timeline-header">
                                         <span class="thread-name"><a
-                                                href="javascript:">{{ i.title }}</a> <small></small></span>
+                                                href="/thread/{{i.id}}">{{ i.title }}</a> <small></small></span>
                                     </div>
                                     <div class="timeline-content">
                                         <p>
