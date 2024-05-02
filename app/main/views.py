@@ -1,8 +1,9 @@
 """Main route views"""
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
-from app.helpers import redirect_wrapper
+from app.helpers import redirect_wrapper, get_user_id_by_auth_header, get_user_id_by_token
+from app.helpers.DatabaseHelper import get_posts_from_user
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -39,5 +40,5 @@ def thread_page(thread_id):
 @main_bp.route("/profile")
 def profile_page():
     """The profile page"""
-
-    return render_template('profile.html')
+    threads = get_posts_from_user(get_user_id_by_token(request.cookies.get('token')))
+    return render_template('profile.html', posts=threads)
