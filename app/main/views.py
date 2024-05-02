@@ -35,3 +35,9 @@ def thread_page(thread_id):
     """The single thread page"""
 
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id))
+
+@main_bp.route("/profile")
+def profile_page():
+    """The profile page"""
+
+    return render_template('profile.html')
