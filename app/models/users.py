@@ -19,3 +19,13 @@ class UserModel(db.Model):
     security_question = db.Column(db.String(200), nullable=False)
     security_question_answer = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+
+    def to_json(self):
+        """Return json from already-created user object"""
+        json_user = {
+            'id': self.id,
+            'username': self.username,
+            'description': self.description,
+            'createdAt': self.created_at,
+        }
+        return json_user

@@ -23,6 +23,35 @@ class BaseApiTest(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
+class TestGetUser(BaseApiTest):
+    """Tests get user endpoint - GET api/users"""
+
+    def test_valid_get_user(self):
+        """Tests that getting a user returns the right user"""
+
+        # Assemble
+        db.session.add(UserModel(
+            username="PurpleGuy",
+            description="I'm the man behind the slaughter",
+            password_hash="Password123",
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="idk"
+        ))
+        db.session.commit()
+
+        # Act
+        res = self.client.get("/api/users", headers=get_api_headers())
+        user = db.session.get(UserModel, 1)
+
+        # Assert
+        self.assertEqual(res.status_code, 200, f"Incorrect status code with message {res.data}")
+
+        response_body = json.loads(res.data)
+        self.assertEqual(response_body["id"], user.id, f"Id is not the same as the one in the db {res.data}")
+        self.assertEqual(response_body["username"], user.username, f"Username is not the same as the one in the db {res.data}")
+        self.assertEqual(response_body["description"], user.description, f"Description is not the same as the one in the db {res.data}")
+
 class TestCreateUser(BaseApiTest):
     """Tests create user endpoint - POST api/users"""
 
