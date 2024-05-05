@@ -170,6 +170,12 @@ body{
     color: var(--darkGrey);
 }
 
+.timeline-header .thread-creator {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mediumGrey);
+}
+
 .timeline img {
     max-width: 100%;
     display: block;
