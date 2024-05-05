@@ -1,66 +1,27 @@
 body{
     margin-top:80px;
-    background:var(--white);
-}
-
-.profile-header {
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-header .profile-header-cover:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, var(--cyan) 0, var(--darkGrey) 100%)
-}
-
-.profile-header .profile-header-content {
-    color: var(--white);
-    padding: 25px;
-}
-
-.profile-header-img {
-    float: left;
-    width: 120px;
-    height: 120px;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-    margin: 0 0 -20px;
-    padding: 3px;
-    border-radius: 4px;
     background: var(--navy);
+    background: linear-gradient(to right, var(--orange), var(--cyan));
+    min-height: 100vh;
+    overflow-x:hidden;
 }
 
-.profile-header-img img {
-    max-width: 100%
-}
-
-.profile-header-info h4 {
-    font-weight: 500;
+.white-text {
     color: var(--white);
 }
 
-.profile-header-img+.profile-header-info {
-    margin-left: 140px
+.profile-head {
+    transform: translateY(5rem)
 }
 
-.profile-header .profile-header-content,
-.profile-header .profile-header-tab {
-    position: relative
+.cover {
+    background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+    background-size: cover;
+    background-repeat: no-repeat
 }
 
-.profile-header .profile-header-tab {
-    background: var(--navy);
-    list-style-type: none;
-    margin: -10px 0 0;
-    padding: 0 0 0 140px;
-    white-space: nowrap;
-    border-radius: 0
+#profile-username{
+    color: var(--white);
 }
 
 .profile-content {
@@ -112,27 +73,26 @@ body{
     top: 30px
 }
 
-.timeline .timeline-time .date,
-.timeline .timeline-time .time {
-    display: block;
-    font-weight: 600
-}
-
 .timeline .timeline-time .date {
     line-height: 16px;
-    font-size: 12px
+    font-size: 12px;
+    color: var(--white);
+    display: block;
+    font-weight: 600
 }
 
 .timeline .timeline-time .time {
     line-height: 24px;
     font-size: 20px;
-    color: var(--navy);
+    color: var(--white);
+    display: block;
+    font-weight: 600;
 }
 
 .timeline .timeline-body {
     margin-left: 23%;
     margin-right: 17%;
-    background: var(--cyan);
+    background: var(--white);
     position: relative;
     padding: 20px 25px;
     border-radius: 6px
@@ -143,7 +103,7 @@ body{
     display: block;
     position: absolute;
     border: 10px solid transparent;
-    border-right-color: var(--cyan);
+    border-right-color: var(--white);
     left: -20px;
     top: 20px
 }

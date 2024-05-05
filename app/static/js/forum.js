@@ -24,7 +24,7 @@ $(document).ready(() => {
                                     <div class="thread-header">
                                         <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
                                         <span class="userimage"><img src="{{ url_for('static', filename='images/jsMug.png') }}" alt=""></span>
-                                        <span class="username"><a href="javascript:;">USERNAME</a> <small></small></span>
+                                        <span class="username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
                                     </div>
                                     <div class="thread-content">
                                         <p class="text-secondary">${thread.description}</p>

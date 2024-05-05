@@ -7,23 +7,39 @@
 
 {% block bodyBlock %}
     <div class="container">
-        <div class="profile-header">
-            <div class="profile-header-cover"></div>
-            <div class="profile-header-content">
-                <div class="profile-header-img ">
-                    <img src="{{ url_for('static', filename='images/jsMug.png') }}" alt=""/>
-                </div>
-                <div class="profile-header-info mb-4">
-                    <h4 class="m-t-sm">{{ user.username }}</h4>
-                    <a href="#" class="btn btn-xs btn-primary mb-4">Edit Profile</a>
-                </div>
+        <div class="row"> 
+            <div class="mx-auto">
+                <div class="shadow rounded overflow-hidden"> 
+                    <div class="px-4 pt-0 pb-4 cover"> 
+                        <div class="media align-items-end profile-head"> 
+                            <div class="profile">
+                                <img src="{{ url_for('static', filename='images/jsMug.png') }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                            </div> 
+                        <div class="mb-5" id="profile-username"> 
+                            <h2>{{ user.username }}</h2> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div class="bg-white p-4 d-flex justify-content-end text-center"> 
+                    <ul class="list-inline mb-0 align-items-end"> 
+                        <li class="list-inline-item"> 
+                            <p class="mb-0 d-block">[TODO: #posts]</p>
+                            <small class="text-muted"> <i class="fas fa-image mr-1"></i>Requests</small> 
+                        </li> 
+                        <li class="list-inline-item"> 
+                            <p class="mb-0 d-block">[TODO: #comments]</p>
+                            <small class="text-muted"> <i class="fas fa-user mr-1"></i>Comments</small> 
+                        </li> 
+                    </ul> 
+                </div> 
             </div>
         </div>
 
         <div class="profile-content">
             <div class="tab-content p-0">
                 <div class="tab-pane fade active show" id="profile-post">
-                    <h2>Requests</h2>
+                    <h2 class="white-text">Requests</h2>
                     <ul class="timeline">
                         {% for i in posts %}
                             <li>
@@ -48,7 +64,7 @@
                             </li>
                         {% endfor %}
                     </ul>
-                    <h2>Comments</h2>
+                    <h2 class="white-text">Comments</h2>
                     <ul class="timeline">
                         <!-- {% for i in posts %} -->
                         <li>

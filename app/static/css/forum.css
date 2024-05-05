@@ -1,3 +1,10 @@
+body {
+    background: var(--navy);
+    background: linear-gradient(to right, var(--orange), var(--cyan));
+    min-height: 100vh;
+    overflow-x:hidden;
+}
+
 .inner-wrapper {
     position: relative;
     height: calc(100vh - 3.5rem);
@@ -64,27 +71,25 @@
     top: 30px
 }
 
-.thread .thread-time .date,
-.thread .thread-time .time {
-    display: block;
-    font-weight: 600
-}
-
 .thread .thread-time .date {
     line-height: 16px;
-    font-size: 12px
+    font-size: 12px;
+    display: block;
+    font-weight: 600;
 }
 
 .thread .thread-time .time {
     line-height: 24px;
     font-size: 20px;
     color: var(--navy);
+    display: block;
+    font-weight: 600;
 }
 
 .thread .thread-body {
     margin-left: 23%;
     margin-right: 17%;
-    background: var(--cyan);
+    background: var(--white);
     position: relative;
     padding: 20px 25px;
     border-radius: 6px
@@ -95,7 +100,7 @@
     display: block;
     position: absolute;
     border: 10px solid transparent;
-    border-right-color: var(--cyan);
+    border-right-color: var(--white);
     left: -20px;
     top: 20px
 }
