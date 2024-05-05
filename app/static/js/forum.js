@@ -17,14 +17,14 @@ $(document).ready(() => {
                         $("#threads").append(`
                             <li>
                                 <div class="thread-time">
-                                    <span class="date">today</span>
-                                    <span class="time">04:20</span>
+                                    <span class="date">TODO:today</span>
+                                    <span class="time">TODO:04:20</span>
                                 </div>
                                 <div class="thread-body">
                                     <div class="thread-header">
                                         <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
-                                        <span class="userimage"><img src="{{ url_for('static', filename='images/jsMug.png') }}" alt=""></span>
-                                        <span class="username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
+                                        <br>
+                                        <span class="thread-creator username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
                                     </div>
                                     <div class="thread-content">
                                         <p class="text-secondary">${thread.description}</p>
