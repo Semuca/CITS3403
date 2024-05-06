@@ -31,7 +31,7 @@ class UserModel(db.Model):
 
     # Need to auto initialise inventory
     def __init__(self, **kwargs):
-        super(UserModel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.inventory = InventoryModel(user_id=self.id)
 
     def to_json(self):

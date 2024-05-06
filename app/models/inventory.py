@@ -34,5 +34,3 @@ class InventoryModel(db.Model):
         for col in range(1, INVENTORY_SIZE + 1):
             inventory_list.append(getattr(self, f"q{col}"))
         return inventory_list
-
-
