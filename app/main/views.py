@@ -46,5 +46,5 @@ def thread_page(thread_id):
     comments = get_comments_by_thread_id(thread_id)
     # TODO (JARED): Fix this so it truly chooses your username
     for i in comments:
-        i.user = get_user_by_id(i.id)
+        i.user = get_user_by_id(i.user_id)
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))

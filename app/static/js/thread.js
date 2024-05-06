@@ -5,7 +5,7 @@ $(document).ready(() => {
     const threadId = $("#threadScript").data().threadId;
     console.log($("#threadScript").data());
 
-
+    loadCommentsPage(0)
     // Submitting comment
     $("#submit").on("click", () => {
         fetch(`/api/threads/${threadId}/comments`, {
