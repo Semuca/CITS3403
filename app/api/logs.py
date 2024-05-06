@@ -19,4 +19,4 @@ def read_many_logs():
         # Return query result to client
         return make_response([LogModel.to_json(t) for t in queried_logs], 200)
 
-    return authenticated_endpoint_wrapper(None, func, needsAdmin=True)
+    return authenticated_endpoint_wrapper(None, func, needs_admin=True)

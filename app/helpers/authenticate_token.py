@@ -53,14 +53,14 @@ def get_user_by_token(token: str) -> UserModel | None:
 
     return res
 
-def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response], needsAdmin: bool = False) -> Response:
+def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response], needs_admin: bool = False) -> Response:
     """Performs the necessary checks for an authenticated endpoint"""
 
     # Authorize request
     request_user = get_user_by_auth_header()
 
 
-    if request_user is None or (needsAdmin and not request_user.admin):
+    if request_user is None or (needs_admin and not request_user.admin):
         return make_response(
             {"error": "Authorization error",
              "errorMessage": "Authorization token not valid"},
