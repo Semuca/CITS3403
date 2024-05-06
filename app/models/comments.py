@@ -31,6 +31,6 @@ class CommentModel(db.Model):
             'threadId': self.thread_id,
             'createdAt': self.created_at,
             'commentText': self.comment_text,
-            'userName': self.user.username,
+            'user': self.user.to_json(),
         }
         return json_comment
