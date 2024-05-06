@@ -53,49 +53,14 @@ def get_user_by_token(token: str) -> UserModel | None:
 
     return res
 
-def admin_authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
-    """Performs the necessary checks for an authenticated endpoint"""
-
-    # Authorize request
-    request_user = get_user_by_auth_header()
-
-    if request_user is None or not request_user.admin:
-        return make_response(
-            {"error": "Authorization error",
-             "errorMessage": "Authorization token not valid"},
-             401)
-
-    # Get validated data
-    data = None
-    if schema is not None:
-        data = validate_request_schema(schema)
-        if isinstance(data, str):
-            return make_response(
-                {"error": "Request validation error",
-                 "errorMessage": data},
-                 400)
-
-    response = func(data, request_user.id)
-
-    # Log the request
-    new_log = LogModel(user_id=request_user.id,
-                       url=request.full_path,
-                       request_body=None if data is None else json.dumps(data),
-                       response_code=response.status_code,
-                       error_response_body=response.data if (response.status_code >= 400) else None)
-    db.session.add(new_log)
-    db.session.commit()
-
-    return response
-
-def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
+def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response], needsAdmin: bool = False) -> Response:
     """Performs the necessary checks for an authenticated endpoint"""
 
     # Authorize request
     request_user = get_user_by_auth_header()
 
 
-    if request_user is None:
+    if request_user is None or (needsAdmin and not request_user.admin):
         return make_response(
             {"error": "Authorization error",
              "errorMessage": "Authorization token not valid"},
