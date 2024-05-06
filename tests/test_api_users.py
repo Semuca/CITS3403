@@ -51,7 +51,6 @@ class TestGetUser(BaseApiTest):
         self.assertEqual(response_body["id"], user.id, f"Id is not the same as the one in the db {res.data}")
         self.assertEqual(response_body["username"], user.username, f"Username is not the same as the one in the db {res.data}")
         self.assertEqual(response_body["description"], user.description, f"Description is not the same as the one in the db {res.data}")
-        self.assertEqual(response_body["inventory"], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Inventory is not the same as the one in the db {res.data}")
 
 class TestCreateUser(BaseApiTest):
     """Tests create user endpoint - POST api/users"""
@@ -77,6 +76,9 @@ class TestCreateUser(BaseApiTest):
         response_body = json.loads(res.data)
         self.assertIn("token", response_body, f"No token present in response {res.data}")
         self.assertEqual(user.authentication_token, response_body["token"], f"Token is not the same as the one in the db {res.data}")
+        self.assertEqual(user.inventory.to_list(), [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Wrong inventory in db {res.data}")
+        self.assertEqual(user.level, 0, f"Wrong level in db {res.data}")
+
 
     def test_create_duplicate_user(self):
         """Tests that creating a user that already exists returns an error"""
