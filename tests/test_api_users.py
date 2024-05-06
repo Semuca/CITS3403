@@ -76,6 +76,9 @@ class TestCreateUser(BaseApiTest):
         response_body = json.loads(res.data)
         self.assertIn("token", response_body, f"No token present in response {res.data}")
         self.assertEqual(user.authentication_token, response_body["token"], f"Token is not the same as the one in the db {res.data}")
+        self.assertEqual(user.inventory.to_list(), [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Wrong inventory in db {res.data}")
+        self.assertEqual(user.level, 0, f"Wrong level in db {res.data}")
+
 
     def test_create_duplicate_user(self):
         """Tests that creating a user that already exists returns an error"""
