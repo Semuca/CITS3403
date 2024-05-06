@@ -39,9 +39,10 @@ def read_many_thread():
     def func(data, _):
         page = data.get("page", 1)
         per_page = data.get("perPage", 10)
+        search = data.get("search", "")
 
         # Get a paginated list of thread objects according to parameters
-        query = db.select(ThreadModel)
+        query = db.select(ThreadModel).filter(ThreadModel.title.contains(search))
         queried_threads = db.paginate(query, page=page, per_page=per_page).items
 
         # Return query result to client
@@ -52,6 +53,7 @@ def read_many_thread():
 read_many_thread_schema = {
     "page": {"type": "int", "required": False},
     "perPage": {"type": "int", "required": False},
+    "search": {"type": "text", "required": False}
 }
 
 @api_bp.route('/threads/<int:thread_id>', methods=['GET'])

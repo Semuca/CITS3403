@@ -219,6 +219,38 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res_json_data[4]["description"], 'description5', f"Json data sent back is '{res_json_data[4]["description"]}'")
         self.assertEqual(res_json_data[9]["title"], 'thread10', f"Json data sent back is '{res_json_data[9]["title"]}'")
 
+    def test_get_with_search(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 12):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1
+            )
+            db.session.add(new_thread)
+        db.session.commit()
+
+        # The endpoint curently only supports searches for the title of the threads
+
+        # Post a get request for threads with 'thread' in the title
+        res = self.client.get("/api/threads?search=thread", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+
+        # Check that the threads with 'thread' in the title are returned with the right information
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 9, f"Data sent back is of length '{len(res_json_data)}")
+        self.assertEqual(res_json_data[0]["title"], 'thread3', f"Json data sent back is '{res_json_data[0]["title"]}'")
+        self.assertEqual(res_json_data[8]["title"], 'thread11', f"Json data sent back is '{res_json_data[8]["title"]}'")
+
+        # Post a get request for threads with '5' in the description
+        res = self.client.get("/api/threads?search=5", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+
+        # Check that the thread with '5' in the title is returned with the right information
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 1, f"Data sent back is of length '{len(res_json_data)}")
+        self.assertEqual(res_json_data[0]["title"], 'thread5', f"Json data sent back is '{res_json_data[0]["title"]}'")
+
 class TestReadById(BaseApiTest):
     """Tests threads read by id endpoint - GET api/threads/{id}"""
 

@@ -9,6 +9,19 @@ from app.helpers import authenticated_endpoint_wrapper, remove_none_from_diction
 
 from .bp import api_bp
 
+@api_bp.route('/users', methods=['GET'])
+def get_user():
+    """Endpoint to get the current user through the authentication token"""
+
+    def func(_data, request_user_id):
+        # Get a thread object from the db according to given id
+        queried_user = db.session.get(UserModel, request_user_id)
+
+        # Return user to the client
+        return make_response(UserModel.to_json(queried_user), 200)
+
+    return authenticated_endpoint_wrapper(None, func)
+
 @api_bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
