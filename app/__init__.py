@@ -1,15 +1,13 @@
 """This module is the entry point for the flask application"""
 
 from flask import Flask
+from app.models import UserModel
 from config import config
 
 from .api import api_bp # Imports with all routes attached (as opposed to blank)
 from .main import main_bp
 
 from .databases import db
-
-# pylint: disable=unused-import
-from .models import ThreadModel, UserModel
 
 def create_app(config_name):
     """Create and configure app"""

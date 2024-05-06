@@ -16,12 +16,12 @@ def redirect_wrapper(successful_result: Response) -> Response:
 
     token = request.cookies.get('token')
 
-    if token is None or get_user_id_by_token(request.cookies.get('token')) is None:
+    if token is None or get_user_by_token(request.cookies.get('token')) is None:
         return redirect("/login")
 
     return successful_result
 
-def get_user_id_by_auth_header() -> str | None:
+def get_user_by_auth_header() -> UserModel | None:
     """Gets a user id by the Authorization header
     Returns:
         A user id if the token is stored against a user
@@ -40,26 +40,26 @@ def get_user_id_by_auth_header() -> str | None:
 
     token = split_authorization_header[1]
 
-    return get_user_id_by_token(token)
+    return get_user_by_token(token)
 
-def get_user_id_by_token(token: str) -> str | None:
-    """Gets a user id by the token
+def get_user_by_token(token: str) -> UserModel | None:
+    """Gets a user by the token
     Returns:
-        A user id if the token is stored against a user
+        A user if the token is stored against a user
         None otherwise
     """
 
     res = UserModel.query.filter_by(authentication_token=token).first()
 
-    return res.id if res is not None else None
+    return res
 
-def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
+def admin_authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
     """Performs the necessary checks for an authenticated endpoint"""
 
     # Authorize request
-    request_user_id = get_user_id_by_auth_header()
+    request_user = get_user_by_auth_header()
 
-    if request_user_id is None:
+    if request_user is None or not request_user.admin:
         return make_response(
             {"error": "Authorization error",
              "errorMessage": "Authorization token not valid"},
@@ -75,10 +75,46 @@ def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[
                  "errorMessage": data},
                  400)
 
-    response = func(data, request_user_id)
+    response = func(data, request_user.id)
 
     # Log the request
-    new_log = LogModel(user_id=request_user_id,
+    new_log = LogModel(user_id=request_user.id,
+                       url=request.full_path,
+                       request_body=None if data is None else json.dumps(data),
+                       response_code=response.status_code,
+                       error_response_body=response.data if (response.status_code >= 400) else None)
+    db.session.add(new_log)
+    db.session.commit()
+
+    return response
+
+def authenticated_endpoint_wrapper(schema: dict[str, str], func: Callable[[dict[str, str], int], Response]) -> Response:
+    """Performs the necessary checks for an authenticated endpoint"""
+
+    # Authorize request
+    request_user = get_user_by_auth_header()
+
+
+    if request_user is None:
+        return make_response(
+            {"error": "Authorization error",
+             "errorMessage": "Authorization token not valid"},
+             401)
+
+    # Get validated data
+    data = None
+    if schema is not None:
+        data = validate_request_schema(schema)
+        if isinstance(data, str):
+            return make_response(
+                {"error": "Request validation error",
+                 "errorMessage": data},
+                 400)
+
+    response = func(data, request_user.id)
+
+    # Log the request
+    new_log = LogModel(user_id=request_user.id,
                        url=request.full_path,
                        request_body=None if data is None else json.dumps(data),
                        response_code=response.status_code,

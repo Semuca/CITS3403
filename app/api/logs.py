@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import LogModel
-from app.helpers import authenticated_endpoint_wrapper
+from app.helpers import admin_authenticated_endpoint_wrapper
 
 from .bp import api_bp
 
@@ -19,4 +19,4 @@ def read_many_logs():
         # Return query result to client
         return make_response([LogModel.to_json(t) for t in queried_logs], 200)
 
-    return authenticated_endpoint_wrapper(None, func)
+    return admin_authenticated_endpoint_wrapper(None, func)
