@@ -20,6 +20,7 @@ class ThreadModel(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
 
     # Relationships
+    user = db.relationship("UserModel", backref="threads")
     children = db.relationship("CommentModel", backref="thread")
 
     # Currently here for testing purposes, to return representation of threads
@@ -31,6 +32,7 @@ class ThreadModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'userId': self.user_id,
+            'userName': self.user.username,
             'children': [c.to_json() for c in self.children],
         }
         return json_thread
