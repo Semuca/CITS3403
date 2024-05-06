@@ -52,24 +52,56 @@
                 <div class="tab-content p-0">
                     <div class="tab-pane fade active show" id="thread-post">
                         <div class="list-group mt-3" id="children">
-                            <div class="m-2">
-                                <label for="commentText">Type a comment here: </label>
-                                <input type="text" id="commentText" required/>
+                            <div class="m-2 post-comment">
+                                <!-- <label for="commentText">Type a comment here: </label> -->
+                                <input type="text" id="commentText" placeholder="Type a comment here" required/>
                                 <input id="submit" type="submit" value="Post comment"/>
-                            </div>
-                            {% for i in comments %}
+                            </div> 
+                            <!-- {% for i in comments %}
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <!-- TODO: fix usernames?? they disappeared for some reason -->
+                                        <!-- TODO: fix usernames?? they disappeared for some reason 
                                         <h5 class="comment-username mb-1">{{ i.user.username }}</h5> 
                                         <small>{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }} ({{ i.created_at.date() }})</small>
                                     </div>
                                     <p class="mb-1">{{ i.comment_text }}</p>
                                 </a>
                                 <hr>
-                            {% endfor %}
+                            {% endfor %} -->
+
+                            <ul class="timeline">
+                                {% for i in comments %}
+                                    <li>
+                                        <div class="timeline-time">
+                                            <span class="date">{{ i.created_at.date() }}</span>
+                                            {# HACK (Jared): stop using cursed __str__ method #} 
+                                            <!-- TODO remove comment. -->
+                                            <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <!-- <div class="timeline-header">
+                                                <span class="thread-name"><a
+                                                        href="/thread/{{i.id}}">{{ i.title }}</a> <small></small></span>
+                                            </div> -->
+                                            <div class="timeline-content">
+                                                <h5 class="comment-username mb-1">{{ i.user.username }}</h5> 
+                                                <p>{{ i.comment_text }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="profile-content">
+            <div class="tab-content p-0">
+                <div class="tab-pane fade active show" id="profile-post">
+                    
                 </div>
             </div>
         </div>
