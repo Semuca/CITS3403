@@ -51,6 +51,7 @@ class TestGetUser(BaseApiTest):
         self.assertEqual(response_body["id"], user.id, f"Id is not the same as the one in the db {res.data}")
         self.assertEqual(response_body["username"], user.username, f"Username is not the same as the one in the db {res.data}")
         self.assertEqual(response_body["description"], user.description, f"Description is not the same as the one in the db {res.data}")
+        self.assertEqual(response_body["inventory"], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Inventory is not the same as the one in the db {res.data}")
 
 class TestCreateUser(BaseApiTest):
     """Tests create user endpoint - POST api/users"""

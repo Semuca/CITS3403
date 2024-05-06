@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from app.models.inventory import InventoryModel
 from app.databases import db
 
 # pylint: disable=too-few-public-methods
@@ -20,6 +21,14 @@ class UserModel(db.Model):
     security_question_answer = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
 
+    # Relationships
+    inventory = db.relationship("InventoryModel", backref="user", uselist=False)
+
+    # Need to auto initialise inventory
+    def __init__(self, **kwargs):
+        super(UserModel, self).__init__(**kwargs)
+        self.inventory = InventoryModel(user_id=self.id)
+
     def to_json(self):
         """Return json from already-created user object"""
         json_user = {
@@ -27,5 +36,6 @@ class UserModel(db.Model):
             'username': self.username,
             'description': self.description,
             'createdAt': self.created_at,
+            'inventory': self.inventory.to_list(),
         }
         return json_user
