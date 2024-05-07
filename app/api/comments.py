@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import authenticated_endpoint_wrapper, DatabaseManager
+from app.helpers import authenticated_endpoint_wrapper, database_manager
 
 from .bp import api_bp
 
