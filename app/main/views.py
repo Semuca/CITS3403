@@ -1,11 +1,8 @@
 """Main route views"""
-from random import Random
 
 from flask import Blueprint, render_template
 
 from app.helpers import redirect_wrapper
-from app.helpers.DatabaseManager import get_comments_by_thread_id, get_thread_by_id, get_user_by_id
-from app.models import CommentModel
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -41,10 +38,4 @@ def forum_page():
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
-    thread = get_thread_by_id(thread_id)
-    thread.poster = get_user_by_id(thread.user_id)
-    comments = get_comments_by_thread_id(thread_id)
-    # TODO (JARED): Fix this so it truly chooses your username
-    for i in comments:
-        i.user = get_user_by_id(i.user_id)
-    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
+    return redirect_wrapper(render_template('thread.html'))
