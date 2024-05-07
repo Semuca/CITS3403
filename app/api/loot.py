@@ -1,8 +1,9 @@
 """This module defines endpoints for user operations"""
 
-from flask import make_response
 from random import randint
 from datetime import datetime, timedelta
+
+from flask import make_response
 
 from app.databases import db
 from app.models import InventoryModel, UserModel, INVENTORY_SIZE
