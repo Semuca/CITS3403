@@ -162,11 +162,11 @@ class TestReadMany(BaseApiTest):
 
         self.assertEqual(res_json_data[0]["commentText"], 'Do you have any with rank above B? I will trade', f"Json data sent back is '{res_json_data[0]["commentText"]}'")
         self.assertEqual(res_json_data[0]["threadId"], 1, f"Json data sent back is '{res_json_data[0]["threadId"]}'")
-        self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
+        self.assertEqual(res_json_data[0]["user"]["id"], 1, f"Json data sent back is '{res_json_data[0]["user"]}'")
 
         self.assertEqual(res_json_data[1]["commentText"], "If u like anything in my inventory I'm down to trade", f"Json data sent back is '{res_json_data[1]["commentText"]}'")
         self.assertEqual(res_json_data[1]["threadId"], 1, f"Json data sent back is '{res_json_data[1]["threadId"]}'")
-        self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
+        self.assertEqual(res_json_data[1]["user"]["username"], "test", f"Json data sent back is '{res_json_data[1]["user"]}'")
 
     def test_get_from_no_comments_thread(self):
         """Tests that getting with no comments gets an empty list"""
