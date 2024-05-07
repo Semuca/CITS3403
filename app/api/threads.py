@@ -39,7 +39,6 @@ def read_many_thread():
     def func(data, _):
         page = data.get("page", 1)
         per_page = data.get("perPage", 10)
-        print(data)
         # Get a paginated list of thread objects according to parameters
         query = db.select(ThreadModel)
         queried_threads = db.paginate(query, page=page, per_page=per_page).items
