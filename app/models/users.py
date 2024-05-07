@@ -25,6 +25,7 @@ class UserModel(db.Model):
 
     # Game stats
     level = db.Column(db.Integer(), default=0, nullable=False)
+    last_drop_collected = db.Column(db.DateTime(), nullable=True)
 
     # Relationships
     inventory = db.relationship("InventoryModel", backref="user", uselist=False)
