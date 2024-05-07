@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import authenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, DatabaseManager
 
 from .bp import api_bp
 
@@ -61,7 +61,7 @@ def read_by_id_thread(thread_id):
 
     def func(*_):
         # Get a thread object from the db according to given id
-        queried_thread = db.session.get(ThreadModel, thread_id)
+        queried_thread = DatabaseManager.get_thread_by_id(thread_id)
 
         if queried_thread is None:
             return make_response(
