@@ -49,7 +49,7 @@ def read_many_comment(thread_id):
 
     def func(*_):
         queried_comments = database_manager.get_comments_by_thread_id(thread_id)
-        if not queried_comments:
+        if queried_comments is None:
             return make_response(
                 {"error": "Request validation error",
                  "errorMessage": "Thread not found"},
