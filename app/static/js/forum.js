@@ -1,15 +1,33 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
 
 const threads = [];
-let currentPage = 1
+let pageNumber = 1
+let pageBefore = $("#pageBefore")
+let currentPage = $("#currentPage")
+let pageAfter = $("#pageAfter")
+let prevPage = $("#prevPage")
+let nextPage = $("#nextPage")
+
+
 
 $(document).ready(() => {
     loadPage(1)
-    $("#nextPage").on("click", () => {
-        loadPage(++currentPage)
+    nextPage.on("click", () => {
+        loadPage(pageNumber + 1)
+        console.log("#nextPage")
     })
-    $("#prevPage").on("click", () => {
-        loadPage(++currentPage)
+    prevPage.on("click", () => {
+        loadPage(pageNumber - 1)
+        console.log("#prevPage")
+    })
+    pageBefore.on("click", () => {
+        loadPage(+pageBefore.text())
+    })
+    currentPage.on("click", () => {
+        loadPage(+currentPage.text())
+    })
+    pageAfter.on("click", () => {
+        loadPage(+pageAfter.text())
     })
     $("#submit").on("click", () => {
         fetch("/api/threads", {
@@ -46,8 +64,26 @@ $(document).ready(() => {
 });
 
 function loadPage(page) {
+    pageNumber = page
     while (threads.length) {
         threads.pop()
+    }
+    if (page === 1) {
+        prevPage.addClass("disabled")
+        pageBefore.addClass("active")
+        pageAfter.removeClass("active")
+        currentPage.removeClass("active")
+        pageBefore.text("1")
+        currentPage.text("2")
+        pageAfter.text("3")
+    } else {
+        prevPage.removeClass("disabled")
+        pageBefore.removeClass("active")
+        currentPage.addClass("active")
+        pageAfter.removeClass("active")
+        pageBefore.text(pageNumber - 1)
+        currentPage.text(pageNumber)
+        pageAfter.text(pageNumber + 1)
     }
     $("#threads").empty()
     console.log(page)

@@ -31,3 +31,10 @@ body {
 #newDiscussion:hover {
     background-color: var(--navy);
 }
+
+.active {
+    /*
+        TODO (bridge): uncurse my css please
+     */
+    color: white !important;
+}

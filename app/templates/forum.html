@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block headBlock %}
-    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/forum.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/forum.css') }}">
     <script src="{{ url_for('static', filename='js/forum.js') }}" type="module"></script>
     <title>Forum</title>
 {% endblock %}
@@ -10,8 +10,11 @@
     <div class="container content">
         <div class="main-body p-0">
             <div class="justify-content-center">
-                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#threadCreationModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus mr-2">
+                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal"
+                        data-target="#threadCreationModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-plus mr-2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
@@ -19,27 +22,29 @@
                 </button>
             </div>
 
-            <div class="inner-wrapper" >
+            <div class="inner-wrapper">
                 <!-- Search Forum -->
                 <div class="searchHeader">
-                    <input type="text" id="searchbar" class="form-control form-control-sm shadow-none mb-4 mt-4" placeholder="Search forum" />
+                    <input type="text" id="searchbar" class="form-control form-control-sm shadow-none mb-4 mt-4"
+                           placeholder="Search forum"/>
                 </div>
 
                 <!-- Forum List -->
                 <div id="threads"></div>
 
-                    <!-- Pagination -->
-                    <ul class="pagination justify-content-center pb-3">
-                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" id="nextPage">Next</a></li>
-                    </ul>
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center pb-3">
+                    <li class="page-item"><a id="prevPage" class="page-link" tabindex="-1">Previous</a></li>
+                    <li class="page-item"><a id="pageBefore" class="page-link">1</a></li>
+                    <li class="page-item"><a id="currentPage" class="page-link">2</a></li>
+                    <li class="page-item"><a id="pageAfter" class="page-link">3</a></li>
+                    <li class="page-item"><a id="nextPage" class="page-link">Next</a></li>
+                </ul>
             </div>
 
             <!-- New Thread Modal -->
-            <div class="modal fade" id="threadCreationModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
+            <div class="modal fade" id="threadCreationModal" tabindex="-1" role="dialog"
+                 aria-labelledby="threadModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <form>
@@ -52,17 +57,20 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" placeholder="Enter title" autofocus="" required/>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter title"
+                                           autofocus="" required/>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description*</label>
-                                    <input type="text" class="form-control" id="description" placeholder="Enter description" autofocus="" required/>
+                                    <input type="text" class="form-control" id="description"
+                                           placeholder="Enter description" autofocus="" required/>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="submit" data-dismiss="modal">Post</button>
+                                <button type="submit" class="btn btn-primary" id="submit" data-dismiss="modal">Post
+                                </button>
                             </div>
                         </form>
                     </div>
