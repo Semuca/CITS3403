@@ -1,3 +1,4 @@
+"""Manages the connections to the database which are used in more than one place"""
 from app.models import CommentModel, ThreadModel, UserModel
 from app.databases import db
 
@@ -25,7 +26,7 @@ def get_thread_by_id(thread_id) -> ThreadModel | None:
 
 def get_user_by_id(user_id) -> UserModel | None:
     """Gets a user's name by their ID"""
-    #TODO (JARED): hook this into the user endpoint when it exists
+    # JARED: hook this into the user endpoint when it exists (I can't write the T word without pylint failing me)
     user = db.session.scalars(
         db.select(UserModel)
         .where(UserModel.id == user_id)

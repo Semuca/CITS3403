@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import authenticated_endpoint_wrapper, DatabaseManager
+from app.helpers import authenticated_endpoint_wrapper, database_manager
 
 from .bp import api_bp
 
@@ -48,7 +48,7 @@ def read_many_comment(thread_id):
     """Reads a list of comments from the database for the thread"""
 
     def func(*_):
-        queried_comments = DatabaseManager.get_comments_by_thread_id(thread_id)
+        queried_comments = database_manager.get_comments_by_thread_id(thread_id)
         if not queried_comments:
             return make_response(
                 {"error": "Request validation error",
