@@ -150,11 +150,11 @@ class TestReadMany(BaseApiTest):
 
         self.assertEqual(res_json_data[0]["title"], 'Theory', f"Json data sent back is '{res_json_data[0]["title"]}'")
         self.assertEqual(res_json_data[0]["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data[0]["description"]}'")
-        self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
+        self.assertEqual(res_json_data[0]["user"]["id"], 1, f"Json data sent back is '{res_json_data[0]["user"]["id"]}'")
 
         self.assertEqual(res_json_data[1]["title"], 'hello', f"Json data sent back is '{res_json_data[1]["title"]}'")
         self.assertEqual(res_json_data[1]["description"], 'Heya new here', f"Json data sent back is '{res_json_data[1]["description"]}'")
-        self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
+        self.assertEqual(res_json_data[1]["user"]["id"], 1, f"Json data sent back is '{res_json_data[1]["user"]["id"]}'")
 
     def test_get_from_empty_database(self):
         # Empty the database
