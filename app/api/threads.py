@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import authenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, RequestSchemaDefinition
 
 from .bp import api_bp
 
@@ -27,7 +27,7 @@ def create_thread():
 
     return authenticated_endpoint_wrapper(create_thread_schema, func)
 
-create_thread_schema = {
+create_thread_schema: dict[str, str | RequestSchemaDefinition] = {
     "title": "text",
     "description": "text"
 }
@@ -40,9 +40,18 @@ def read_many_thread():
         page = data.get("page", 1)
         per_page = data.get("perPage", 10)
         search = data.get("search", "")
+        sort_by = data.get("sortBy", "created_at")
+        sort_dir = data.get("sortDir", "desc")
 
         # Get a paginated list of thread objects according to parameters
-        query = db.select(ThreadModel).filter(ThreadModel.title.contains(search))
+        if hasattr(ThreadModel, sort_by) is False:
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "sortBy property not found"},
+                400)
+        sort_by_attribute = getattr(ThreadModel, sort_by)
+        order_by_query = sort_by_attribute.desc() if sort_dir == 'desc' else sort_by_attribute.asc()
+        query = db.select(ThreadModel).filter(ThreadModel.title.contains(search)).order_by(order_by_query)
         queried_threads = db.paginate(query, page=page, per_page=per_page).items
 
         # Return query result to client
@@ -50,10 +59,12 @@ def read_many_thread():
 
     return authenticated_endpoint_wrapper(read_many_thread_schema, func)
 
-read_many_thread_schema = {
+read_many_thread_schema: dict[str, str | RequestSchemaDefinition] = {
     "page": {"type": "int", "required": False},
     "perPage": {"type": "int", "required": False},
-    "search": {"type": "text", "required": False}
+    "search": {"type": "text", "required": False},
+    "sortBy": {"type": "text", "required": False},
+    "sortDir": {"type": "enum", "values": ["asc", "desc"], "required": False}
 }
 
 @api_bp.route('/threads/<int:thread_id>', methods=['GET'])

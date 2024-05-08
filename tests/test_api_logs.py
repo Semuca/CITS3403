@@ -86,8 +86,6 @@ class TestReadMany(BaseApiTest):
                               'createdAt': response_body[1]['createdAt']},
                              "Log 1 is incorrect")
 
-        print(response_body)
-
 
 
 if __name__ == '__main__':
