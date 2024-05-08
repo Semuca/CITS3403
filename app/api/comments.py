@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import authenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, RequestSchemaDefinition
 
 from .bp import api_bp
 
@@ -36,7 +36,7 @@ def create_comment(thread_id):
 
     return authenticated_endpoint_wrapper(create_comment_schema, func)
 
-create_comment_schema = {
+create_comment_schema: dict[str, str | RequestSchemaDefinition] = {
     "commentText": "text"
 }
 
