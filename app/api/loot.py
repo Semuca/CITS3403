@@ -27,13 +27,13 @@ def get_loot_drop():
 
         queried_user.last_drop_collected = datetime.now()
 
-        queried_inventory = InventoryModel.query.filter_by(user_id=request_user_id).first()
-
-        gained_values = []
-        update_body = {}
+        gained_values = [] # Values the player is getting
+        update_body = {} # Values the player will have after getting gained_values
         for i in range(0, INVENTORY_SIZE):
-            gained_values.append(randint(0, 4))
-            update_body.update({f"q{i + 1}": getattr(queried_inventory, f"q{i + 1}") + gained_values[i]})
+            gained_values.append(randint(0, 4)) # Get random value
+
+            # Generate update body from gained_value added to inventory
+            update_body.update({f"q{i + 1}": getattr(queried_user.inventory, f"q{i + 1}") + gained_values[i]})
 
         # Update the inventory
         InventoryModel.query.filter_by(user_id=request_user_id).update(update_body)

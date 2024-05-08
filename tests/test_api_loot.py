@@ -26,30 +26,16 @@ class TestGetLoot(BaseApiTest):
         )
         db.session.add(test_user)
 
-        test_inventory = InventoryModel(
-            user_id=1,
-            q1=0,
-            q2=0,
-            q3=0,
-            q4=0,
-            q5=0,
-            q6=0,
-            q7=0,
-            q8=0,
-            q9=0,
-            q10=0,
-        )
-        db.session.add(test_inventory)
-
-        # Get loot
+        # Act
         res = self.client.get("/api/loot", headers=get_api_headers())
+
+        # Assert
         response_body = json.loads(res.data)
+        inventory = db.session.get(InventoryModel, 1)
 
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
-        # Check that threads are in the db and have info
-        inventory = db.session.get(InventoryModel, 1)
-
+        # Assert inventory has been modified correctly
         self.assertIsNotNone(inventory)
         self.assertEqual(response_body.get("items"), inventory.to_list())
 
@@ -70,15 +56,13 @@ class TestGetLoot(BaseApiTest):
 
         old_inventory_list = db.session.get(InventoryModel, 1).to_list()
 
-        # Get loot
+        # Act
         res = self.client.get("/api/loot", headers=get_api_headers())
+        inventory = db.session.get(InventoryModel, 1)
         response_body = json.loads(res.data)
 
+        # Assert inventory has been modified correctly
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
-
-        # Check that threads are in the db and have info
-        inventory = db.session.get(InventoryModel, 1)
-
         self.assertEqual(inventory.to_list(), [i+j for i,j in zip(old_inventory_list,response_body.get("items"))])
 
     def test_invalid_next_loot(self):
@@ -98,14 +82,12 @@ class TestGetLoot(BaseApiTest):
 
         old_inventory_list = db.session.get(InventoryModel, 1).to_list()
 
-        # Get loot
+        # Act
         res = self.client.get("/api/loot", headers=get_api_headers())
-
-        self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
-
-        # Check that threads are in the db and have info
         inventory = db.session.get(InventoryModel, 1)
 
+        # Assert inventory hasn't been changed
+        self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
         self.assertEqual(inventory.to_list(), old_inventory_list)
 
 if __name__ == '__main__':
