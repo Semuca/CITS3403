@@ -2,11 +2,11 @@ import { CookieManager } from "./helpers/cookie_manager.js";
 
 const threads = [];
 let pageNumber = 1
-let pageBefore = $("#pageBefore")
-let currentPage = $("#currentPage")
-let pageAfter = $("#pageAfter")
-let prevPage = $("#prevPage")
-let nextPage = $("#nextPage")
+const pageBefore = $("#pageBefore")
+const currentPage = $("#currentPage")
+const pageAfter = $("#pageAfter")
+const prevPage = $("#prevPage")
+const nextPage = $("#nextPage")
 
 
 
@@ -49,7 +49,7 @@ $(document).ready(() => {
                                     <div class="media-body">
                                         <a href="/thread/${thread.id}">${thread.title}</a>
                                         <p class="text-secondary">${thread.description}</p>
-                                    </div>
+                                    </div>const
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,6 @@ function loadPage(page) {
     if (page === 1) {
         prevPage.addClass("disabled")
         pageBefore.addClass("active")
-        pageAfter.removeClass("active")
         currentPage.removeClass("active")
         pageBefore.text("1")
         currentPage.text("2")
@@ -80,7 +79,6 @@ function loadPage(page) {
         prevPage.removeClass("disabled")
         pageBefore.removeClass("active")
         currentPage.addClass("active")
-        pageAfter.removeClass("active")
         pageBefore.text(pageNumber - 1)
         currentPage.text(pageNumber)
         pageAfter.text(pageNumber + 1)
