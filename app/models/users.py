@@ -23,8 +23,11 @@ class UserModel(db.Model):
     security_question = db.Column(db.String(200), nullable=False)
     security_question_answer = db.Column(db.String(200), nullable=False)
 
+    admin = db.Column(db.Boolean(), default=False, nullable=False)
+
     # Game stats
     level = db.Column(db.Integer(), default=0, nullable=False)
+    last_drop_collected = db.Column(db.DateTime(), nullable=True)
 
     # Relationships
     inventory = db.relationship("InventoryModel", backref="user", uselist=False)
