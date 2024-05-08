@@ -5,7 +5,7 @@ import json
 
 from app import create_app
 from app.databases import db
-from app.models import LogModel, ThreadModel, UserModel
+from app.models import UserModel
 
 from .helpers import get_api_headers
 class BaseApiTest(unittest.TestCase):
@@ -34,7 +34,8 @@ class TestReadMany(BaseApiTest):
             password_hash="test",
             authentication_token="authtest",
             security_question=3,
-            security_question_answer="Purple"
+            security_question_answer="Purple",
+            admin=True
         )
         db.session.add(test_user)
 

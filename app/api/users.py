@@ -42,6 +42,7 @@ def create_user():
         # Add the user into the database
         user = UserModel(username=data["username"],
                         password_hash=data["password"],
+                        description="",
                         authentication_token=token,
                         security_question=data["securityQuestion"],
                         security_question_answer=data["securityQuestionAnswer"])

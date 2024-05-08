@@ -29,3 +29,6 @@ clean_cache: 	## Clean pycaches
 
 clean_dbs: 	## Removes database files
 	rm app/databases/*.db
+
+create_admin_user: 	## Creates admin user
+	python3 script_runner.py create_admin_user
