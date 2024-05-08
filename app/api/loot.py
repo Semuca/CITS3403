@@ -36,7 +36,7 @@ def get_loot_drop():
             update_body.update({f"q{i + 1}": getattr(queried_user.inventory, f"q{i + 1}") + gained_values[i]})
 
         # Update the inventory
-        InventoryModel.query.filter_by(user_id=request_user_id).update(update_body)
+        queried_user.inventory.query.update(update_body)
         db.session.commit()
 
         # Return with the token
