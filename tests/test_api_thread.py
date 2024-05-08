@@ -4,24 +4,10 @@ import unittest
 import json
 from datetime import datetime, timedelta
 
-from app import create_app
 from app.databases import db
 from app.models import UserModel, ThreadModel
 
-from .helpers import get_api_headers
-class BaseApiTest(unittest.TestCase):
-    def setUp(self):
-        # create app so db can be linked to it
-        self.app = create_app('test')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        self.client = self.app.test_client()
-
-    def tearDown(self):
-        # stop db session and clear out all data
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+from .helpers import BaseApiTest, get_api_headers
 
 class TestCreate(BaseApiTest):
     """Tests threads create endpoint - POST api/threads"""
@@ -38,9 +24,6 @@ class TestCreate(BaseApiTest):
             security_question_answer="Purple"
         )
         db.session.add(test_user)
-
-    def tearDown(self):
-        super().tearDown()
 
     def test_valid_create(self):
         """Tests that threads can be created from the endpoint"""
@@ -135,9 +118,6 @@ class TestReadMany(BaseApiTest):
         db.session.add(test_thread_2)
 
         db.session.commit()
-
-    def tearDown(self):
-        return super().tearDown()
 
     def test_valid_read_many(self):
         # Post a get request for all the threads
@@ -349,9 +329,6 @@ class TestReadById(BaseApiTest):
         db.session.add(test_thread_2)
 
         db.session.commit()
-
-    def tearDown(self):
-        super().tearDown()
 
     def test_get_valid_thread(self):
         """Test that threads can be received from the endpoint"""
