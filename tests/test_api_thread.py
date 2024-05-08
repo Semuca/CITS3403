@@ -148,13 +148,13 @@ class TestReadMany(BaseApiTest):
         res_json_data = json.loads(res.data)
         self.assertEqual(len(res_json_data), 2, f"Data sent back is '{res.data}'")
 
-        self.assertEqual(res_json_data[0]["title"], 'Theory', f"Json data sent back is '{res_json_data[1]["title"]}'")
-        self.assertEqual(res_json_data[0]["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data[1]["description"]}'")
-        self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
+        self.assertEqual(res_json_data[0]["title"], 'Theory', f"Json data sent back is '{res_json_data[0]["title"]}'")
+        self.assertEqual(res_json_data[0]["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data[0]["description"]}'")
+        self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
 
-        self.assertEqual(res_json_data[1]["title"], 'hello', f"Json data sent back is '{res_json_data[0]["title"]}'")
-        self.assertEqual(res_json_data[1]["description"], 'Heya new here', f"Json data sent back is '{res_json_data[0]["description"]}'")
-        self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
+        self.assertEqual(res_json_data[1]["title"], 'hello', f"Json data sent back is '{res_json_data[1]["title"]}'")
+        self.assertEqual(res_json_data[1]["description"], 'Heya new here', f"Json data sent back is '{res_json_data[1]["description"]}'")
+        self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
 
     def test_get_from_empty_database(self):
         # Empty the database
@@ -350,7 +350,7 @@ class TestReadById(BaseApiTest):
         res_json_data = json.loads(res.data)
         self.assertEqual(res_json_data["title"], 'hello', f"Json data sent back is '{res_json_data["title"]}'")
         self.assertEqual(res_json_data["description"], 'Heya new here', f"Json data sent back is '{res_json_data["description"]}'")
-        self.assertEqual(res_json_data["userId"], 1, f"Json data sent back is '{res_json_data["userId"]}'")
+        self.assertEqual(res_json_data["user"]["id"], 1, f"Json data sent back is '{res_json_data["user"]}'")
 
         # Post a get request for second thread
         res = self.client.get("/api/threads/2", headers=get_api_headers())
@@ -360,7 +360,7 @@ class TestReadById(BaseApiTest):
         res_json_data = json.loads(res.data)
         self.assertEqual(res_json_data["title"], 'Theory', f"Json data sent back is '{res_json_data}'")
         self.assertEqual(res_json_data["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data}'")
-        self.assertEqual(res_json_data["userId"], 1, f"Json data sent back is '{res_json_data["userId"]}'")
+        self.assertEqual(res_json_data["user"]["username"], "test", f"Json data sent back is '{res_json_data["user"]}'")
 
     def test_get_nonexistent_thread(self):
         """Tests that getting with a nonexistent thread ids gets the right error response"""
