@@ -63,24 +63,20 @@ $(document).ready(() => {
 
 function loadPage(page) {
     pageNumber = page
-    while (threads.length) {
-        threads.pop()
-    }
+    threads.length = 0 //empty the threads array
     if (page === 1) {
         prevPage.addClass("disabled")
         pageBefore.addClass("active")
         currentPage.removeClass("active")
-        pageBefore.text("1")
-        currentPage.text("2")
-        pageAfter.text("3")
     } else {
         prevPage.removeClass("disabled")
         pageBefore.removeClass("active")
         currentPage.addClass("active")
-        pageBefore.text(pageNumber - 1)
-        currentPage.text(pageNumber)
-        pageAfter.text(pageNumber + 1)
     }
+    const smallestPageNumber = Math.min(pageNumber - 1, 1)
+    pageBefore.text(smallestPageNumber)
+    currentPage.text(smallestPageNumber + 1)
+    pageAfter.text(smallestPageNumber + 2)
     $("#threads").empty()
     fetch(`/api/threads?perPage=10&page=${page}`, {
         method: "GET", headers: {
