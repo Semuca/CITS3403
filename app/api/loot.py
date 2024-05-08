@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from flask import make_response
 
 from app.databases import db
-from app.models import InventoryModel, UserModel, INVENTORY_SIZE
+from app.models import UserModel, INVENTORY_SIZE
 from app.helpers import authenticated_endpoint_wrapper
 
 from .bp import api_bp
