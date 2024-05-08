@@ -44,6 +44,11 @@ def read_many_thread():
         sort_dir = data.get("sortDir", "desc")
 
         # Get a paginated list of thread objects according to parameters
+        if hasattr(ThreadModel, sort_by) is False:
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "sortBy property not found"},
+                400)
         sort_by_attribute = getattr(ThreadModel, sort_by)
         order_by_query = sort_by_attribute.desc() if sort_dir == 'desc' else sort_by_attribute.asc()
         query = db.select(ThreadModel).filter(ThreadModel.title.contains(search)).order_by(order_by_query)

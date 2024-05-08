@@ -85,7 +85,7 @@ def validate_enum(value: any, definition: RequestSchemaDefinition) -> str | None
     """Validates that a value is one of the enum values"""
 
     # Check if the value is in one of the enum values
-    for i in definition.values:
+    for i in definition.get('values'):
         if i == value:
             return value
 

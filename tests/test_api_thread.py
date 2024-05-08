@@ -259,50 +259,64 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(len(res_json_data), 1, f"Data sent back is of length '{len(res_json_data)}")
         self.assertEqual(res_json_data[0]["title"], 'thread5', f"Json data sent back is '{res_json_data[0]["title"]}'")
 
-def test_get_with_ordering(self):
-    # Create a sizable number more threads directly with the database
-    for i in range(3, 11):
-        new_thread = ThreadModel(
-            title=f'thread{i}',
-            description=f'description{i}',
-            user_id=1,
-            created_at=datetime.now() + timedelta(hours=i)
-        )
-        db.session.add(new_thread)
+    def test_get_with_ordering(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 11):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1,
+                created_at=datetime.now() + timedelta(hours=i)
+            )
+            db.session.add(new_thread)
 
-    db.session.commit()
+        db.session.commit()
 
-    # The endpoint curently only supports searches for the title of the threads
+        # Post a get request for threads sorted by title
+        res = self.client.get("/api/threads?sortBy=title&sortDir=asc", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
-    # Post a get request for threads with 'thread' in the title
-    res = self.client.get("/api/threads?sortBy=title&sortDir=asc", headers=get_api_headers())
-    self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
+        # Check that the threads with 'thread' in the title are returned with the right information
+        res_json_data = json.loads(res.data)
 
-    # Check that the threads with 'thread' in the title are returned with the right information
-    res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 10, f"Data sent back is of length '{len(res_json_data)}")
+        self.assertEqual(res_json_data[9]["title"], 'thread9', f"Json data sent back is '{res_json_data[9]["title"]}'")
+        self.assertEqual(res_json_data[0]["title"], 'Theory', f"Json data sent back is '{res_json_data[0]["title"]}'")
 
-    self.assertEqual(len(res_json_data), 10, f"Data sent back is of length '{len(res_json_data)}")
-    self.assertEqual(res_json_data[9]["title"], 'thread10', f"Json data sent back is '{res_json_data[0]["title"]}'")
-    self.assertEqual(res_json_data[0]["title"], 'hello', f"Json data sent back is '{res_json_data[8]["title"]}'")
+    def test_get_with_invalid_ordering(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 11):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1,
+                created_at=datetime.now() + timedelta(hours=i)
+            )
+            db.session.add(new_thread)
 
-def test_get_with_invalid_ordering(self):
-    # Create a sizable number more threads directly with the database
-    for i in range(3, 11):
-        new_thread = ThreadModel(
-            title=f'thread{i}',
-            description=f'description{i}',
-            user_id=1,
-            created_at=datetime.now() + timedelta(hours=i)
-        )
-        db.session.add(new_thread)
+        db.session.commit()
 
-    db.session.commit()
+        # Post a get request for threads sorted by title with an incorrect sort direction
+        res = self.client.get("/api/threads?sortBy=title&sortDir=SOMETHINGELSE", headers=get_api_headers())
+        self.assertEqual(res.status_code, 400, f"Status code is wrong with message '{res.data}'")
 
-    # The endpoint curently only supports searches for the title of the threads
+    def test_get_with_invalid_attribute(self):
+        # Create a sizable number more threads directly with the database
+        for i in range(3, 11):
+            new_thread = ThreadModel(
+                title=f'thread{i}',
+                description=f'description{i}',
+                user_id=1,
+                created_at=datetime.now() + timedelta(hours=i)
+            )
+            db.session.add(new_thread)
 
-    # Post a get request for threads with 'thread' in the title
-    res = self.client.get("/api/threads?sortBy=title&sortDir=SOMETHINGELSE", headers=get_api_headers())
-    self.assertEqual(res.status_code, 404, f"Status code is wrong with message '{res.data}'")
+        db.session.commit()
+
+        # Post a get request for threads sorted by title with an incorrect sort direction
+        res = self.client.get("/api/threads?sortBy=INVALID&sortDir=asc", headers=get_api_headers())
+
+        self.assertEqual(res.status_code, 400, f"Status code is wrong with message '{res.data}'")
 
 class TestReadById(BaseApiTest):
     """Tests threads read by id endpoint - GET api/threads/{id}"""
