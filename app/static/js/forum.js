@@ -14,11 +14,9 @@ $(document).ready(() => {
     loadPage(1)
     nextPage.on("click", () => {
         loadPage(pageNumber + 1)
-        console.log("#nextPage")
     })
     prevPage.on("click", () => {
         loadPage(pageNumber - 1)
-        console.log("#prevPage")
     })
     pageBefore.on("click", () => {
         loadPage(+pageBefore.text())
@@ -84,7 +82,6 @@ function loadPage(page) {
         pageAfter.text(pageNumber + 1)
     }
     $("#threads").empty()
-    console.log(page)
     fetch(`/api/threads?perPage=10&page=${page}`, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
