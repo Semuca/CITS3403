@@ -3,7 +3,6 @@ import { CookieManager } from "./helpers/cookie_manager.js";
 
 $(document).ready(() => {
     const threadId = $("#threadScript").data().threadId;
-    console.log($("#threadScript").data());
 
     // Loading thread post
     fetch(`/api/threads/${threadId}`, {

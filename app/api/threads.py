@@ -4,7 +4,8 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import authenticated_endpoint_wrapper, RequestSchemaDefinition
+from app.helpers import authenticated_endpoint_wrapper, database_manager, RequestSchemaDefinition
+
 
 from .bp import api_bp
 
@@ -56,7 +57,6 @@ def read_many_thread():
 
         # Return query result to client
         return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
-
     return authenticated_endpoint_wrapper(read_many_thread_schema, func)
 
 read_many_thread_schema: dict[str, str | RequestSchemaDefinition] = {
@@ -73,7 +73,7 @@ def read_by_id_thread(thread_id):
 
     def func(*_):
         # Get a thread object from the db according to given id
-        queried_thread = db.session.get(ThreadModel, thread_id)
+        queried_thread = database_manager.get_thread_by_id(thread_id)
 
         if queried_thread is None:
             return make_response(
