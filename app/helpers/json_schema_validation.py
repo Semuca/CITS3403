@@ -91,10 +91,17 @@ def validate_enum(value: any, definition: RequestSchemaDefinition) -> str | None
 
     return None
 
+def validate_list(value: any, _definition: RequestSchemaDefinition) -> list | None:
+    """Validates a general list"""
+    if not isinstance(value, list):
+        return None
+    return value
+
 validators = {
     "username": validate_username,
     "hash": validate_hash,
     "text": validate_text,
     "int": validate_int,
     "enum": validate_enum,
+    "list": validate_list
 }

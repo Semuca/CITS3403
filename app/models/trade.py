@@ -41,6 +41,7 @@ class OffersModel(db.Model):
         json_trade_offer = {
             'id': self.id,
             'userId': self.user_id,
+            'threadId': self.thread_id,
             'createdAt': self.created_at,
             'offering': self.get_offering(),
             'wanting': self.get_wanting(),
