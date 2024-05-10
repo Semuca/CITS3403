@@ -125,7 +125,7 @@ class TestCreate(BaseApiTest):
 
 
 class TestPerformTrade(BaseApiTest):
-    """Tests threads perform trade endpoint - PUT api/threads/{thread_id}/offers"""
+    """Tests threads perform trade endpoint - POST api/threads/{thread_id}/offers/{trade_id}"""
 
     def setUp(self):
         super().setUp()
@@ -143,19 +143,34 @@ class TestPerformTrade(BaseApiTest):
         test_user_2 = UserModel(
             username="test2",
             password_hash="test",
-            authentication_token="authtest",
+            authentication_token="authtest2",
             security_question=3,
             security_question_answer="Purple"
         )
         db.session.add(test_user_2)
 
-        # Create a new thread directly with the database (user 1)
-        test_thread = ThreadModel(
+        test_user_3 = UserModel(
+            username="test3",
+            password_hash="test",
+            authentication_token="authtest3",
+            security_question=3,
+            security_question_answer="Purple"
+        )
+
+        # Create a couple of new threads directly with the database (user 1)
+        test_thread_1 = ThreadModel(
             title='Exchange rare cards',
             description = "looking for a green mage to improve defence.",
             user_id=1
         )
-        db.session.add(test_thread)
+        db.session.add(test_thread_1)
+
+        test_thread_2 = ThreadModel(
+            title='AAA',
+            description='BBB',
+            user_id=2
+        )
+        db.session.add(test_thread_2)
 
         # Add some items to the users' inventories
         test_user_1.inventory.set_items([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
@@ -177,10 +192,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        req_body_1 = {
-            "tradeId": 1
-        }
-        res_1 = self.client.put("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 204, f"Status code is wrong with message {res_1.data}")
 
         # Check that the trade has been performed
@@ -204,10 +216,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        req_body_1 = {
-            "tradeId": 1
-        }
-        res_1 = self.client.put("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 400, f"Status code is wrong with message {res_1.data}")
 
         # Check that the trade has not been performed
@@ -221,10 +230,7 @@ class TestPerformTrade(BaseApiTest):
         """Tests that trades can't be performed if the trade doesn't exist"""
 
         # Posts an accept trade request
-        req_body_1 = {
-            "tradeId": 1
-        }
-        res_1 = self.client.put("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
 
     def test_missing_thread(self):
@@ -241,11 +247,50 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        req_body_1 = {
-            "tradeId": 1
-        }
-        res_1 = self.client.put("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/7/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
+
+    def test_wrong_accepting_user(self):
+        """Tests that trades can't be performed if the accepting user is not the thread creator"""
+
+        # Create a trade offer (user 3)
+        test_offer = OffersModel(
+            user_id=3,
+            thread_id=2,
+            offering_list=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            wanting_list=[0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        )
+        db.session.add(test_offer)
+        db.session.commit()
+
+        # Posts an accept trade request (as user 1)
+        res_1 = self.client.post("/api/threads/2/offers/1", headers=get_api_headers())
+        self.assertEqual(res_1.status_code, 403, f"Status code is wrong with message {res_1.data}")
+
+    def test_trade_for_wrong_thread(self):
+        """Tests that trades can't be performed if the trade is for a different thread"""
+
+        # Create some trade offers (user 2)
+        test_offer = OffersModel(
+            user_id=2,
+            thread_id=1,
+            offering_list=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            wanting_list=[0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        )
+        db.session.add(test_offer)
+
+        test_offer_2 = OffersModel(
+            user_id=2,
+            thread_id=2,
+            offering_list=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            wanting_list=[0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        )
+        db.session.add(test_offer_2)
+        db.session.commit()
+
+        # Posts an accept trade request
+        res_1 = self.client.post("/api/threads/1/offers/2", headers=get_api_headers())
+        self.assertEqual(res_1.status_code, 403, f"Status code is wrong with message {res_1.data}")
 
 if __name__ == '__main__':
     unittest.main()

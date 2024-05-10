@@ -56,13 +56,11 @@ create_offer_schema: dict[str, str | RequestSchemaDefinition] = {
     "wantingList": "list"
 }
 
-@api_bp.route('/threads/<int:thread_id>/offers', methods=['PUT'])
-def accept_trade(thread_id):
+@api_bp.route('/threads/<int:thread_id>/offers/<int:trade_id>', methods=['POST'])
+def accept_trade(thread_id, trade_id):
     """Accepts a trade object for a thread and saves it to the database"""
 
-    def func(data, request_user_id):
-        trade_id = data.get("tradeId")
-
+    def func(_, request_user_id):
         # Get the thread object
         thread = db.session.get(ThreadModel, thread_id)
         if thread is None:
@@ -85,6 +83,12 @@ def accept_trade(thread_id):
                 {"error": "Request validation error",
                  "errorMessage": "Trade not found"},
                 404)
+        # Make sure the trade is for the correct thread
+        if trade.thread_id != thread_id:
+            return make_response(
+                {"error": "Request validation error",
+                 "errorMessage": "Trade not for this thread"},
+                403)
 
         # Update the relevant users' inventories
         if not check_trade_possible(trade, thread.user, trade.user):
@@ -98,9 +102,5 @@ def accept_trade(thread_id):
         # Return for successful updated of resource
         return make_response("Update successful", 204)
 
-    return authenticated_endpoint_wrapper(accept_trade_schema, func)
-
-accept_trade_schema: dict[str, str | RequestSchemaDefinition] = {
-    "tradeId": "int"
-}
+    return authenticated_endpoint_wrapper(None, func)
 
