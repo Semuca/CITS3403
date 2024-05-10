@@ -70,6 +70,7 @@ class TestThreadModel(unittest.TestCase):
         self.assertEqual(created_thread.children[0].comment_text, "Do you have any with rank above B? I will trade")
         self.assertEqual(created_thread.children[0].user_id, 1)
         self.assertEqual(created_thread.children[0].thread_id, 1)
+        self.assertEqual(created_thread.children[0].thread_child_type, "comment")
 
 if __name__ == '__main__':
     unittest.main()

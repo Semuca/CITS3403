@@ -21,6 +21,7 @@ class CommentModel(db.Model):
 
     # Relationships
     user = db.relationship("UserModel", backref="comments")
+    thread_child_type = "comment"
 
     # Currently here for testing purposes, to return representation of comments
     def to_json(self):

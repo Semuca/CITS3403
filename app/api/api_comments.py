@@ -44,19 +44,3 @@ create_comment_schema: dict[str, str | RequestSchemaDefinition] = {
 }
 
 
-@api_bp.route('/threads/<int:thread_id>/children', methods=['GET'])
-def read_many_comment(thread_id):
-    """Reads a list of comments from the database for the thread"""
-
-    def func(*_):
-        queried_comments = database_manager.get_comments_by_thread_id(thread_id)
-        if queried_comments is None:
-            return make_response(
-                {"error": "Request validation error",
-                 "errorMessage": "Thread not found"},
-                404)
-
-        # Return query result to client
-        return make_response([CommentModel.to_json(t) for t in queried_comments], 200)
-
-    return authenticated_endpoint_wrapper(None, func)

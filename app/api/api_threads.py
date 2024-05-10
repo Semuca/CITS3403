@@ -85,3 +85,20 @@ def read_by_id_thread(thread_id):
         return make_response(ThreadModel.to_json(queried_thread), 200)
 
     return authenticated_endpoint_wrapper(None, func)
+
+@api_bp.route('/threads/<int:thread_id>/children', methods=['GET'])
+def read_many_comment(thread_id):
+    """Reads a list of comments from the database for the thread"""
+
+    def func(*_):
+        queried_thread = database_manager.get_thread_by_id(thread_id)
+        if queried_thread is None:
+            return make_response(
+                {"error": "Request validation error",
+                 "errorMessage": "Thread not found"},
+                404)
+
+        # Return query result to client
+        return make_response([child.to_json() for child in queried_thread.children], 200)
+
+    return authenticated_endpoint_wrapper(None, func)

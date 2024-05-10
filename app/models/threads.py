@@ -1,6 +1,7 @@
 """Defines the thread object and provides functions to get and manipulate one"""
 
 from datetime import datetime
+from typing import Type
 
 from app.databases import db
 
@@ -21,7 +22,15 @@ class ThreadModel(db.Model):
 
     # Relationships
     user = db.relationship("UserModel", backref="threads")
-    children = db.relationship("CommentModel", backref="thread")
+    comments = db.relationship("CommentModel", backref="thread")
+    offers = db.relationship("OffersModel", backref="thread")
+
+    @property
+    def children(self) -> list:
+        """All children (comments and trade offers) of this thread in date order"""
+        if len(self.comments) == 0 and len(self.offers) == 0:
+            return []
+        return sorted(self.comments + self.offers, key=lambda x: x.created_at)
 
     # Currently here for testing purposes, to return representation of threads
     def to_json(self):
@@ -32,6 +41,6 @@ class ThreadModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'user': self.user.to_json(),
-            'children': [c.to_json() for c in self.children],
+            # 'children': self.children,
         }
         return json_thread

@@ -19,14 +19,18 @@ class OffersModel(db.Model):
     # Set fields
     offering = db.Column(db.Text(), nullable=False)
     wanting = db.Column(db.Text(), nullable=False)
+    thread_id = db.Column(db.Integer(), db.ForeignKey("threads.id"), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
 
     # Relationships
     user = db.relationship("UserModel", backref="offers")
+    thread_child_type = "offer"
 
     # Need to store lists as json in the database
-    def __init__(self, user_id, offering_list, wanting_list):
+    def __init__(self, user_id, thread_id, offering_list, wanting_list):
         self.user_id = user_id
+        self.thread_id = thread_id
+
         if len(offering_list) != INVENTORY_SIZE or len(wanting_list) != INVENTORY_SIZE:
             raise ValueError("Offering and wanting lists must be same length as number of possible items")
         self.set_offering(offering_list)
