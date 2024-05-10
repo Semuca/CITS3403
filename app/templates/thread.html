@@ -7,15 +7,46 @@
 {% endblock %}
 
 {% block bodyBlock %}
-    <div class="container content">
-        <a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Back</a>
-        <h1 id="title"></h1>
-        <h5 id="description"></h5>
-        <div id="children"></div>
-        <div>
-            <label for="commentText">Type a comment here: </label>
-            <input type="text" id="commentText" required />
-            <input id="submit" type="submit" value="Post comment" />
+    <div class="container">
+        <div class="thread-header">
+            <div class="thread-header-cover"></div>
+            <div class="thread-header-content">
+                <div class="thread-header-info mb-4">
+                    <h1 id="title"> {{ thread.title }}</h1>
+                    <i class="poster"> Posted by {{ thread.poster.username }}</i>
+                    <p id="description"> {{ thread.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="thread-content">
+            <div class="tab-content p-0">
+                <div class="tab-pane fade active show" id="thread-post">
+                    <div class="list-group mt-3" id="children">
+                        <div class="m-2 post-comment">
+                            <input type="text" id="commentText" placeholder="Type a comment here" required/>
+                            <input id="submit" type="submit" value="Post comment"/>
+                        </div>
+
+                        <ul class="timeline">
+                            {% for i in comments %}
+                                <li>
+                                    <div class="timeline-time">
+                                        <span class="date">{{ i.created_at.date() }}</span>
+                                        <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <div class="timeline-content">
+                                            <h5 class="comment-username mb-1">{{ i.user.username }}</h5>
+                                            <p>{{ i.comment_text }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
