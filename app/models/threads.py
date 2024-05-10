@@ -1,7 +1,6 @@
 """Defines the thread object and provides functions to get and manipulate one"""
 
 from datetime import datetime
-from typing import Type
 
 from app.databases import db
 
@@ -44,3 +43,8 @@ class ThreadModel(db.Model):
             # 'children': self.children,
         }
         return json_thread
+
+    @staticmethod
+    def thread_exists(thread_id: int) -> bool:
+        """Check if a thread with this id exists"""
+        return db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id)))

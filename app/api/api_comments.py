@@ -4,7 +4,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import authenticated_endpoint_wrapper, database_manager,  RequestSchemaDefinition
+from app.helpers import authenticated_endpoint_wrapper,  RequestSchemaDefinition
 
 from .bp import api_bp
 
@@ -14,7 +14,7 @@ def create_comment(thread_id):
 
     def func(data, request_user_id):
         # Check that a thread with this id does exist
-        if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
+        if not ThreadModel.thread_exists(thread_id):
             return make_response(
                 {"error": "Request validation error",
                  "errorMessage": "Thread not found"},

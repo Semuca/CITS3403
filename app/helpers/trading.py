@@ -47,4 +47,3 @@ def perform_trade(offer: OffersModel, accepting: UserModel, offering: UserModel)
     # Save the changes to the database
     offering.inventory.set_items(offering_inventory)
     accepting.inventory.set_items(accepting_inventory)
-

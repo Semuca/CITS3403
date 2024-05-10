@@ -15,7 +15,8 @@ def create_trade(thread_id):
 
     def func(data, request_user_id):
         # Check that a thread with this id does exist
-        if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
+        # pylint: disable=duplicate-code
+        if not ThreadModel.thread_exists(thread_id):
             return make_response(
                 {"error": "Request validation error",
                  "errorMessage": "Thread not found"},
@@ -68,7 +69,6 @@ def accept_trade(thread_id, trade_id):
                 {"error": "Request validation error",
                  "errorMessage": "Thread not found"},
                 404)
-
         # Make sure the accepting user is the one who created the thread
         if thread.user_id != request_user_id:
             return make_response(
@@ -103,4 +103,3 @@ def accept_trade(thread_id, trade_id):
         return make_response("Update successful", 204)
 
     return authenticated_endpoint_wrapper(None, func)
-
