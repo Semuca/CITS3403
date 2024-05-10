@@ -12,6 +12,9 @@ class BaseApiTest(unittest.TestCase):
         self.app_context.push()
         self.client = self.app.test_client()
 
+        # create all tables in the db
+        db.create_all()
+
     def tearDown(self):
         # stop db session and clear out all data
         db.session.remove()
