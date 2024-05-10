@@ -29,9 +29,9 @@ jQuery(() => {
     $("#pressCreate").on("click",() => {
         const body = JSON.stringify({
                 username: $("#username").val(),
-                password: (hash($("#password").val())),
-                securityQuestion: 1,
-                securityQuestionAnswer: "test"
+                password: (hash($("#password").val())).toString(),
+                securityQuestion: $("#question").val(),
+                securityQuestionAnswer: (hash($("#answer").val())).toString()
             }
         )
         fetch("/api/users", {
