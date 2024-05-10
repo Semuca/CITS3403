@@ -19,6 +19,9 @@ class CommentModel(db.Model):
     thread_id = db.Column(db.Integer(), db.ForeignKey("threads.id"), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
 
+    # Relationships
+    user = db.relationship("UserModel", backref="comments")
+
     # Currently here for testing purposes, to return representation of comments
     def to_json(self):
         """Return json from already-created comment object"""
@@ -28,5 +31,6 @@ class CommentModel(db.Model):
             'threadId': self.thread_id,
             'createdAt': self.created_at,
             'commentText': self.comment_text,
+            'user': self.user.to_json(),
         }
         return json_comment

@@ -4,7 +4,8 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel
-from app.helpers import authenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, database_manager, RequestSchemaDefinition
+
 
 from .bp import api_bp
 
@@ -27,7 +28,7 @@ def create_thread():
 
     return authenticated_endpoint_wrapper(create_thread_schema, func)
 
-create_thread_schema = {
+create_thread_schema: dict[str, str | RequestSchemaDefinition] = {
     "title": "text",
     "description": "text"
 }
@@ -36,15 +37,35 @@ create_thread_schema = {
 def read_many_thread():
     """Reads a list of threads from the database based on query parameters"""
 
-    def func(*_):
-        # Get a list of thread objects according to parameters
-        queried_threads = db.session.scalars(db.select(ThreadModel)).all()
+    def func(data, _):
+        page = data.get("page", 1)
+        per_page = data.get("perPage", 10)
+        search = data.get("search", "")
+        sort_by = data.get("sortBy", "created_at")
+        sort_dir = data.get("sortDir", "desc")
+
+        # Get a paginated list of thread objects according to parameters
+        if hasattr(ThreadModel, sort_by) is False:
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "sortBy property not found"},
+                400)
+        sort_by_attribute = getattr(ThreadModel, sort_by)
+        order_by_query = sort_by_attribute.desc() if sort_dir == 'desc' else sort_by_attribute.asc()
+        query = db.select(ThreadModel).filter(ThreadModel.title.contains(search)).order_by(order_by_query)
+        queried_threads = db.paginate(query, page=page, per_page=per_page).items
 
         # Return query result to client
         return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
+    return authenticated_endpoint_wrapper(read_many_thread_schema, func)
 
-    return authenticated_endpoint_wrapper(None, func)
-
+read_many_thread_schema: dict[str, str | RequestSchemaDefinition] = {
+    "page": {"type": "int", "required": False},
+    "perPage": {"type": "int", "required": False},
+    "search": {"type": "text", "required": False},
+    "sortBy": {"type": "text", "required": False},
+    "sortDir": {"type": "enum", "values": ["asc", "desc"], "required": False}
+}
 
 @api_bp.route('/threads/<int:thread_id>', methods=['GET'])
 def read_by_id_thread(thread_id):
@@ -52,7 +73,7 @@ def read_by_id_thread(thread_id):
 
     def func(*_):
         # Get a thread object from the db according to given id
-        queried_thread = db.session.get(ThreadModel, thread_id)
+        queried_thread = database_manager.get_thread_by_id(thread_id)
 
         if queried_thread is None:
             return make_response(

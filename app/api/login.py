@@ -5,7 +5,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import UserModel
-from app.helpers import unauthenticated_endpoint_wrapper
+from app.helpers import unauthenticated_endpoint_wrapper, RequestSchemaDefinition
 
 from .bp import api_bp
 
@@ -36,7 +36,7 @@ def login():
 
     return unauthenticated_endpoint_wrapper(login_schema, func)
 
-login_schema = {
+login_schema: dict[str, str | RequestSchemaDefinition] = {
     "username": "username",
     "password": "hash",
 }
@@ -68,7 +68,7 @@ def change_password_with_questions():
 
     return unauthenticated_endpoint_wrapper(change_password_with_questions_schema, func)
 
-change_password_with_questions_schema = {
+change_password_with_questions_schema: dict[str, str | RequestSchemaDefinition] = {
     "username": "username",
     "securityQuestionAnswer": "hash",
 }
@@ -100,7 +100,7 @@ def change_password_unauthenticated():
 
     return unauthenticated_endpoint_wrapper(change_password_unauthenticated_schema, func)
 
-change_password_unauthenticated_schema = {
+change_password_unauthenticated_schema: dict[str, str | RequestSchemaDefinition] = {
     "password": "hash",
     "changePasswordToken": "text",
 }
