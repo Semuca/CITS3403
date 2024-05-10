@@ -27,7 +27,8 @@ class UserModel(db.Model):
 
     # Game stats
     level = db.Column(db.Integer(), default=0, nullable=False)
-    last_drop_collected = db.Column(db.DateTime(), nullable=True)
+    level_expiry = db.Column(db.DateTime())
+    loot_drop_refresh = db.Column(db.DateTime())
 
     # Relationships
     inventory = db.relationship("InventoryModel", backref="user", uselist=False)
