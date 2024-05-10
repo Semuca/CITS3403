@@ -44,8 +44,8 @@ jQuery(() => {
         const body = JSON.stringify({
                 username: $("#username").val(),
                 password: (hash($("#password").val())).toString(),
-                securityQuestion: 1,
-                securityQuestionAnswer: "test"
+                securityQuestion: $("#question").val(),
+                securityQuestionAnswer: (hash($("#answer").val())).toString()
             }
         )
         fetch("/api/users", {
