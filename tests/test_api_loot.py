@@ -36,7 +36,7 @@ class TestGetLoot(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Assert inventory has been modified correctly
-        self.assertEqual(response_body.get("items"), user.inventory.to_list())
+        self.assertEqual(response_body.get("items"), user.inventory.get_items())
 
         # Assert level countdown has started
         self.assertGreater(user.level_expiry, datetime.now() + timedelta(days=1,seconds=-5))
@@ -62,7 +62,7 @@ class TestGetLoot(BaseApiTest):
         )
         db.session.add(test_user)
 
-        old_inventory_list = db.session.get(InventoryModel, 1).to_list()
+        old_inventory_list = db.session.get(InventoryModel, 1).get_items()
 
         # Act
         res = self.client.get("/api/loot", headers=get_api_headers())
@@ -76,7 +76,7 @@ class TestGetLoot(BaseApiTest):
         self.assertLess(user.loot_drop_refresh, datetime.now() + timedelta(hours=12,seconds=5))
 
         # Assert inventory has been modified correctly
-        current_inventory_list = user.inventory.to_list()
+        current_inventory_list = user.inventory.get_items()
         self.assertEqual(current_inventory_list, [i+j for i,j in zip(old_inventory_list,response_body.get("items"))])
         for i in range(INVENTORY_SIZE): # Make sure all loot items are in range
             self.assertGreaterEqual(current_inventory_list[i], 0)
@@ -99,7 +99,7 @@ class TestGetLoot(BaseApiTest):
         )
         db.session.add(test_user)
 
-        old_inventory_list = db.session.get(InventoryModel, 1).to_list()
+        old_inventory_list = db.session.get(InventoryModel, 1).get_items()
 
         # Act
         res = self.client.get("/api/loot", headers=get_api_headers())
@@ -108,7 +108,7 @@ class TestGetLoot(BaseApiTest):
         # Assert inventory hasn't been changed
         self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
 
-        self.assertEqual(user.inventory.to_list(), old_inventory_list)
+        self.assertEqual(user.inventory.get_items(), old_inventory_list)
         self.assertEqual(user.loot_drop_refresh, old_loot_drop_refresh)
 
 class TestLevelUp(BaseApiTest):
@@ -130,12 +130,9 @@ class TestLevelUp(BaseApiTest):
         )
         db.session.add(test_user)
 
-        test_user.inventory.query.update({
-            'q1': 6,
-            'q1_required': 4,
-            'q2': 9,
-            'q2_required': 2,
-        })
+        test_user.inventory.set_items([6, 9, 0, 0, 0, 0, 0, 0, 0, 0])
+        test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
+        db.session.commit()
 
         # User is about to level up with 23.5 hours left. Therefore:
         # One loot drop should be triggered. After that, hours left is 23.5 - 11 = 12.5
@@ -179,12 +176,9 @@ class TestLevelUp(BaseApiTest):
         )
         db.session.add(test_user)
 
-        test_user.inventory.query.update({
-            'q1': 6,
-            'q1_required': 9,
-            'q2': 9,
-            'q2_required': 6,
-        })
+        test_user.inventory.set_items([6, 9, 0, 0, 0, 0, 0, 0, 0, 0])
+        test_user.inventory.set_items_required([9, 6, 0, 0, 0, 0, 0, 0, 0, 0])
+        db.session.commit()
 
         # Act
         res = self.client.get("/api/levelup", headers=get_api_headers())

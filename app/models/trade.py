@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 
 from app.databases import db
-from app.models import INVENTORY_SIZE
+from app.models.inventory import INVENTORY_SIZE
 
 # pylint: disable=too-few-public-methods
 class OffersModel(db.Model):
@@ -59,6 +59,3 @@ class OffersModel(db.Model):
     def get_wanting(self):
         """Returns the list of wanted items from the database from json"""
         return json.loads(self.wanting)
-
-
-

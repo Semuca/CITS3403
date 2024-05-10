@@ -6,7 +6,7 @@ from flask import make_response
 
 from app.databases import db
 from app.models import UserModel
-from app.helpers import authenticated_endpoint_wrapper, calculate_loot_drops, calculate_next_level_requirements, create_inventory_update_body
+from app.helpers import authenticated_endpoint_wrapper, calculate_loot_drops, calculate_next_level_requirements
 
 from .bp import api_bp
 
@@ -26,19 +26,13 @@ def get_loot_drop():
 
         # Get gained values as a list
         gained_values = calculate_loot_drops(1)
-
-        # Get the updated inventory body by converting the gained_values
-        inventory_update_body = create_inventory_update_body(queried_user, gained_values)
+        queried_user.inventory.add_to_items(gained_values[0])
 
         # Set up updated user body
-        user_update_body = {"loot_drop_refresh": datetime.now() + timedelta(hours=12)}
-        # If the user does not have a level expiry set, start on collecting a drop
+        queried_user.loot_drop_refresh = datetime.now() + timedelta(hours=12)
         if queried_user.level_expiry is None:
-            user_update_body["level_expiry"] = datetime.now() + timedelta(days=1)
+            queried_user.level_expiry = datetime.now() + timedelta(days=1)
 
-        # Update the user and inventory databases
-        queried_user.query.update(user_update_body)
-        queried_user.inventory.query.update(inventory_update_body)
         db.session.commit()
 
         # Return with the items
@@ -73,17 +67,16 @@ def level_up():
 
         # Generate loot drops and new requirements
         drops = calculate_loot_drops(drops_count)
-        inventory_update_body = create_inventory_update_body(queried_user, drops, calculate_next_level_requirements())
+        for drop in drops:
+            queried_user.inventory.add_to_items(drop)
 
-        # Update the user database
         # Next loot drop is in now + 12 hours - the time that has been saved
         # Next level expiry is in one day
-        queried_user.query.update({"level": queried_user.level + 1,
-                                   "loot_drop_refresh": datetime.now() + loot_drop_time_remaining,
-                                   "level_expiry": datetime.now() + timedelta(days=1)})
+        queried_user.inventory.set_items_required(calculate_next_level_requirements())
+        queried_user.level += 1
+        queried_user.loot_drop_refresh = datetime.now() + loot_drop_time_remaining
+        queried_user.level_expiry = datetime.now() + timedelta(days=1)
 
-        # Update the inventory database
-        queried_user.inventory.query.update(inventory_update_body)
         db.session.commit()
 
         # Return 200
