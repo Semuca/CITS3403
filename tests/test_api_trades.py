@@ -4,7 +4,7 @@ import unittest
 import json
 
 from app.databases import db
-from app.models import UserModel, ThreadModel, OffersModel
+from app.models import UserModel, ThreadModel, OffersModel, CommentModel
 
 from .helpers import BaseApiTest, get_api_headers
 
@@ -317,6 +317,125 @@ class TestPerformTrade(BaseApiTest):
         # Posts an accept trade request
         res_1 = self.client.post("/api/threads/1/offers/2", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 403, f"Status code is wrong with message {res_1.data}")
+
+class TestReadMany(BaseApiTest):
+    """Tests threads read many endpoint - GET api/threads/{thread_id}/children"""
+
+    def setUp(self):
+        super().setUp()
+
+        # Create a couple of users with auth token directly with the database
+        test_user_1 = UserModel(
+            username="test",
+            password_hash="test",
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple"
+        )
+        db.session.add(test_user_1)
+
+        test_user_2 = UserModel(
+            username="test2",
+            password_hash="test",
+            authentication_token="authtest2",
+            security_question=3,
+            security_question_answer="Purple"
+        )
+        db.session.add(test_user_2)
+
+        # Create a couple of new threads directly with the database
+        test_thread_1 = ThreadModel(
+            title='Exchange rare cards',
+            description = "looking for a green mage to improve defence.",
+            user_id=1
+        )
+        db.session.add(test_thread_1)
+
+        test_thread_2 = ThreadModel(
+            title='AAA',
+            description='BBB',
+            user_id=2
+        )
+        db.session.add(test_thread_2)
+
+        # Create a couple of trade offers directly with the database
+        test_offer_1 = OffersModel(
+            user_id=2,
+            thread_id=1,
+            offering_list=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            wanting_list=[0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        )
+        db.session.add(test_offer_1)
+
+        db.session.commit()
+
+    def tearDown(self):
+        super().tearDown()
+
+    def test_valid_read_many(self):
+        """Tests that trades can be received from the endpoint"""
+
+        # Post a get request for the trade in a thread
+        res = self.client.get("/api/threads/1/children", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
+
+        # Check that the trade is in the response
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 1, f"Data sent back is {res.data}")
+        print("AAAAAA", res_json_data[0])
+
+        self.assertEqual(res_json_data[0]["offering"], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Json data sent back is {res_json_data}")
+        self.assertEqual(res_json_data[0]["wanting"], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0], f"Json data sent back is {res_json_data}")
+        self.assertEqual(res_json_data[0]["userId"], 2, f"Json data sent back is {res_json_data[0]['userId']}")
+        self.assertEqual(res_json_data[0]["threadId"], 1, f"Json data sent back is {res_json_data[0]['threadId']}")
+
+    def test_get_from_no_trades_thread(self):
+        """Tests that getting with no thread children gets an empty list"""
+
+        # Post a get request for the trade in a thread with no trades
+        res = self.client.get("/api/threads/2/children", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
+
+        # Check that the trade is in the response
+        res_json_data = json.loads(res.data)
+        self.assertEqual(len(res_json_data), 0, f"Data sent back is {res.data}")
+
+    def test_get_from_nonexistent_thread(self):
+        """Tests that getting from a nonexistent thread gets the right error response"""
+
+        # Post a get request for the trade in a nonexistent thread
+        res = self.client.get("/api/threads/7/children", headers=get_api_headers())
+        self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
+
+    def test_multiple_children_types(self):
+        """Tests that multiple children types can be received from the thread endpoint"""
+
+        # Create a couple of comments directly with the database
+        test_comment_1 = CommentModel(
+            comment_text="Do you have any with rank above B? I will trade",
+            thread_id=1,
+            user_id=1
+        )
+        test_comment_2 = CommentModel(
+            comment_text="If u like anything in my inventory I'm down to trade",
+            thread_id=1,
+            user_id=1
+        )
+        db.session.add(test_comment_1)
+        db.session.add(test_comment_2)
+        db.session.commit()
+
+        # Post a get request for all the children in the test thread with two comments
+        res = self.client.get("/api/threads/1/children", headers=get_api_headers())
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
+        self.assertEqual(len(json.loads(res.data)), 3, f"Data sent back is {res.data}")
+
+        # Check that the children created before are returned with the right information
+        res_json_data = json.loads(res.data)
+
+        self.assertEqual(res_json_data[0]["childType"], "offer", f"Json data sent back is {res_json_data[0]['childType']}")
+        self.assertEqual(res_json_data[1]["childType"], "comment", f"Json data sent back is {res_json_data[1]['childType']}")
+        self.assertEqual(res_json_data[2]["childType"], "comment", f"Json data sent back is {res_json_data[2]['childType']}")
 
 if __name__ == '__main__':
     unittest.main()

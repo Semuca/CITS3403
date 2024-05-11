@@ -40,6 +40,7 @@ class OffersModel(db.Model):
         """Return json from already-created trade object"""
         json_trade_offer = {
             'id': self.id,
+            'childType': 'offer',
             'userId': self.user_id,
             'threadId': self.thread_id,
             'createdAt': self.created_at,

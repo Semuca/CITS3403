@@ -28,6 +28,7 @@ class CommentModel(db.Model):
         """Return json from already-created comment object"""
         json_comment = {
             'id': self.id,
+            'childType': 'comment',
             'userId': self.user_id,
             'threadId': self.thread_id,
             'createdAt': self.created_at,

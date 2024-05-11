@@ -27,8 +27,6 @@ class ThreadModel(db.Model):
     @property
     def children(self) -> list:
         """All children (comments and trade offers) of this thread in date order"""
-        if len(self.comments) == 0 and len(self.offers) == 0:
-            return []
         return sorted(self.comments + self.offers, key=lambda x: x.created_at)
 
     # Currently here for testing purposes, to return representation of threads
