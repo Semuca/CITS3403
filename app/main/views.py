@@ -45,21 +45,12 @@ def thread_page(thread_id):
         i.user = database_manager.get_user_by_id(i.user_id)
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
 
-#TODO: pls figure out the updated way to route to the profile page
+
 @main_bp.route("/profile")
 def profile_page():
     """The profile page"""
-    print(request.headers)
     user = get_user_by_token(request.cookies.get('token'))
-
-    # This is here temporarily to resolve merge conflict, will be done with changes to the user model later
     threads = []
     if user is not None:
-        from app import db
-        from app.models import ThreadModel
-        threads = db.session.scalars(
-            db.select(ThreadModel)
-            .where(ThreadModel.user_id == user.id)
-            .order_by(ThreadModel.created_at.asc())
-        ).all()
+        threads = database_manager.get_threads_by_user(user)
     return redirect_wrapper(render_template('profile.html', posts=threads, user=user))
