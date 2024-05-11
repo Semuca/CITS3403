@@ -1,52 +1,54 @@
-body {
+body{
+    margin-top:80px;
     background: var(--navy);
     background: linear-gradient(to right, var(--orange), var(--cyan));
     min-height: 100vh;
     overflow-x:hidden;
 }
 
-.inner-wrapper {
-    position: relative;
-    height: calc(100vh - 3.5rem);
+.white-text {
+    color: var(--white);
 }
 
-#searchbar {
-    background-color: var(--cyan);
+.profile-head {
+    transform: translateY(5rem)
 }
 
-#newDiscussion {
-    background-color: var(--cyan);
+.cover {
+    background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+    background-size: cover;
+    background-repeat: no-repeat
 }
 
-#newDiscussion:hover {
-    background-color: var(--navy);
+#profile-username{
+    color: var(--white);
 }
 
-.forum-content {
+.profile-content {
     padding: 25px;
     border-radius: 4px
 }
 
-.forum-content:after,
-.forum-content:before {
+.profile-content:after,
+.profile-content:before {
     content: '';
     display: table;
     clear: both
 }
 
-.forum-content .tab-content,
-.forum-content .tab-pane {
+.profile-content .tab-content,
+.profile-content .tab-pane {
     background: 0 0
 }
 
-.thread {
+.timeline {
     list-style-type: none;
     margin: 0;
     padding: 0;
     position: relative
 }
 
-.thread:before {
+.timeline:before {
     content: '';
     position: absolute;
     top: 5px;
@@ -57,13 +59,13 @@ body {
     margin-left: -2.5px
 }
 
-.thread>li {
+.timeline>li {
     position: relative;
     min-height: 50px;
     padding: 20px 0
 }
 
-.thread .thread-time {
+.timeline .timeline-time {
     position: absolute;
     left: 0;
     width: 18%;
@@ -71,22 +73,23 @@ body {
     top: 30px
 }
 
-.thread .thread-time .date {
+.timeline .timeline-time .date {
     line-height: 16px;
     font-size: 12px;
+    color: var(--white);
     display: block;
-    font-weight: 600;
+    font-weight: 600
 }
 
-.thread .thread-time .time {
+.timeline .timeline-time .time {
     line-height: 24px;
     font-size: 20px;
-    color: var(--navy);
+    color: var(--white);
     display: block;
     font-weight: 600;
 }
 
-.thread .thread-body {
+.timeline .timeline-body {
     margin-left: 23%;
     margin-right: 17%;
     background: var(--white);
@@ -95,7 +98,7 @@ body {
     border-radius: 6px
 }
 
-.thread .thread-body:before {
+.timeline .timeline-body:before {
     content: '';
     display: block;
     position: absolute;
@@ -104,23 +107,27 @@ body {
     top: 20px
 }
 
-.thread .thread-body>div+div {
+.timeline .timeline-body-comments:before {
+    border-right-color: var(--white);
+}
+
+.timeline .timeline-body>div+div {
     margin-top: 15px
 }
 
-.thread .thread-body>div+div:last-child {
+.timeline .timeline-body>div+div:last-child {
     margin-bottom: -20px;
     padding-bottom: 20px;
     border-radius: 0 0 6px 6px
 }
 
-.thread-header {
+.timeline-header {
     padding-bottom: 10px;
     /* border-bottom: 1px solid var(--white); */
     line-height: 30px
 }
 
-.thread-header .thread-name {
+.timeline-header .thread-name {
     font-size: 16px;
     font-weight: 600;
     color: var(--darkGrey);
@@ -132,31 +139,24 @@ body {
     color: var(--mediumGrey);
 }
 
-.thread img {
+.timeline img {
     max-width: 100%;
     display: block;
 }
 
-.thread-content {
+.timeline-content {
     letter-spacing: .25px;
     line-height: 18px;
     font-size: 13px;
 }
 
-.thread-content:after,
-.thread-content:before {
+.timeline-content:after,
+.timeline-content:before {
     content: '';
     display: table;
     clear: both;
 }
 
-.thread-title {
+.timeline-title {
     margin-top: 0;
-}
-
-.active {
-    /*
-        TODO (bridge): uncurse my css please
-     */
-    color: white !important;
 }
