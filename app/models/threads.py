@@ -40,7 +40,6 @@ class ThreadModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'user': self.user.to_json(),
-            # 'children': self.children,
         }
         return json_thread
 
