@@ -14,6 +14,7 @@ class TestThreadModel(unittest.TestCase):
         self.app = create_app('test')
         self.app_context = self.app.app_context()
         self.app_context.push()
+        db.create_all()
 
         # create new user with auth token directly with the database
         test_user = UserModel(

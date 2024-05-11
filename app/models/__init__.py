@@ -5,3 +5,4 @@ from .threads import ThreadModel
 from .users import UserModel
 from .comments import CommentModel
 from .inventory import InventoryModel, INVENTORY_SIZE
+from .trade import OffersModel

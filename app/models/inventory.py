@@ -1,5 +1,7 @@
 """Defines the inventory object and provides functions to get and manipulate one"""
 
+import json
+
 from app.databases import db
 
 INVENTORY_SIZE = 10
@@ -15,67 +17,44 @@ class InventoryModel(db.Model):
 
     # Set fields
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"), nullable=False)
+    items = db.Column(db.Text(), nullable=False)
+    items_required = db.Column(db.Text(), nullable=False)
 
-    # Inventory items by id - scalability currently not a priority
-    q1 = db.Column(db.Integer(), default=0, nullable=False)
-    q1_required = db.Column(db.Integer(), default=0, nullable=False)
+    # Need to store lists as json in the database
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.set_items([0] * INVENTORY_SIZE)
+        self.set_items_required([0] * INVENTORY_SIZE)
 
-    q2 = db.Column(db.Integer(), default=0, nullable=False)
-    q2_required = db.Column(db.Integer(), default=0, nullable=False)
+    def set_items(self, items_list: list[int]) -> None:
+        """Stores the list of items using json in the database"""
+        self.items = json.dumps(items_list)
 
-    q3 = db.Column(db.Integer(), default=0, nullable=False)
-    q3_required = db.Column(db.Integer(), default=0, nullable=False)
+    def get_items(self) -> list[int]:
+        """Returns the list of items from the database from json"""
+        return json.loads(self.items)
 
-    q4 = db.Column(db.Integer(), default=0, nullable=False)
-    q4_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q5 = db.Column(db.Integer(), default=0, nullable=False)
-    q5_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q6 = db.Column(db.Integer(), default=0, nullable=False)
-    q6_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q7 = db.Column(db.Integer(), default=0, nullable=False)
-    q7_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q8 = db.Column(db.Integer(), default=0, nullable=False)
-    q8_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q9 = db.Column(db.Integer(), default=0, nullable=False)
-    q9_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    q10 = db.Column(db.Integer(), default=0, nullable=False)
-    q10_required = db.Column(db.Integer(), default=0, nullable=False)
-
-    def to_list(self) -> list[int]:
-        """Return list from already-created inventory object"""
-        inventory_list = []
+    def add_to_items(self, new_items_list: list[int]) -> None:
+        """Adds the new items to the existing items in the database"""
+        items = self.get_items()
         for col in range(INVENTORY_SIZE):
-            inventory_list.append(self.get_item_by_index(col))
-        return inventory_list
+            items[col] += new_items_list[col]
+        self.set_items(items)
 
-    def required_to_list(self) -> list[int]:
-        """Return list of required inventory objects for levelling up"""
-        inventory_list = []
-        for col in range(INVENTORY_SIZE):
-            inventory_list.append(self.get_requirement_by_index(col))
-        return inventory_list
+    def set_items_required(self, items_required_list: list[int]) -> None:
+        """Stores the list of required items using json in the database"""
+        self.items_required = json.dumps(items_required_list)
+
+    def get_items_required(self) -> list[int]:
+        """Returns the list of required items from the database from json"""
+        return json.loads(self.items_required)
 
     def has_required_items(self) -> bool:
         """Returns true iff the user has all the items needed to level up"""
+        items = self.get_items()
+        required_items = self.get_items_required()
 
         for col in range(INVENTORY_SIZE):
-            if self.get_item_by_index(col) < self.get_requirement_by_index(col):
+            if items[col] < required_items[col]:
                 return False
-
         return True
-
-    def get_item_by_index(self, item_number: int):
-        """Get inventory item by item_number between 0 and INVENTORY_SIZE"""
-
-        return getattr(self, f"q{item_number + 1}")
-
-    def get_requirement_by_index(self, item_number: int):
-        """Get inventory requirement by item_number between 0 and INVENTORY_SIZE"""
-
-        return getattr(self, f"q{item_number + 1}_required")
