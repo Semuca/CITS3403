@@ -2,7 +2,8 @@
 
 from flask import Blueprint, render_template, request
 
-from app.helpers import redirect_wrapper, get_user_id_by_auth_header, get_user_id_by_token, database_manager
+from app.helpers import redirect_wrapper, database_manager, get_user_id_by_auth_header, get_user_id_by_token
+#TODO: pls remove unneeded imports
 from app.helpers.DatabaseHelper import get_posts_from_user, get_user_by_id
 
 main_bp = Blueprint('main_bp', __name__)
@@ -46,6 +47,7 @@ def thread_page(thread_id):
         i.user = database_manager.get_user_by_id(i.user_id)
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
 
+#TODO: pls figure out the updated way to route to the profile page
 @main_bp.route("/profile")
 def profile_page():
     """The profile page"""
