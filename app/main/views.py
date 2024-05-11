@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, request
 
-from app.helpers import redirect_wrapper, get_user_by_auth_header, database_manager
+from app.helpers import redirect_wrapper, get_user_by_token, database_manager
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -50,7 +50,7 @@ def thread_page(thread_id):
 def profile_page():
     """The profile page"""
     print(request.headers)
-    user = get_user_by_auth_header()
+    user = get_user_by_token(request.cookies.get('token'))
 
     # This is here temporarily to resolve merge conflict, will be done with changes to the user model later
     threads = []
