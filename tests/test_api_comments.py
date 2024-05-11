@@ -88,7 +88,7 @@ class TestCreate(BaseApiTest):
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message {res_2.data}")
 
 class TestReadMany(BaseApiTest):
-    """Tests comments read many endpoint - GET api/threads/{thread_id}/children"""
+    """Tests children read many endpoint with only comments - GET api/threads/{thread_id}/children"""
 
     def setUp(self):
         super().setUp()

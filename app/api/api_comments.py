@@ -4,11 +4,9 @@ from flask import make_response
 
 from app.databases import db
 from app.models import ThreadModel, CommentModel
-from app.helpers import authenticated_endpoint_wrapper, database_manager,  RequestSchemaDefinition
-
+from app.helpers import authenticated_endpoint_wrapper,  RequestSchemaDefinition
 
 from .bp import api_bp
-
 
 @api_bp.route('/threads/<int:thread_id>/comments', methods=['POST'])
 def create_comment(thread_id):
@@ -16,7 +14,7 @@ def create_comment(thread_id):
 
     def func(data, request_user_id):
         # Check that a thread with this id does exist
-        if not db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id))):
+        if not ThreadModel.thread_exists(thread_id):
             return make_response(
                 {"error": "Request validation error",
                  "errorMessage": "Thread not found"},
@@ -38,25 +36,6 @@ def create_comment(thread_id):
 
     return authenticated_endpoint_wrapper(create_comment_schema, func)
 
-
 create_comment_schema: dict[str, str | RequestSchemaDefinition] = {
     "commentText": "text"
 }
-
-
-@api_bp.route('/threads/<int:thread_id>/children', methods=['GET'])
-def read_many_comment(thread_id):
-    """Reads a list of comments from the database for the thread"""
-
-    def func(*_):
-        queried_comments = database_manager.get_comments_by_thread_id(thread_id)
-        if queried_comments is None:
-            return make_response(
-                {"error": "Request validation error",
-                 "errorMessage": "Thread not found"},
-                404)
-
-        # Return query result to client
-        return make_response([CommentModel.to_json(t) for t in queried_comments], 200)
-
-    return authenticated_endpoint_wrapper(None, func)

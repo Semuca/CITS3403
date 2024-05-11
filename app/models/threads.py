@@ -21,7 +21,13 @@ class ThreadModel(db.Model):
 
     # Relationships
     user = db.relationship("UserModel", backref="threads")
-    children = db.relationship("CommentModel", backref="thread")
+    comments = db.relationship("CommentModel", backref="thread")
+    offers = db.relationship("OffersModel", backref="thread")
+
+    @property
+    def children(self) -> list:
+        """All children (comments and trade offers) of this thread in date order"""
+        return sorted(self.comments + self.offers, key=lambda x: x.created_at)
 
     # Currently here for testing purposes, to return representation of threads
     def to_json(self):
@@ -32,6 +38,10 @@ class ThreadModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'user': self.user.to_json(),
-            'children': [c.to_json() for c in self.children],
         }
         return json_thread
+
+    @staticmethod
+    def thread_exists(thread_id: int) -> bool:
+        """Check if a thread with this id exists"""
+        return db.session.scalar(db.select(db.exists().where(ThreadModel.id == thread_id)))

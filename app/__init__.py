@@ -19,8 +19,8 @@ def create_app(config_name='default'):
     db.init_app(flask_app)
 
     # Bind migration to app
-    migrate = Migrate(flask_app, db)
-    migrate.init_app(flask_app, db)
+    migrate = Migrate(flask_app, db, render_as_batch=True)
+    migrate.init_app(flask_app, db, render_as_batch=True)
 
     # Importing blueprint endpoints
     flask_app.register_blueprint(api_bp, url_prefix='/api')

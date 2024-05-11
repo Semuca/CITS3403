@@ -21,12 +21,14 @@ class CommentModel(db.Model):
 
     # Relationships
     user = db.relationship("UserModel", backref="comments")
+    thread_child_type = "comment"
 
     # Currently here for testing purposes, to return representation of comments
     def to_json(self):
         """Return json from already-created comment object"""
         json_comment = {
             'id': self.id,
+            'childType': 'comment',
             'userId': self.user_id,
             'threadId': self.thread_id,
             'createdAt': self.created_at,
