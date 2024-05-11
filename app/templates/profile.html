@@ -41,7 +41,7 @@
         <div class="profile-content">
             <div class="tab-content p-0">
                 <div class="tab-pane fade active show" id="profile-post">
-                    <h2 class="white-text">Trade Requests</h2>
+                    <h2 class="white-text">Threads</h2>
                     <ul class="timeline">
                         {% for i in posts %}
                             <li>
@@ -68,13 +68,13 @@
                     </ul>
                     <h2 class="white-text">Comments</h2>
                     <ul class="timeline">
-                        <!-- {% for i in posts %} -->
+                        <!-- {% for i in comments %} -->
                         <li>
                             <div class="timeline-time">
                                 <span class="date">TODO:2024-06-09</span>
                                 <span class="time">TODO:16:20</span>
                             </div>
-                            <div class="timeline-body">
+                            <div class="timeline-body timeline-body-comments">
                                 <div class="timeline-header">
                                     <span class="thread-name">
                                         TODO:>a href="/thread/i.id">i.title <small></small>
@@ -85,7 +85,7 @@
                                     </span>
                                 </div>
                                 <div class="timeline-content">        
-                                    <p>TODO:i.description</p>
+                                    <p>TODO:i.comment_text</p>
                                 </div>
                             </div>
                         </li>
