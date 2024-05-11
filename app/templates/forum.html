@@ -10,14 +10,8 @@
     <div class="container content">
         <div class="main-body p-0">
             <div class="justify-content-center">
-                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal"
-                        data-target="#threadCreationModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         class="feather feather-plus mr-2">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
+                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#threadCreationModal">
+                    <i class="fa-solid fa-plus me-3"></i>
                     NEW DISCUSSION
                 </button>
             </div>
@@ -30,7 +24,14 @@
                 </div>
 
                 <!-- Forum List -->
-                <div id="threads"></div>
+                <div class="forum-content">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane fade active show">
+                            <!-- Threads added here-->
+                            <ul class="thread" id="threads"></ul>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center pb-3">

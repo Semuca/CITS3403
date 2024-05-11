@@ -9,3 +9,9 @@ header.title {
   padding-bottom: 7rem;
   background: linear-gradient(0deg, var(--orange) 0%, var(--cyan) 100%);
 }
+
+#homeTitleIcon {
+  color: #4f5d75;
+  padding-left: 1rem;
+}
+

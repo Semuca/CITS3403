@@ -32,3 +32,14 @@ def get_user_by_id(user_id) -> UserModel | None:
         .where(UserModel.id == user_id)
     ).first()
     return user
+
+
+def get_threads_by_user(user):
+    """gets all threads that a user has posted"""
+    #FUTURE: This is still tempoary, will be changed later
+    threads = db.session.scalars(
+        db.select(ThreadModel)
+        .where(ThreadModel.user_id == user.id)
+        .order_by(ThreadModel.created_at.asc())
+    ).all()
+    return threads

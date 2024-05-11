@@ -41,16 +41,22 @@ $(document).ready(() => {
                 r.json().then(thread => {
                     threads.push(thread);
                     $("#threads").append(`
-                        <div class="card mb-2">
-                            <div class="card-body p-2 p-sm-3">
-                                <div class="media forum-item">
-                                    <div class="media-body">
-                                        <a href="/thread/${thread.id}">${thread.title}</a>
-                                        <p class="text-secondary">${thread.description}</p>
-                                    </div>
+                        <li>
+                            <div class="thread-time">
+                                <span class="date">TODO:today</span>
+                                <span class="time">TODO:04:20</span>
+                            </div>
+                            <div class="thread-body">
+                                <div class="thread-header">
+                                    <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
+                                    <br>
+                                    <span class="thread-creator username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
+                                </div>
+                                <div class="thread-content">
+                                    <p class="text-secondary">${thread.description}</p>
                                 </div>
                             </div>
-                        </div>
+                        </li>
                     `);
                     $('#threadCreationModal').modal('hide');
                 });
@@ -90,16 +96,22 @@ function loadPage(page) {
                     threads.push(o);
                     o.forEach(thread => {
                         $("#threads").append(`
-                            <div class="card mb-2">
-                                <div class="card-body p-2 p-sm-3">
-                                    <div class="media forum-item">
-                                        <div class="media-body">
-                                            <a href="/thread/${thread.id}">${thread.title}</a>
-                                            <p class="text-secondary">${thread.description}</p>
-                                        </div>
+                            <li>
+                                <div class="thread-time">
+                                    <span class="date">TODO:today</span>
+                                    <span class="time">TODO:04:20</span>
+                                </div>
+                                <div class="thread-body">
+                                    <div class="thread-header">
+                                        <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
+                                        <br>
+                                        <span class="thread-creator username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
+                                    </div>
+                                    <div class="thread-content">
+                                        <p class="text-secondary">${thread.description}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </li>
                         `)
                     });
                 }
