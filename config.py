@@ -1,5 +1,6 @@
 """Flask app configurations"""
 
+from datetime import timedelta
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,6 +22,10 @@ class TestConfig(Config):
     # Databases
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'test.db')
 
+    # Game mechanics
+    LOOT_DROP_TIMER = timedelta(hours=12)
+
+
 # pylint: disable=too-few-public-methods
 class DevConfig(Config):
     """Config for the development environment"""
@@ -28,8 +33,22 @@ class DevConfig(Config):
     # Databases
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'dev.db')
 
+    # Game mechanics
+    LOOT_DROP_TIMER = timedelta(seconds=10)
+
+# pylint: disable=too-few-public-methods
+class ProdConfig(Config):
+    """Config for the production environment"""
+
+    # Databases
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'prod.db')
+
+    # Game mechanics
+    LOOT_DROP_TIMER = timedelta(hours=12)
+
 config = {
     'default': DevConfig,
     'test': TestConfig,
     'dev': DevConfig,
+    'prod': ProdConfig
 }
