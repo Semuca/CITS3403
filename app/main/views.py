@@ -45,6 +45,7 @@ def thread_page(thread_id):
         i.user = database_manager.get_user_by_id(i.user_id)
     return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
 
+#TODO: pls figure out the updated way to route to the profile page
 @main_bp.route("/profile")
 def profile_page():
     """The profile page"""
