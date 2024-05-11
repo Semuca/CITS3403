@@ -382,7 +382,6 @@ class TestReadMany(BaseApiTest):
         # Check that the trade is in the response
         res_json_data = json.loads(res.data)
         self.assertEqual(len(res_json_data), 1, f"Data sent back is {res.data}")
-        print("AAAAAA", res_json_data[0])
 
         self.assertEqual(res_json_data[0]["offering"], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], f"Json data sent back is {res_json_data}")
         self.assertEqual(res_json_data[0]["wanting"], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0], f"Json data sent back is {res_json_data}")
