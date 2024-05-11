@@ -3,25 +3,10 @@
 import unittest
 import json
 
-from app import create_app
 from app.databases import db
 from app.models import UserModel, ThreadModel, CommentModel
 
-from .helpers import get_api_headers
-
-class BaseApiTest(unittest.TestCase):
-    def setUp(self):
-        # create app so db can be linked to it
-        self.app = create_app('test')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        self.client = self.app.test_client()
-
-    def tearDown(self):
-        # stop db session and clear out all data
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+from .helpers import BaseApiTest, get_api_headers
 
 class TestCreate(BaseApiTest):
     """Tests threads create endpoint - POST api/threads/{thread_id}/comments"""
@@ -162,11 +147,11 @@ class TestReadMany(BaseApiTest):
 
         self.assertEqual(res_json_data[0]["commentText"], 'Do you have any with rank above B? I will trade', f"Json data sent back is '{res_json_data[0]["commentText"]}'")
         self.assertEqual(res_json_data[0]["threadId"], 1, f"Json data sent back is '{res_json_data[0]["threadId"]}'")
-        self.assertEqual(res_json_data[0]["userId"], 1, f"Json data sent back is '{res_json_data[0]["userId"]}'")
+        self.assertEqual(res_json_data[0]["user"]["id"], 1, f"Json data sent back is '{res_json_data[0]["user"]}'")
 
         self.assertEqual(res_json_data[1]["commentText"], "If u like anything in my inventory I'm down to trade", f"Json data sent back is '{res_json_data[1]["commentText"]}'")
         self.assertEqual(res_json_data[1]["threadId"], 1, f"Json data sent back is '{res_json_data[1]["threadId"]}'")
-        self.assertEqual(res_json_data[1]["userId"], 1, f"Json data sent back is '{res_json_data[1]["userId"]}'")
+        self.assertEqual(res_json_data[1]["user"]["username"], "test", f"Json data sent back is '{res_json_data[1]["user"]}'")
 
     def test_get_from_no_comments_thread(self):
         """Tests that getting with no comments gets an empty list"""

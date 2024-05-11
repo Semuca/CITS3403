@@ -5,9 +5,22 @@ from flask import make_response
 
 from app.databases import db
 from app.models import UserModel
-from app.helpers import authenticated_endpoint_wrapper, remove_none_from_dictionary, unauthenticated_endpoint_wrapper
+from app.helpers import authenticated_endpoint_wrapper, remove_none_from_dictionary, unauthenticated_endpoint_wrapper, RequestSchemaDefinition
 
 from .bp import api_bp
+
+@api_bp.route('/users', methods=['GET'])
+def get_user():
+    """Endpoint to get the current user through the authentication token"""
+
+    def func(_data, request_user_id):
+        # Get a thread object from the db according to given id
+        queried_user = db.session.get(UserModel, request_user_id)
+
+        # Return user to the client
+        return make_response(UserModel.to_json(queried_user), 200)
+
+    return authenticated_endpoint_wrapper(None, func)
 
 @api_bp.route('/users', methods=['POST'])
 def create_user():
@@ -29,6 +42,7 @@ def create_user():
         # Add the user into the database
         user = UserModel(username=data["username"],
                         password_hash=data["password"],
+                        description="",
                         authentication_token=token,
                         security_question=data["securityQuestion"],
                         security_question_answer=data["securityQuestionAnswer"])
@@ -41,7 +55,7 @@ def create_user():
 
     return unauthenticated_endpoint_wrapper(create_user_schema, func)
 
-create_user_schema = {
+create_user_schema: dict[str, str | RequestSchemaDefinition] = {
     "username": "username",
     "password": "hash",
     "securityQuestion": "int",
@@ -71,7 +85,7 @@ def edit_user():
 
     return authenticated_endpoint_wrapper(change_questions_authenticated_schema, func)
 
-change_questions_authenticated_schema = {
+change_questions_authenticated_schema: dict[str, str | RequestSchemaDefinition] = {
     "description": {"type": "text", "required": False},
     "password": {"type": "hash", "required": False},
     "securityQuestion": {"type": "int", "required": False},

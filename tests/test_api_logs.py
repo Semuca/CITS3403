@@ -3,24 +3,10 @@
 import unittest
 import json
 
-from app import create_app
 from app.databases import db
-from app.models import LogModel, ThreadModel, UserModel
+from app.models import UserModel
 
-from .helpers import get_api_headers
-class BaseApiTest(unittest.TestCase):
-    def setUp(self):
-        # create app so db can be linked to it
-        self.app = create_app('test')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        self.client = self.app.test_client()
-
-    def tearDown(self):
-        # stop db session and clear out all data
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+from .helpers import BaseApiTest, get_api_headers
 
 class TestReadMany(BaseApiTest):
     """Tests logs read-many endpoint - GET api/logs"""
@@ -34,12 +20,10 @@ class TestReadMany(BaseApiTest):
             password_hash="test",
             authentication_token="authtest",
             security_question=3,
-            security_question_answer="Purple"
+            security_question_answer="Purple",
+            admin=True
         )
         db.session.add(test_user)
-
-    def tearDown(self):
-        super().tearDown()
 
     def test_valid_create(self):
         """Tests that logs can be read from the endpoint"""
@@ -84,8 +68,6 @@ class TestReadMany(BaseApiTest):
                               'errorResponseBody': None,
                               'createdAt': response_body[1]['createdAt']},
                              "Log 1 is incorrect")
-
-        print(response_body)
 
 
 

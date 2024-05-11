@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, request
 
-from app.helpers import redirect_wrapper, get_user_id_by_auth_header, get_user_id_by_token
+from app.helpers import redirect_wrapper, get_user_id_by_auth_header, get_user_id_by_token, database_manager
 from app.helpers.DatabaseHelper import get_posts_from_user, get_user_by_id
 
 main_bp = Blueprint('main_bp', __name__)
@@ -39,9 +39,12 @@ def forum_page():
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
-
-    return redirect_wrapper(render_template('thread.html', thread_id=thread_id))
-
+    thread = database_manager.get_thread_by_id(thread_id)
+    thread.poster = database_manager.get_user_by_id(thread.user_id)
+    comments = database_manager.get_comments_by_thread_id(thread_id)
+    for i in comments:
+        i.user = database_manager.get_user_by_id(i.user_id)
+    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
 
 @main_bp.route("/profile")
 def profile_page():
