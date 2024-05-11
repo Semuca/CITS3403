@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 
-from flask import make_response
+from flask import current_app, make_response
 
 from app.databases import db
 from app.models import UserModel
@@ -29,7 +29,7 @@ def get_loot_drop():
         queried_user.inventory.add_to_items(gained_values[0])
 
         # Set up updated user body
-        queried_user.loot_drop_refresh = datetime.now() + timedelta(hours=12)
+        queried_user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
         if queried_user.level_expiry is None:
             queried_user.level_expiry = datetime.now() + timedelta(days=1)
 
@@ -59,7 +59,7 @@ def level_up():
 
         drops_count = 0
         while next_loot_drop_point < queried_user.level_expiry:
-            next_loot_drop_point += timedelta(hours=12)
+            next_loot_drop_point += current_app.config['LOOT_DROP_TIMER']
             drops_count += 1
 
         # Calculate remaining time until next loot drop from this speedup
