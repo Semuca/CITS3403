@@ -22,6 +22,14 @@ def create_trade(thread_id):
                  "errorMessage": "Thread not found"},
                 404)
 
+        # Check that the user is not the creator of the thread
+        thread = db.session.get(ThreadModel, thread_id)
+        if thread.user_id == request_user_id:
+            return make_response(
+                {"error": "Request validation error",
+                 "errorMessage": "Cannot trade with yourself"},
+                403)
+
         offering_list = data['offeringList']
         wanting_list = data['wantingList']
         if len(offering_list) != INVENTORY_SIZE or len(wanting_list) != INVENTORY_SIZE:

@@ -14,23 +14,39 @@ class TestCreate(BaseApiTest):
     def setUp(self):
         super().setUp()
 
-        # Create new user with auth token directly with the database
-        test_user = UserModel(
+        # Create new users with auth token directly with the database
+        test_user_1 = UserModel(
             username="test",
             password_hash="test",
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple"
         )
-        db.session.add(test_user)
+        db.session.add(test_user_1)
 
-        # Create a new thread directly with the database
-        test_thread = ThreadModel(
+        test_user_2 = UserModel(
+            username="test2",
+            password_hash="test",
+            authentication_token="authtest2",
+            security_question=3,
+            security_question_answer="Purple"
+        )
+        db.session.add(test_user_2)
+
+        test_thread_1 = ThreadModel(
             title='Exchange rare cards',
             description = "looking for a green mage to improve defence.",
             user_id=1
         )
-        db.session.add(test_thread)
+        db.session.add(test_thread_1)
+
+        # Create a new thread directly with the database
+        test_thread_2 = ThreadModel(
+            title='Exchange rare cards',
+            description = "looking for a green mage to improve defence.",
+            user_id=2
+        )
+        db.session.add(test_thread_2)
 
         db.session.commit()
 
@@ -45,14 +61,14 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res_1 = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 201, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
             "offeringList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             "wantingList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         }
-        res_2 = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body_2))
+        res_2 = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 201, f"Status code is wrong with message {res_2.data}")
 
         # Check that trades are in the db and have info
@@ -65,15 +81,15 @@ class TestCreate(BaseApiTest):
         self.assertEqual(created_trade_1.get_offering(), [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         self.assertEqual(created_trade_1.get_wanting(), [0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
         self.assertEqual(created_trade_1.user_id, 1)
-        self.assertEqual(created_trade_1.thread_id, 1)
+        self.assertEqual(created_trade_1.thread_id, 2)
 
         self.assertEqual(created_trade_2.get_offering(), [0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
         self.assertEqual(created_trade_2.get_wanting(), [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         self.assertEqual(created_trade_2.user_id, 1)
-        self.assertEqual(created_trade_2.thread_id, 1)
+        self.assertEqual(created_trade_2.thread_id, 2)
 
         # Check that the trades can be properly accessed through the thread model
-        test_thread = db.session.get(ThreadModel, 1)
+        test_thread = db.session.get(ThreadModel, 2)
 
         self.assertEqual(len(test_thread.offers), 2)
         self.assertEqual(test_thread.offers[0].get_offering(), [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -87,7 +103,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/7/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
 
     def test_create_with_wrong_length_lists(self):
@@ -98,7 +114,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
     def test_create_with_negative_items(self):
@@ -109,7 +125,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, -1],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
     def test_create_with_wrong_item_types(self):
@@ -120,9 +136,19 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0.5],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
+    def test_thread_owner_creating_trade(self):
+        """Tests that the thread owner can't create a trade for their own thread"""
+
+        # Posts a create trade request as the thread owner
+        req_body = {
+            "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        }
+        res = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body))
+        self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
 
 class TestPerformTrade(BaseApiTest):
     """Tests threads perform trade endpoint - POST api/threads/{thread_id}/offers/{trade_id}"""
