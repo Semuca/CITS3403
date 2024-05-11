@@ -26,20 +26,9 @@
                             <input id="submit" type="submit" value="Post comment" class="pixelFont"/>
                         </div>
 
-                        <ul class="timeline">
+                        <ul class="timeline" id="comments">
                             {% for i in comments %}
-                                <li>
-                                    <div class="timeline-time">
-                                        <span class="date">{{ i.created_at.date() }}</span>
-                                        <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <div class="timeline-content">
-                                            <h5 class="comment-username mb-1">{{ i.user.username }}</h5>
-                                            <p>{{ i.comment_text | safe }}</p>
-                                        </div>
-                                    </div>
-                                </li>
+
                             {% endfor %}
                         </ul>
                     </div>
