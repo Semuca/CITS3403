@@ -26,6 +26,19 @@ def get_user():
 
     return authenticated_endpoint_wrapper(None, func)
 
+@api_bp.route('/users/<userId: int>', methods=['GET'])
+def get_specific_user(userId):
+    """Endpoint to get the current user through the authentication token"""
+
+    def func(_data, _):
+        # Get a thread object from the db according to given id
+        queried_user = db.session.get(UserModel, userId)
+        # Return user to the client
+        return make_response(UserModel.to_json(queried_user), 200)
+
+    return authenticated_endpoint_wrapper(None, func)
+
+
 @api_bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
