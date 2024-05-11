@@ -47,9 +47,7 @@
                             <li>
                                 <div class="timeline-time">
                                     <span class="date">{{ i.created_at.date() }}</span>
-                                    {# HACK (Jared): stop using cursed __str__ method #} 
-                                    <!-- TODO remove comment. -->
-                                    <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
+                                    <span class="time">{{ i.created_at.time().hour }}:{{ "0" if i.created_at.time().minute <=10 else "" }}{{ i.created_at.time().minute }}</span>
                                 </div>
                                 <div class="timeline-body">
                                     <div class="timeline-header">
@@ -66,31 +64,6 @@
                             </li>
                         {% endfor %}
                     </ul>
-                    <!-- <h2 class="white-text">Comments</h2>
-                    <ul class="timeline">
-                        {% for i in comments %}
-                        <li>
-                            <div class="timeline-time">
-                                <span class="date">2024-06-09</span>
-                                <span class="time">16:20</span>
-                            </div>
-                            <div class="timeline-body timeline-body-comments">
-                                <div class="timeline-header">
-                                    <span class="thread-name">
-                                        a href="/thread/i.id">i.title <small></small>
-                                    </span>
-                                    <br>
-                                    <span class="thread-creator">
-                                        creator of thread's username
-                                    </span>
-                                </div>
-                                <div class="timeline-content">        
-                                    <p>i.comment_text</p>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %} 
-                    </ul> -->
                 </div>
             </div>
 
