@@ -35,6 +35,8 @@ def get_user_by_id(user_id) -> UserModel | None:
 
 
 def get_threads_by_user(user):
+    """gets all threads that a user has posted"""
+    #FUTURE: This is still tempoary, will be changed later
     threads = db.session.scalars(
         db.select(ThreadModel)
         .where(ThreadModel.user_id == user.id)
