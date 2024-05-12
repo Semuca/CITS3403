@@ -16,9 +16,9 @@
     height: 128;
 }
 
-/* #lootTimerTitle {
-    font-size: 20px;
-} */
+.count{
+    font-size: 150%;
+}
 
 div.gallery {
     border: 1px solid #ccc;
