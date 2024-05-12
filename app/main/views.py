@@ -54,3 +54,9 @@ def profile_page():
     if user is not None:
         threads = database_manager.get_threads_by_user(user)
     return redirect_wrapper(render_template('profile.html', posts=threads, user=user))
+
+@main_bp.route("/game")
+def game_page():
+    """The game page"""
+    user = get_user_by_token(request.cookies.get('token'))
+    return redirect_wrapper(render_template('game.html', user=user))
