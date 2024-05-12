@@ -8,267 +8,269 @@
 {% block bodyBlock %}
     <div class="container content d-flex">
         <div class="row"> 
-                <div class="d-flex justify-content-center">
-                    <div class="col-md-2 m-1 shadow rounded overflow-hidden align-content-center"> 
-                        <div class="w-95">
-                            <div class="text-center">
-                                <h2>LEVEL 1</h2>
-                            </div>
-                        </div>
+            <div class="d-flex justify-content-center">
+                <div class="col-md-3 m-1 align-items-center pt-1"> 
+                    <div class="mb-3 pt-4 pb-3 text-center h-45 align-items-start align-content-center shadow rounded overflow-hidden">
+                        <h2>LEVEL 1</h2>
                     </div>
-                    <div class="col-md-4 m-1 shadow rounded overflow-hidden align-content-center"> 
-                        <div class="w-95">
-                            <div class="text-center">
-                                <h3>LEVEL TIMER</h3>
-                                <h3>00:00</h3>
-                            </div>
-                        </div>
+                    <div class="text-center h-45 align-items-end align-content-center shadow rounded overflow-hidden">
+                        <h3>LEVEL IMMEDIATELY</h3>
                     </div>
-                    <div class="col-md-3 m-1 align-items-center pt-1"> 
-                        <div class="mb-3 pt-4 pb-3 text-center h-45 align-items-start align-content-center shadow rounded overflow-hidden">
-                            <h4 id="lootTimerTitle">LOOT TIMER</h4>
+                </div>
+                <div class="col-md-3 m-1 shadow rounded overflow-hidden align-content-center"> 
+                    <div class="w-95">
+                        <div class="text-center">
+                            <h3>LEVEL TIMER</h3>
                             <h3>00:00</h3>
                         </div>
-                        <div class="text-center h-45 align-items-end align-content-center shadow rounded overflow-hidden">
-                            <h3>COLLECT LOOT</h3>
-                        </div>
                     </div>
                 </div>
+                <div class="col-md-3 m-1 align-items-center pt-1"> 
+                    <div class="mb-3 pt-4 pb-3 text-center h-45 align-items-start align-content-center shadow rounded overflow-hidden">
+                        <h4 id="lootTimerTitle">LOOT TIMER</h4>
+                        <h3>00:00</h3>
+                    </div>
+                    <div class="text-center h-45 align-items-end align-content-center shadow rounded overflow-hidden">
+                        <h3>COLLECT LOOT</h3>
+                    </div>
+                </div>
+            </div>
 
-                <div class="mt-4 shadow rounded overflow-hidden d-flex justify-content-center"> 
-                    <div class="w-95">
-                        <h2>Needed Items</h2>
-                        <div class="row">
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Boar</p>
-                                    </div>
+            <div class="mt-4 shadow rounded overflow-hidden d-flex justify-content-center"> 
+                <div class="w-95">
+                    <h2>Needed Items</h2>
+                    <div class="row">
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Boar</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Cheese</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Cheese</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Emerald</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Emerald</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Feather</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Feather</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Horn</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Horn</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Ink</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Ink</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Meat</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Meat</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Mushroom</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Mushroom</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Orb</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Orb</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Scroll</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Scroll</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 shadow rounded overflow-hidden d-flex justify-content-center"> 
-                    <div class="w-95">
-                        <h2>Inventory</h2>
-                        <div class="row">
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Boar</p>
-                                    </div>
+            </div>
+
+            <div class="mt-4 shadow rounded overflow-hidden d-flex justify-content-center"> 
+                <div class="w-95">
+                    <h2>Inventory</h2>
+                    <div class="row">
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Boar</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Cheese</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Cheese</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Emerald</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Emerald</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Feather</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Feather</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Horn</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Horn</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Ink</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Ink</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Meat</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Meat</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Mushroom</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Mushroom</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Orb</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Orb</p>
                                 </div>
                             </div>
-                            <div class="mb-2 responsive">
-                                <div class="card h-100 gallery">
-                                    <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
-                                    <div class="align-items-end count-translate">
-                                        <p class="count">#</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-title">Scroll</p>
-                                    </div>
+                        </div>
+                        <div class="mb-2 responsive">
+                            <div class="card h-100 gallery">
+                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
+                                <div class="align-items-end count-translate">
+                                    <p class="count">#</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title">Scroll</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 {% endblock %}
