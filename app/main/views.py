@@ -55,6 +55,7 @@ def profile_page():
         threads = database_manager.get_threads_by_user(user)
     return redirect_wrapper(render_template('profile.html', posts=threads, user=user))
 
+
 @main_bp.route("/game")
 def game_page():
     """The game page"""

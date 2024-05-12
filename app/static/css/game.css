@@ -1,8 +1,14 @@
 .w-95 {
     width: 95%;
 }
+.h-30 {
+    height: 30%;
+}
 .h-45 {
     height: 45%;
+}
+.h-70 {
+    height: 70%;
 }
 
 body{
@@ -26,7 +32,7 @@ body{
 }
 
 div.gallery {
-    border: 1px solid #ccc;
+    border: 1px solid var(--white);
 }
 
 div.gallery img {
