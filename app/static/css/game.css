@@ -1,0 +1,76 @@
+.w-95 {
+    width: 95%;
+}
+.h-30 {
+    height: 30%;
+}
+.h-45 {
+    height: 45%;
+}
+.h-70 {
+    height: 70%;
+}
+
+body{
+    background: linear-gradient(to right, var(--orange), var(--cyan));
+    min-height: 100vh;
+}
+
+#levelImmediately{
+    border: none;
+}
+
+#collectLoot{
+    border: none;
+}
+
+.card-title {
+    /* padding: 15px; */
+    text-align: center;
+    width: auto;
+}
+
+.card-img-top {
+    width: 128;
+    height: 128;
+}
+
+.count{
+    font-size: 150%;
+}
+
+div.gallery {
+    border: 1px solid var(--white);
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.responsive {
+    padding: 0 6px;
+    float: left;
+    width: 10%;
+}
+
+@media only screen and (max-width: 700px) {
+.responsive {
+    width: 20%;
+    margin: 6px 0;
+}
+}
+
+@media only screen and (max-width: 500px) {
+.responsive {
+    width: 20%;
+}
+}
+
+/* .count-translate {
+    transform: translateY(1rem)
+} */

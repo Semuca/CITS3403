@@ -1,6 +1,5 @@
 body{
     margin-top:80px;
-    background: var(--navy);
     background: linear-gradient(to right, var(--orange), var(--cyan));
     min-height: 100vh;
     overflow-x:hidden;
