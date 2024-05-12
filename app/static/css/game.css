@@ -1,8 +1,12 @@
 .w-95 {
     width: 95%;
 }
+.h-40 {
+    height: 40%;
+}
+
 .card-title {
-    padding: 15px;
+    /* padding: 15px; */
     text-align: center;
     width: auto;
 }
@@ -40,10 +44,10 @@ div.gallery img {
 
 @media only screen and (max-width: 500px) {
 .responsive {
-    width: 33.3333%;
+    width: 20%;
 }
 }
 
-.count-translate {
+/* .count-translate {
     transform: translateY(1rem)
-}
+} */
