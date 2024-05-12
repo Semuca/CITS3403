@@ -5,6 +5,11 @@
     height: 45%;
 }
 
+body{
+    background: linear-gradient(to right, var(--orange), var(--cyan));
+    min-height: 100vh;
+}
+
 .card-title {
     /* padding: 15px; */
     text-align: center;
