@@ -1,8 +1,8 @@
 .w-95 {
     width: 95%;
 }
-.h-40 {
-    height: 40%;
+.h-45 {
+    height: 45%;
 }
 
 .card-title {
@@ -15,6 +15,10 @@
     width: 128;
     height: 128;
 }
+
+/* #lootTimerTitle {
+    font-size: 20px;
+} */
 
 div.gallery {
     border: 1px solid #ccc;
