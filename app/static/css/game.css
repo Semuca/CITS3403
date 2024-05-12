@@ -16,6 +16,14 @@ body{
     min-height: 100vh;
 }
 
+#levelImmediately{
+    border: none;
+}
+
+#collectLoot{
+    border: none;
+}
+
 .card-title {
     /* padding: 15px; */
     text-align: center;
