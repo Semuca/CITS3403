@@ -73,7 +73,7 @@ def level_down(user: UserModel) -> None:
     # Reset user game attributes
     user.level = 0
     user.level_expiry = None
-    user.set_loot_drop_refresh()
+    user.loot_drop_refresh = current_app.config['LOOT_DROP_TIMER']
 
     db.session.add(user.inventory)
     db.session.add(user)

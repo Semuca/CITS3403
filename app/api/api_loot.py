@@ -28,7 +28,7 @@ def get_loot_drop():
 
         # Get gained values as a list
         gained_values = single_loot_drop()
-        queried_user.inventory.add_to_items(gained_values[0])
+        queried_user.inventory.add_to_items(gained_values)
 
         # Set up updated user body
         queried_user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
@@ -43,7 +43,7 @@ def get_loot_drop():
     return authenticated_endpoint_wrapper(None, func)
 
 @api_bp.route('/levelup', methods=['GET'])
-def level_up():
+def immediate_level_up():
     """Endpoint to let a user level up early"""
 
     def func(_data, request_user_id):
