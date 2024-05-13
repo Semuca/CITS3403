@@ -27,23 +27,13 @@
                         </div>
                         <div class="m-2 post-comment">
                             <h3>Submit a trade request</h3>
-                            <p class="readable">Item 0: <label for="give0">You give</label> <input type="text" id="give0"/> <label for="get0">and get</label> <input type="text" id="get0"/></p>
-                            <p class="readable">Item 1: <label for="give1">You give</label> <input type="text" id="give1"/> <label for="get1">and get</label> <input type="text" id="get1"/></p>
-                            <p class="readable">Item 2: <label for="give2">You give</label> <input type="text" id="give2"/> <label for="get2">and get</label> <input type="text" id="get2"/></p>
-                            <p class="readable">Item 3: <label for="give3">You give</label> <input type="text" id="give3"/> <label for="get3">and get</label> <input type="text" id="get3"/></p>
-                            <p class="readable">Item 4: <label for="give4">You give</label> <input type="text" id="give4"/> <label for="get4">and get</label> <input type="text" id="get4"/></p>
-                            <p class="readable">Item 5: <label for="give5">You give</label> <input type="text" id="give5"/> <label for="get5">and get</label> <input type="text" id="get5"/></p>
-                            <p class="readable">Item 6: <label for="give6">You give</label> <input type="text" id="give6"/> <label for="get6">and get</label> <input type="text" id="get6"/></p>
-                            <p class="readable">Item 7: <label for="give7">You give</label> <input type="text" id="give7"/> <label for="get7">and get</label> <input type="text" id="get7"/></p>
-                            <p class="readable">Item 8: <label for="give8">You give</label> <input type="text" id="give8"/> <label for="get8">and get</label> <input type="text" id="get8"/></p>
-                            <p class="readable">Item 9: <label for="give9">You give</label> <input type="text" id="give9"/> <label for="get9">and get</label> <input type="text" id="get9"/></p>
+                            {% for i, item in items %}
+                            <p class="readable">{{ item }}: <label for="give{{ i }}">You give</label> <input type="text" id="give{{ i }}"/> <label for="get{{ i }}">and get</label> <input type="text" id="get{{ i }}"/></p>
+                            {% endfor %}
                             <input id="newTrade" type="submit" value="Create Trade"/>
                         </div>
 
                         <ul class="timeline" id="comments">
-                            {% for i in comments %}
-
-                            {% endfor %}
                         </ul>
                     </div>
                 </div>
