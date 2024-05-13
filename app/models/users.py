@@ -46,5 +46,6 @@ class UserModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'inventory': self.inventory.get_items(),
+            'requiredItems': self.inventory.get_required_items(),
         }
         return json_user
