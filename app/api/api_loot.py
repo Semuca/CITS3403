@@ -38,7 +38,7 @@ def get_loot_drop():
         db.session.commit()
 
         # Return with the items
-        return make_response({"items": gained_values[0]})
+        return make_response({"items": gained_values})
 
     return authenticated_endpoint_wrapper(None, func)
 
