@@ -9,7 +9,7 @@ $(document).ready(() => {
 
 
     $("#collectLoot").on("click", e => {
-        fetch(`/loot`, {
+        fetch("/loot", {
             method: "GET", headers: {
                 Authorization: `Bearer ${CookieManager.getCookie("token")}`,
                 "Content-type": "application/json; charset=UTF-8"
@@ -18,7 +18,9 @@ $(document).ready(() => {
             if (r.ok) {
                 location.reload()
             } else {
-                alert(r.statusText)
+                r.json().then(o => {
+                    alert(o.errorMessage)
+                })
             }
         })
     })
