@@ -9,7 +9,24 @@ $(document).ready(() => {
 
 
     $("#collectLoot").on("click", e => {
-        fetch("/loot", {
+        fetch("/api/loot", {
+            method: "GET", headers: {
+                Authorization: `Bearer ${CookieManager.getCookie("token")}`,
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(r => {
+            if (r.ok) {
+                location.reload()
+            } else {
+                r.json().then(o => {
+                    alert(o.errorMessage)
+                })
+            }
+        })
+    })
+
+    $("#levelImmediately").on("click", e => {
+        fetch("/api/levelup", {
             method: "GET", headers: {
                 Authorization: `Bearer ${CookieManager.getCookie("token")}`,
                 "Content-type": "application/json; charset=UTF-8"

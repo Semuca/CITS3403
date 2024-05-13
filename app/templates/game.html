@@ -9,17 +9,18 @@
 
 {% block bodyBlock %}
     <div class="container content d-flex">
-        <div class="row"> 
+        <div class="row">
             <div class="d-flex justify-content-center">
-                <div class="col-md-3 ml-1 pt-1 align-items-center "> 
+                <div class="col-md-3 ml-1 pt-1 align-items-center ">
                     <div class="mb-1 pt-4 pb-3 text-center h-70 bg-white align-items-start align-content-center shadow rounded overflow-hidden">
                         <h2>LEVEL 1</h2>
                     </div>
-                    <button id="levelImmediately" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
-                            LEVEL IMMEDIATELY
+                    <button id="levelImmediately" type="button"
+                            class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
+                        LEVEL IMMEDIATELY
                     </button>
                 </div>
-                <div class="col-md-3 mx-1 pt-1 bg-white shadow rounded overflow-hidden align-content-center"> 
+                <div class="col-md-3 mx-1 pt-1 bg-white shadow rounded overflow-hidden align-content-center">
                     <div class="w-95">
                         <div class="text-center">
                             <h3>LEVEL TIMER</h3>
@@ -27,190 +28,54 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mr-1 align-items-center pt-1"> 
+                <div class="col-md-3 mr-1 align-items-center pt-1">
                     <div class="mb-1 pt-4 pb-3 text-center h-70 bg-white align-items-start align-content-center shadow rounded overflow-hidden">
                         <h4 id="lootTimerTitle">LOOT TIMER</h4>
                         <h3 id="lootTime">00:00</h3>
                     </div>
-                    <button id="collectLoot" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
+                    <button id="collectLoot" type="button"
+                            class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
                         COLLECT LOOT
                     </button>
                 </div>
             </div>
-            <div class="mt-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center"> 
+            <div class="mt-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center">
                 <div class="w-95">
                     <h2>Needed Items</h2>
                     <div class="row">
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">3</p>
+                        {% for i, item in items %}
+                            <div class="mb-2 responsive">
+                                <div class="card h-100 gallery">
+                                    <a href="#"><img class="card-img-top img-fluid"
+                                                     src="{{ url_for('static', filename='images/' + i.__str__() + item +'.png') }}"
+                                                     alt=""></a>
+                                    <div class="text-center">
+                                        <p class="count">{{ user.inventory.get_items_required()[i] }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">1</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">8</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">0</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">3</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">3</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">4</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">1</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">2</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            <div class="mt-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center"> 
+            <div class="mt-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center">
                 <div class="w-95">
                     <h2>Inventory</h2>
-                    <div class="row">
+                    {% for i, item in items %}
                         <div class="mb-2 responsive">
                             <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/0Boar.png') }}" alt=""></a>
+                                <a href="#"><img class="card-img-top img-fluid"
+                                                 src="{{ url_for('static', filename='images/' + i.__str__() + item + '.png') }}"
+                                                 alt=""></a>
                                 <div class="text-center">
-                                    <p class="count">3</p>
+                                    <p class="count">{{ user.inventory.get_items()[i] }}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/1Cheese.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">1</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/2Emerald.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">8</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/3Feather.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">0</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/4Horn.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/5Ink.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">3</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/6Meat.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">3</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/7Mushroom.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">4</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/8Orb.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">1</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/9Scroll.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">2</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
