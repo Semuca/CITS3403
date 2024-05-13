@@ -3,7 +3,7 @@
 import json
 
 from app.databases import db
-from app.helpers import calculate_loot_drops, calculate_next_level_requirements
+from app.helpers import calculate_next_level_requirements, single_loot_drop
 
 INVENTORY_SIZE = 10
 
@@ -24,7 +24,7 @@ class InventoryModel(db.Model):
     # Need to store lists as json in the database
     def __init__(self, user_id):
         self.user_id = user_id
-        self.set_items(calculate_loot_drops(1)[0])
+        self.set_items(single_loot_drop())
         self.set_items_required(calculate_next_level_requirements())
 
     def save(self):

@@ -1,7 +1,6 @@
 """Defines the users object and provides functions to get and manipulate one"""
 
-from datetime import datetime, timedelta
-from flask import current_app
+from datetime import datetime
 
 from app.models.inventory import InventoryModel
 from app.databases import db
@@ -50,13 +49,3 @@ class UserModel(db.Model):
             'inventory': self.inventory.get_items(),
         }
         return json_user
-
-    def set_level_expiry(self, timing: timedelta = timedelta(days=1)):
-        """Reset the level expiry. Default is 1 day from now."""
-        self.level_expiry = datetime.now() + timing
-
-    def set_loot_drop_refresh(self, limit: timedelta = None, time_left: timedelta = None):
-        """Reset the loot drop refresh. Default is 12 hours from now."""
-        limit = current_app.config['LOOT_DROP_TIMER'] if limit is None else limit
-        time_left = timedelta(0) if time_left is None else time_left
-        self.loot_drop_refresh = datetime.now() + limit - time_left

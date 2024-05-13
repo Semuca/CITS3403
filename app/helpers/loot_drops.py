@@ -1,19 +1,30 @@
 """Stores the logic for loot drops in a centralized location"""
 
 from random import randint, shuffle
+from flask import current_app
 
-from app.models import INVENTORY_SIZE
+from app.databases import db
+from app.models import INVENTORY_SIZE, UserModel
 
-def calculate_loot_drops(drop_count: int) -> list[list[int]]:
-    """Calculate a loot drop as a list of 'drops' loot drops"""
+def single_loot_drop() -> list[int]:
+    """Calculate a single loot drop"""
+    return [randint(0, 4) for x in range(INVENTORY_SIZE)] # Drops the player is getting
 
-    drops = [[0 for x in range(INVENTORY_SIZE)] for y in range(drop_count)] # Drops the player is getting
+def perform_loot_drops(user: UserModel) -> list[int]:
+    """Performs possible loot drops for the user. Default cooldown is 12 hours, default time left is 0."""
 
-    for drop in drops:
-        for i, _item in enumerate(drop):
-            drop[i] += randint(0, 4) # Get random value
+    gained_values = []
+    while user.loot_drop_refresh < user.level_expiry:
+        drop = single_loot_drop()
+        user.inventory.add_to_items(drop)
 
-    return drops
+        user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
+        gained_values.append(drop)
+
+    db.session.add(user.inventory)
+    db.session.add(user)
+
+    return gained_values
 
 def calculate_next_level_requirements() -> list[int]:
     """Calculate next level requirements as a list"""
