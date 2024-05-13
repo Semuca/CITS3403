@@ -50,7 +50,7 @@ def immediate_level_up():
         queried_user = db.session.get(UserModel, request_user_id)
 
         # If cannot level up, don't change anything
-        if not queried_user.inventory.has_required_items():
+        if queried_user.inventory.has_required_items() is False:
             return make_response(
                 {"error": "Request validation error",
                 "errorMessage": "User is not able to level up"},

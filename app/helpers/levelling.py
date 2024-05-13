@@ -47,11 +47,9 @@ def level_up(user: UserModel) -> list[int]:
         # Increase the loot drop cooldown
         user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
 
-    # Changes to inventory done, so set it for the user
-    user.inventory.set_items(items)
-
     # Speed up loot timer
-    user.loot_drop_refresh -= user.level_expiry
+    time_left = user.level_expiry - datetime.now()
+    user.loot_drop_refresh -= time_left
 
     # Reset game attributes
     user.level_expiry = datetime.now() + timedelta(days=1)
