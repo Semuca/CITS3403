@@ -11,7 +11,7 @@ def single_loot_drop() -> list[int]:
     return [randint(0, 4) for x in range(INVENTORY_SIZE)] # Drops the player is getting
 
 def perform_loot_drops(user: UserModel) -> list[int]:
-    """Performs possible loot drops for the user. Default cooldown is 12 hours, default time left is 0."""
+    """Performs maximum possible loot drops. Default cooldown is 12 hours, default time left is 0."""
 
     gained_values = []
     while user.loot_drop_refresh < user.level_expiry:

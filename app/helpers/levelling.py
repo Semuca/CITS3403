@@ -51,7 +51,7 @@ def level_up(user: UserModel) -> list[int]:
     time_left = user.level_expiry - datetime.now()
     user.loot_drop_refresh -= time_left
 
-    # Reset game attributes
+    # Set game attributes
     user.level_expiry = datetime.now() + timedelta(days=1)
     user.level += 1
     user.inventory.set_items_required(calculate_next_level_requirements())
@@ -71,7 +71,7 @@ def level_down(user: UserModel) -> None:
     # Reset user game attributes
     user.level = 0
     user.level_expiry = None
-    user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
+    user.loot_drop_refresh = None
 
     db.session.add(user.inventory)
     db.session.add(user)

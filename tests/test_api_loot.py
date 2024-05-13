@@ -160,6 +160,73 @@ class TestLevelUp(BaseApiTest):
         self.assertGreater(user.loot_drop_refresh, datetime.now() + timedelta(hours=11,minutes=30,seconds=-5))
         self.assertLess(user.loot_drop_refresh, datetime.now() + timedelta(hours=11,minutes=30,seconds=5))
 
+    def test_valid_level_up_no_loot(self):
+        """Tests that levelling up with a higher loot drop cooldown will not trigger any loot drops"""
+
+        # Create new user with auth token directly with the database
+        test_user = UserModel(
+            id=1,
+            username="test",
+            password_hash="test",
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple",
+            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now() + timedelta(hours=42),
+        )
+        db.session.add(test_user)
+
+        test_user.inventory.set_items([6, 9, 0, 0, 0, 0, 0, 0, 0, 0])
+        test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
+        db.session.commit()
+
+        # Act
+        res = self.client.get("/api/levelup", headers=get_api_headers())
+
+        # Assert
+        user = db.session.get(UserModel, 1)
+
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
+
+        # Assert inventory is still the same
+        self.assertEqual(user.inventory.get_items(), [6, 9, 0, 0, 0, 0, 0, 0, 0, 0])
+
+    def test_valid_level_up_one_drop(self):
+        """Tests that levelling up with a lower loot drop cooldown will trigger one loot drop"""
+
+        # Create new user with auth token directly with the database
+        test_user = UserModel(
+            id=1,
+            username="test",
+            password_hash="test",
+            authentication_token="authtest",
+            security_question=3,
+            security_question_answer="Purple",
+            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now() + timedelta(hours=20),
+        )
+        db.session.add(test_user)
+
+        test_user.inventory.set_items([6, 9, 0, 0, 0, 0, 0, 0, 0, 0])
+        test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
+        db.session.commit()
+
+        # Act
+        res = self.client.get("/api/levelup", headers=get_api_headers())
+
+        # Assert
+        response_body = json.loads(res.data)
+        user = db.session.get(UserModel, 1)
+
+        self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
+
+        # Assert inventory has only been through one loot drop
+        max_loot = 4 * INVENTORY_SIZE + 9 # 9 is leftover after subtraction
+        min_loot = 9
+        loot_count = sum(user.inventory.get_items())
+        self.assertLessEqual(loot_count, max_loot)
+        self.assertGreaterEqual(loot_count, min_loot)
+
     def test_invalid_level_up(self):
         """Tests that level up will correctly not level a player up if the requirements are not met"""
 

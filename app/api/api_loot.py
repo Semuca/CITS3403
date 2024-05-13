@@ -32,7 +32,7 @@ def get_loot_drop():
 
         # Set up updated user body
         queried_user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
-        if queried_user.level_expiry is None:
+        if queried_user.level_expiry is None: # If first drop, start the level timer
             queried_user.level_expiry = datetime.now() + timedelta(days=1)
 
         db.session.commit()
