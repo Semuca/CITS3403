@@ -1,7 +1,6 @@
 """Defines the users object and provides functions to get and manipulate one"""
 
 from datetime import datetime
-from flask import current_app
 
 from app.models.inventory import InventoryModel
 from app.databases import db
@@ -38,8 +37,6 @@ class UserModel(db.Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.inventory = InventoryModel(user_id=self.id)
-        # if self.loot_drop_refresh is None: # if not manually set
-            # self.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
 
     def to_json(self):
         """Return json from already-created user object"""
