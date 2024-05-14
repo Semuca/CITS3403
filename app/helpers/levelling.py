@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from flask import current_app
 from app.databases import db
-from app.models import UserModel
+from app.models import UserModel, INVENTORY_SIZE
 from app.helpers.loot_drops import calculate_next_level_requirements, single_loot_drop
 
 def auto_level(user: UserModel) -> None:
@@ -12,10 +12,10 @@ def auto_level(user: UserModel) -> None:
 
     # Don't do anything if user has not started playing or still has time left
     if user.level == 0 or datetime.now() < user.level_expiry:
-        return 0
+        return
 
     # Level until user is up to date, or until they cannot meet requirements
-    while user.level_expiry < datetime.now() and user.has_required_items():
+    while user.level_expiry < datetime.now() and user.inventory.has_required_items():
         auto_level_up(user)
 
     if user.level_expiry < datetime.now(): # cannot meet requirements
@@ -38,6 +38,7 @@ def auto_level_up(user: UserModel) -> None:
     # Set game attributes
     user.level_expiry += timedelta(days=1) # Level starts when the last one ended
     user.level += 1
+    user.inventory.set_items(items)
     user.inventory.set_items_required(calculate_next_level_requirements())
 
     db.session.add(user.inventory)
@@ -54,10 +55,10 @@ def manual_level_up(user: UserModel) -> list[list[int]]:
     # Subtract requirements from inventory
     for i, requirement in enumerate(items_required):
         items[i] -= requirement
+    user.inventory.set_items(items)
 
     # Set loot drop cooldown to now if it's in the past, to stop users from getting past drops
-    if user.loot_drop_refresh < datetime.now():
-        user.loot_drop_refresh = datetime.now()
+    user.loot_drop_refresh = max(user.loot_drop_refresh, datetime.now())
 
     # Perform auto loot drops for the time left, until cooldown is higher than time to next level
     gained_values = []
@@ -88,8 +89,8 @@ def level_down(user: UserModel) -> None:
     """Level down the user since time is up and calculate changes"""
 
     # Reset inventory
-    user.inventory.set_items(single_loot_drop())
-    user.inventory.set_items_required(calculate_next_level_requirements())
+    user.inventory.set_items([0 for x in range(INVENTORY_SIZE)])
+    user.inventory.set_items_required([0 for x in range(INVENTORY_SIZE)])
 
     # Reset user game attributes
     user.level = 0

@@ -1,4 +1,4 @@
-"""This module defines endpoints for user operations"""
+"""This module defines endpoints for loot and level up operations"""
 
 from datetime import datetime, timedelta
 
@@ -60,6 +60,12 @@ def immediate_level_up():
         # Checks if time is up and performs auto level ups/downs if necessary
         auto_level(queried_user)
 
+        # If user hasn't collected a drop yet (hasn't started playing), return error
+        if queried_user.level == 0:
+            return make_response(
+                {"error": "Request validation error",
+                "errorMessage": "User has not collected a first drop yet"},
+                403)
         # If cannot level up, don't change anything
         if queried_user.inventory.has_required_items() is False:
             return make_response(
