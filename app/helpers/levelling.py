@@ -10,21 +10,37 @@ from app.helpers.loot_drops import calculate_next_level_requirements, single_loo
 def auto_level(user: UserModel) -> None:
     """Check if the user's level time is up and level up/down if necessary"""
 
-    # Check if user still has time
-    if user.level_expiry is None or datetime.now() < user.level_expiry:
+    # Don't do anything if user has not started playing or still has time left
+    if user.level == 0 or datetime.now() < user.level_expiry:
         return 0
 
-    overtime = datetime.now() - user.level_expiry
+    # Level until user is up to date, or until they cannot meet requirements
+    while user.level_expiry < datetime.now() and user.has_required_items():
+        ontimer_level_up(user)
 
-    # If user does not meet requirements, or is more than 1 day late, level down
-    if (overtime > timedelta(days=1)) or not user.has_required_items():
+    if user.level_expiry < datetime.now(): # cannot meet requirements
         level_down(user)
-        return -1
-    else:
-        level_up(user)
-        user.level_expiry = datetime.now() + timedelta(days=1) - overtime
-        db.session.add(user)
-        return 1
+
+    db.session.add(user)
+
+def ontimer_level_up(user: UserModel) -> None:
+    """Successfully level up the user once because time is up. No auto loot drops.
+    Starts next level from when the last one ended."""
+
+    items = user.inventory.get_items()
+    items_required = user.inventory.get_items_required()
+
+    # Subtract requirements from inventory
+    for i, requirement in enumerate(items_required):
+        items[i] -= requirement
+
+    # Set game attributes
+    user.level_expiry += timedelta(days=1) # Level starts when the last one ended
+    user.level += 1
+    user.inventory.set_items_required(calculate_next_level_requirements())
+
+    db.session.add(user.inventory)
+    db.session.add(user)
 
 def level_up(user: UserModel) -> list[int]:
     """Successfully level up the user and calculates changes"""
@@ -36,20 +52,23 @@ def level_up(user: UserModel) -> list[int]:
     for i, requirement in enumerate(items_required):
         items[i] -= requirement
 
-    # Perform loot drops until cooldown is higher than time to next level expiry
-    gained_values = []
-    while user.loot_drop_refresh < user.level_expiry:
-        # Get a drop and add it to the inventory
-        drop = single_loot_drop()
-        user.inventory.add_to_items(drop)
-        gained_values.append(drop)
+    # Since level up was done before timer was up, perform auto loot drops for the time left
+    # Make drops until cooldown is higher than time to next level expiry
+    if user.loot_drop_refresh < datetime.now():
+        user.loot_drop_refresh = datetime.now() # stops them from getting past drop opportunities
+    if user.level_expiry > datetime.now():
+        gained_values = []
+        while user.loot_drop_refresh < user.level_expiry:
+            # Get a drop and add it to the inventory
+            drop = single_loot_drop()
+            user.inventory.add_to_items(drop)
+            gained_values.append(drop)
 
-        # Increase the loot drop cooldown
-        user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
+            # Increase the loot drop cooldown
+            user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
 
-    # Speed up loot timer
-    time_left = user.level_expiry - datetime.now()
-    user.loot_drop_refresh -= time_left
+        # Speeding up loot cooldown to next expiry
+        user.loot_drop_refresh = datetime.now() + (user.loot_drop_refresh - user.level_expiry)
 
     # Set game attributes
     user.level_expiry = datetime.now() + timedelta(days=1)

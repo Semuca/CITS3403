@@ -20,7 +20,8 @@ def get_loot_drop():
         # Find a user by id
         queried_user = db.session.get(UserModel, request_user_id)
 
-        if queried_user.loot_drop_refresh is not None and queried_user.loot_drop_refresh > datetime.now():
+        # if cooldown finish is in the future, return error
+        if queried_user.level != 0 and queried_user.loot_drop_refresh > datetime.now():
             return make_response(
                 {"error": "Request validation error",
                 "errorMessage": "User has already collected a drop within the last 12 hours"},
@@ -30,10 +31,14 @@ def get_loot_drop():
         gained_values = single_loot_drop()
         queried_user.inventory.add_to_items(gained_values)
 
-        # Set up updated user body
-        queried_user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
-        if queried_user.level_expiry is None: # If first drop, start the level timer
+        # If this is the first drop, start the level timer and put the user in the first level
+        if queried_user.level == 0:
+            queried_user.level = 1
             queried_user.level_expiry = datetime.now() + timedelta(days=1)
+            queried_user.inventory.set_items_required(single_loot_drop())
+
+        # Reset the loot drop timer
+        queried_user.loot_drop_refresh = datetime.now() + current_app.config['LOOT_DROP_TIMER']
 
         db.session.commit()
 

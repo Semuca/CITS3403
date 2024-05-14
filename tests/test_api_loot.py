@@ -95,7 +95,8 @@ class TestGetLoot(BaseApiTest):
             security_question=3,
             security_question_answer="Purple",
             loot_drop_refresh=old_loot_drop_refresh,
-            level_expiry=datetime.now() + timedelta(days=1)
+            level_expiry=datetime.now() + timedelta(days=1),
+            level=1
         )
         db.session.add(test_user)
 
