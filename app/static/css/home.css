@@ -21,7 +21,11 @@ header.title {
 }
 
 #homeTitleIcon {
-  color: #4f5d75;
+  color: var(--white);
   padding-left: 1rem;
 }
 
+.icon {
+  max-width: 100%; 
+  height: auto;
+}
