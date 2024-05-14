@@ -75,7 +75,7 @@ $(document).ready(() => {
         loadPage(1)
     })
 
-    $("#searchbar").on('keypress', e => {
+    $("#searchbar").on('keydown', e => {
         if (e.which == 13) {
             loadPage(1)
         }
@@ -99,8 +99,8 @@ function loadPage(page, search = "") {
     currentPage.text(smallestPageNumber + 1)
     pageAfter.text(smallestPageNumber + 2)
     $("#threads").empty()
-    let direction = ascending ? "asc" : "desc"
-    let sort = $("#sortBy").val()
+    const direction = ascending ? "asc" : "desc"
+    const sort = $("#sortBy").val()
     let query = `/api/threads?perPage=10&page=${page}&sortBy=${sort}&sortDir=${direction}`
     if (search) {
         query += `&search=${search}`
