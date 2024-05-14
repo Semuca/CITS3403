@@ -4,8 +4,12 @@
 } */
 
 body{
-    margin-top:80px;
-    background:var(--white);
+    min-height: 100vh;
+    overflow-x:hidden;
+    background-image: url("/static/images/wood.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center center;
 }
 
 .thread-header {

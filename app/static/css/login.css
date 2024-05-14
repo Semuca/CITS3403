@@ -1,19 +1,13 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--white);
+    background-image: url("/static/images/wood.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center center;
 }
 
-#main {
-    padding-top: 50px;
+.card {
+    border-radius: 15px;
+    background-color:var(--white);
 }
 
 #username, #password {
@@ -30,6 +24,6 @@ body {
     cursor: pointer;
 }
 
-#pressLogin:hover {
+/* #pressLogin:hover {
     background-color: var(--navy);
-}
+} */
