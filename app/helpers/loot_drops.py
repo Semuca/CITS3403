@@ -8,7 +8,7 @@ from app.models import INVENTORY_SIZE, UserModel
 
 def single_loot_drop() -> list[int]:
     """Calculate a single loot drop"""
-    return [randint(0, 4) for x in range(INVENTORY_SIZE)] # Drops the player is getting
+    return [randint(0, 4) for x in range(INVENTORY_SIZE)]
 
 def perform_loot_drops(user: UserModel) -> list[int]:
     """Performs maximum possible loot drops. Default cooldown is 12 hours, default time left is 0."""

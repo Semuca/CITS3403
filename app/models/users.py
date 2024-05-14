@@ -26,7 +26,7 @@ class UserModel(db.Model):
     admin = db.Column(db.Boolean(), default=False, nullable=False)
 
     # Game stats
-    level = db.Column(db.Integer(), default=0, nullable=False) # level 0 does not have a level expiry
+    level = db.Column(db.Integer(), default=0, nullable=False) # lv0 not playing yet, empty attributes
     level_expiry = db.Column(db.DateTime())
     loot_drop_refresh = db.Column(db.DateTime())
 
