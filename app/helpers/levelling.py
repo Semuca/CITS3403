@@ -16,14 +16,15 @@ def auto_level(user: UserModel) -> None:
 
     # Level until user is up to date, or until they cannot meet requirements
     while user.level_expiry < datetime.now() and user.has_required_items():
-        ontimer_level_up(user)
+        auto_level_up(user)
 
     if user.level_expiry < datetime.now(): # cannot meet requirements
         level_down(user)
 
     db.session.add(user)
+    db.session.commit()
 
-def ontimer_level_up(user: UserModel) -> None:
+def auto_level_up(user: UserModel) -> None:
     """Successfully level up the user once because time is up. No auto loot drops.
     Starts next level from when the last one ended."""
 
@@ -42,8 +43,10 @@ def ontimer_level_up(user: UserModel) -> None:
     db.session.add(user.inventory)
     db.session.add(user)
 
-def level_up(user: UserModel) -> list[int]:
-    """Successfully level up the user and calculates changes"""
+def manual_level_up(user: UserModel) -> list[list[int]]:
+    """Successfully level up the user before time is up.
+    Auto loot drops are calculated for the time left, and next level starts now.
+    Returns the list of drops lists."""
 
     items = user.inventory.get_items()
     items_required = user.inventory.get_items_required()
@@ -52,23 +55,23 @@ def level_up(user: UserModel) -> list[int]:
     for i, requirement in enumerate(items_required):
         items[i] -= requirement
 
-    # Since level up was done before timer was up, perform auto loot drops for the time left
-    # Make drops until cooldown is higher than time to next level expiry
+    # Set loot drop cooldown to now if it's in the past, to stop users from getting past drops
     if user.loot_drop_refresh < datetime.now():
-        user.loot_drop_refresh = datetime.now() # stops them from getting past drop opportunities
-    if user.level_expiry > datetime.now():
-        gained_values = []
-        while user.loot_drop_refresh < user.level_expiry:
-            # Get a drop and add it to the inventory
-            drop = single_loot_drop()
-            user.inventory.add_to_items(drop)
-            gained_values.append(drop)
+        user.loot_drop_refresh = datetime.now()
 
-            # Increase the loot drop cooldown
-            user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
+    # Perform auto loot drops for the time left, until cooldown is higher than time to next level
+    gained_values = []
+    while user.loot_drop_refresh < user.level_expiry:
+        # Get a drop and add it to the inventory
+        drop = single_loot_drop()
+        user.inventory.add_to_items(drop)
+        gained_values.append(drop)
 
-        # Speeding up loot cooldown to next expiry
-        user.loot_drop_refresh = datetime.now() + (user.loot_drop_refresh - user.level_expiry)
+        # Increase the loot drop cooldown
+        user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
+
+    # Speed up loot cooldown to next expiry
+    user.loot_drop_refresh = datetime.now() + (user.loot_drop_refresh - user.level_expiry)
 
     # Set game attributes
     user.level_expiry = datetime.now() + timedelta(days=1)
@@ -77,6 +80,7 @@ def level_up(user: UserModel) -> list[int]:
 
     db.session.add(user.inventory)
     db.session.add(user)
+    db.session.commit()
 
     return gained_values
 
@@ -94,8 +98,3 @@ def level_down(user: UserModel) -> None:
 
     db.session.add(user.inventory)
     db.session.add(user)
-
-
-
-
-

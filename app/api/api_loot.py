@@ -8,7 +8,7 @@ from app.databases import db
 from app.models import UserModel
 from app.helpers import authenticated_endpoint_wrapper
 from app.helpers.loot_drops import single_loot_drop
-from app.helpers.levelling import level_up
+from app.helpers.levelling import manual_level_up, auto_level
 
 from .bp import api_bp
 
@@ -19,6 +19,9 @@ def get_loot_drop():
     def func(_data, request_user_id):
         # Find a user by id
         queried_user = db.session.get(UserModel, request_user_id)
+
+        # Checks if time is up and performs auto level ups/downs if necessary
+        auto_level(queried_user)
 
         # if cooldown finish is in the future, return error
         if queried_user.level != 0 and queried_user.loot_drop_refresh > datetime.now():
@@ -54,15 +57,18 @@ def immediate_level_up():
     def func(_data, request_user_id):
         queried_user = db.session.get(UserModel, request_user_id)
 
+        # Checks if time is up and performs auto level ups/downs if necessary
+        auto_level(queried_user)
+
         # If cannot level up, don't change anything
         if queried_user.inventory.has_required_items() is False:
             return make_response(
                 {"error": "Request validation error",
-                "errorMessage": "User is not able to level up"},
+                "errorMessage": "User does not have the resources to level up"},
                 403)
 
         # Perform level up
-        gains = level_up(queried_user)
+        gains = manual_level_up(queried_user)
 
         db.session.commit()
 

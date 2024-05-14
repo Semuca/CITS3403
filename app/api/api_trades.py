@@ -3,9 +3,10 @@
 from flask import make_response
 
 from app.databases import db
-from app.models import ThreadModel, OffersModel, INVENTORY_SIZE
+from app.models import ThreadModel, OffersModel, UserModel, INVENTORY_SIZE
 from app.helpers import authenticated_endpoint_wrapper, RequestSchemaDefinition
 from app.helpers.trading import check_trade_possible, perform_trade, check_positive_ints_list
+from app.helpers.levelling import auto_level
 
 from .bp import api_bp
 
@@ -30,8 +31,11 @@ def create_trade(thread_id):
                  "errorMessage": "Cannot trade with yourself"},
                 403)
 
+        # Get what the user that proposed the trade is offering and wanting
         offering_list = data['offeringList']
         wanting_list = data['wantingList']
+
+        # Validate the offering and wanting lists
         if len(offering_list) != INVENTORY_SIZE or len(wanting_list) != INVENTORY_SIZE:
             return make_response(
                 {"error": "Request validation error",
@@ -97,6 +101,12 @@ def accept_trade(thread_id, trade_id):
                 {"error": "Request validation error",
                  "errorMessage": "Trade not for this thread"},
                 403)
+
+        # Checks if time is up for either user and performs auto level ups/downs if necessary
+        queried_user = db.session.get(UserModel, request_user_id)
+        queried_trade_proposer = trade.user
+        auto_level(queried_user)
+        auto_level(queried_trade_proposer)
 
         # Update the relevant users' inventories
         if not check_trade_possible(trade, thread.user, trade.user):
