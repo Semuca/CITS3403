@@ -1,6 +1,6 @@
 """Main route views"""
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect
 
 from app.helpers import redirect_wrapper, get_user_by_token, database_manager
 from app.models.inventory import INVENTORY_CATEGORIES
@@ -61,5 +61,9 @@ def profile_page():
 def game_page():
     """The game page"""
     user = get_user_by_token(request.cookies.get('token'))
+
+    if get_user_by_token(request.cookies.get('token')) is None: # needs to be done first since the game template uses user attributes
+        return redirect("/login")
+
     # using [*enumerate(items)] so that we can use the iterator more than once
-    return redirect_wrapper(render_template('game.html', user=user, items=[*enumerate(INVENTORY_CATEGORIES)]))
+    return render_template('game.html', user=user, items=[*enumerate(INVENTORY_CATEGORIES)])

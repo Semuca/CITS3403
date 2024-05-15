@@ -34,7 +34,7 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'dev.db')
 
     # Game mechanics
-    LOOT_DROP_TIMER = timedelta(seconds=10)
+    LOOT_DROP_TIMER = timedelta(hours=12)
 
 # pylint: disable=too-few-public-methods
 class ProdConfig(Config):
