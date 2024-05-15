@@ -5,6 +5,8 @@ import json
 from app.databases import db
 
 INVENTORY_SIZE = 10
+INVENTORY_CATEGORIES = ["Boar", "Cheese", "Emerald", "Feather", "Horn", "Ink", "Meat", "Mushroom", "Orb", "Scroll"]
+
 
 # pylint: disable=too-few-public-methods
 class InventoryModel(db.Model):
