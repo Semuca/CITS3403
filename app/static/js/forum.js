@@ -1,4 +1,5 @@
-import { CookieManager } from "./helpers/cookie_manager.js";
+import {CookieManager} from "./helpers/cookie_manager.js";
+import {dateFromPythonTime, timeFromPythonTime} from "./helpers/format_time.js"
 
 const threads = [];
 let pageNumber = 1
@@ -7,7 +8,6 @@ const currentPage = $("#currentPage")
 const pageAfter = $("#pageAfter")
 const prevPage = $("#prevPage")
 const nextPage = $("#nextPage")
-
 
 
 $(document).ready(() => {
@@ -38,28 +38,7 @@ $(document).ready(() => {
             })
         }).then(r => {
             if (r.ok) {
-                r.json().then(thread => {
-                    threads.push(thread);
-                    $("#threads").append(`
-                        <li>
-                            <div class="thread-time">
-                                <span class="date">TODO:today</span>
-                                <span class="time">TODO:04:20</span>
-                            </div>
-                            <div class="thread-body">
-                                <div class="thread-header">
-                                    <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
-                                    <br>
-                                    <span class="thread-creator username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
-                                </div>
-                                <div class="thread-content">
-                                    <p class="text-secondary">${thread.description}</p>
-                                </div>
-                            </div>
-                        </li>
-                    `);
-                    $('#threadCreationModal').modal('hide');
-                });
+                location.reload()
             } else {
                 alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
             }
@@ -98,14 +77,14 @@ function loadPage(page) {
                         $("#threads").append(`
                             <li>
                                 <div class="thread-time">
-                                    <span class="date">TODO:today</span>
-                                    <span class="time">TODO:04:20</span>
+                                    <span class="date">${dateFromPythonTime(thread.createdAt)}</span>
+                                    <span class="time">${timeFromPythonTime(thread.createdAt)}</span>
                                 </div>
                                 <div class="thread-body">
                                     <div class="thread-header">
                                         <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
                                         <br>
-                                        <span class="thread-creator username"><a href="javascript:;">TODO:USERNAME</a> <small></small></span>
+                                        <span class="thread-creator username"><a href="javascript:;">${thread.user.username}</a> <small></small></span>
                                     </div>
                                     <div class="thread-content">
                                         <p class="text-secondary">${thread.description}</p>
