@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, request
 
 from app.helpers import redirect_wrapper, get_user_by_token, database_manager
-from app.models.users import INVENTORY_CATEGORIES
+from app.models.inventory import INVENTORY_CATEGORIES
 
 main_bp = Blueprint('main_bp', __name__)
 

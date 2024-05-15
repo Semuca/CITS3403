@@ -42,7 +42,9 @@ $(document).ready(() => {
         })
     })
 
-    //TODO: fix to backend
+
+
+    //TODO: fix to backend (placeholder URLs)
     fetch(`/magic/address/to/level/countdown`, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
@@ -57,6 +59,7 @@ $(document).ready(() => {
             // alert("Something has gone horribly wrong...")
         }
     })
+    //TODO: fix to backend (placeholder URLs)
     fetch(`/magic/address/to/loot/countdown`, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
@@ -76,7 +79,7 @@ $(document).ready(() => {
 
 function everySecond() {
     let diff = (levelTime - Date.now())
-    let text = new Date(diff).toISOString().slice(11, -5); // stolen from https://stackoverflow.com/questions/9763441/milliseconds-to-time-in-javascript
+    let text = new Date(diff).toISOString().slice(11, -5);
     $("#levelTime").text(text)
     diff = (lootTime - Date.now())
     text = new Date(diff).toISOString().slice(11, -5);
