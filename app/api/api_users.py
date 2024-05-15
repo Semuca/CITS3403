@@ -6,6 +6,7 @@ from flask import make_response
 from app.databases import db
 from app.models import UserModel
 from app.helpers import authenticated_endpoint_wrapper, remove_none_from_dictionary, unauthenticated_endpoint_wrapper, RequestSchemaDefinition
+from app.helpers.levelling import auto_level
 
 from .bp import api_bp
 
@@ -16,6 +17,9 @@ def get_user():
     def func(_data, request_user_id):
         # Get a thread object from the db according to given id
         queried_user = db.session.get(UserModel, request_user_id)
+
+        # Checks if time is up and performs auto level ups/downs if necessary
+        auto_level(queried_user)
 
         # Return user to the client
         return make_response(UserModel.to_json(queried_user), 200)
@@ -69,7 +73,7 @@ def edit_user():
 
     def func(data, request_user_id):
         # Find a user by that username and security question hash
-        res = UserModel.query.filter_by(id=request_user_id)
+        res = UserModel.query.filter_by(id=request_user_id) # the query, not the query result
 
         update_body = { UserModel.description: data.get("description"),
                         UserModel.password_hash: data.get("password"),
