@@ -1,4 +1,5 @@
 import {CookieManager} from "./helpers/cookie_manager.js";
+
 import {dateFromPythonTime, timeFromPythonTime} from "./helpers/format_time.js"
 
 const threads = [];
@@ -8,7 +9,7 @@ const currentPage = $("#currentPage")
 const pageAfter = $("#pageAfter")
 const prevPage = $("#prevPage")
 const nextPage = $("#nextPage")
-
+let ascending = false
 
 $(document).ready(() => {
     loadPage(1)
@@ -44,9 +45,24 @@ $(document).ready(() => {
             }
         })
     });
+
+    $("#order").on("click", () => {
+        ascending = !ascending
+        $("#ascending").text(ascending ? "Ascending" : "Descending")
+        loadPage(1)
+    })
+    $("#sortBy").on("change", e => {
+        loadPage(1)
+    })
+
+    $("#searchbar").on('keydown', e => {
+        if (e.which == 13) {
+            loadPage(1)
+        }
+    })
 });
 
-function loadPage(page) {
+function loadPage(page, search = "") {
     pageNumber = page
     threads.length = 0 //empty the threads array
     if (page === 1) {
@@ -58,12 +74,18 @@ function loadPage(page) {
         pageBefore.removeClass("active")
         currentPage.addClass("active")
     }
-    const smallestPageNumber = Math.min(pageNumber - 1, 1)
+    const smallestPageNumber = Math.max(pageNumber - 1, 1)
     pageBefore.text(smallestPageNumber)
     currentPage.text(smallestPageNumber + 1)
     pageAfter.text(smallestPageNumber + 2)
     $("#threads").empty()
-    fetch(`/api/threads?perPage=10&page=${page}`, {
+    const direction = ascending ? "asc" : "desc"
+    const sort = $("#sortBy").val()
+    let query = `/api/threads?perPage=10&page=${page}&sortBy=${sort}&sortDir=${direction}`
+    if (search) {
+        query += `&search=${search}`
+    }
+    fetch(query, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
             "Content-type": "application/json; charset=UTF-8"

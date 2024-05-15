@@ -21,6 +21,13 @@
                 <div class="searchHeader">
                     <input type="text" id="searchbar" class="form-control form-control-sm shadow-none mb-4 mt-4"
                            placeholder="Search forum"/>
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy">
+                        <option value="created_at">Date Created</option>
+                        <option value="title">Title</option>
+                        <option value="description">Description</option>
+                    </select>
+                    <button id="order">Descending</button>
                 </div>
 
                 <!-- Forum List -->
