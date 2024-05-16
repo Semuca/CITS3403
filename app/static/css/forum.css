@@ -13,15 +13,11 @@ body {
 }
 
 #searchbar {
-    background-color: var(--cyan);
+    border: none;
 }
 
 #newDiscussion {
-    background-color: var(--cyan);
-}
-
-#newDiscussion:hover {
-    background-color: var(--navy);
+    border: none;
 }
 
 .forum-content {

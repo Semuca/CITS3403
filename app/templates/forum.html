@@ -9,8 +9,8 @@
 {% block bodyBlock %}
     <div class="container content">
         <div class="main-body p-0">
-            <div class="justify-content-center">
-                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#threadCreationModal">
+            <div class="d-flex justify-content-center w-100">
+                <button id="newDiscussion" class="bg-white shadow rounded overflow-hidden w-100" type="button" data-toggle="modal" data-target="#threadCreationModal">
                     <i class="fa-solid fa-plus me-3"></i>
                     NEW DISCUSSION
                 </button>
@@ -19,8 +19,8 @@
             <div class="inner-wrapper">
                 <!-- Search Forum -->
                 <div class="searchHeader">
-                    <input type="text" id="searchbar" class="form-control form-control-sm shadow-none mb-4 mt-4" placeholder="Search forum"/>
-                    <label for="sortBy">Sort By:</label>
+                    <input type="text" id="searchbar" class=" mb-4 mt-4 form-control form-control-sm bg-white shadow rounded overflow-hidden" placeholder="Search forum"/>
+                    <label for="sortBy" class="text-white">Sort By:</label>
                     <select id="sortBy">
                         <option value="created_at">Date Created</option>
                         <option value="title">Title</option>
