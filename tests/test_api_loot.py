@@ -1,6 +1,6 @@
 """Unit tests for loot and level up endpoints"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import unittest
 import json
 
@@ -39,12 +39,12 @@ class TestGetLoot(BaseApiTest):
         self.assertEqual(response_body.get("items"), user.inventory.get_items())
 
         # Assert level countdown has started
-        self.assertGreater(user.level_expiry, datetime.now() + timedelta(days=1,seconds=-5))
-        self.assertLess(user.level_expiry, datetime.now() + timedelta(days=1,seconds=5))
+        self.assertGreater(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=-5))
+        self.assertLess(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=5))
 
         # Assert loot drop countdown has started
-        self.assertGreater(user.loot_drop_refresh, datetime.now() + timedelta(hours=12,seconds=-5))
-        self.assertLess(user.loot_drop_refresh, datetime.now() + timedelta(hours=12,seconds=5))
+        self.assertGreater(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=12,seconds=-5))
+        self.assertLess(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=12,seconds=5))
 
     def test_valid_next_loot(self):
         """Tests that loot can be collected if user has collected loot over 12 hours ago"""
@@ -57,8 +57,8 @@ class TestGetLoot(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            loot_drop_refresh=datetime.now() - timedelta(seconds=5),
-            level_expiry=datetime.now() + timedelta(days=1)
+            loot_drop_refresh=datetime.now(timezone.utc) - timedelta(seconds=5),
+            level_expiry=datetime.now(timezone.utc) + timedelta(days=1)
         )
         db.session.add(test_user)
 
@@ -72,8 +72,8 @@ class TestGetLoot(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Assert loot drop countdown has started
-        self.assertGreater(user.loot_drop_refresh, datetime.now() + timedelta(hours=12,seconds=-5))
-        self.assertLess(user.loot_drop_refresh, datetime.now() + timedelta(hours=12,seconds=5))
+        self.assertGreater(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=12,seconds=-5))
+        self.assertLess(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=12,seconds=5))
 
         # Assert inventory has been modified correctly
         current_inventory_list = user.inventory.get_items()
@@ -86,7 +86,7 @@ class TestGetLoot(BaseApiTest):
         """Tests that loot will not be collected if user has collected loot under 12 hours ago"""
 
         # Create new user with auth token directly with the database
-        old_loot_drop_refresh = datetime.now() + timedelta(hours=1)
+        old_loot_drop_refresh = datetime.now(timezone.utc) + timedelta(hours=1)
         test_user = UserModel(
             id=1,
             username="test",
@@ -95,7 +95,7 @@ class TestGetLoot(BaseApiTest):
             security_question=3,
             security_question_answer="Purple",
             loot_drop_refresh=old_loot_drop_refresh,
-            level_expiry=datetime.now() + timedelta(days=1),
+            level_expiry=datetime.now(timezone.utc) + timedelta(days=1),
             level=1
         )
         db.session.add(test_user)
@@ -146,8 +146,8 @@ class TestManualLevelUp(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
-            loot_drop_refresh=datetime.now() + timedelta(hours=11),
+            level_expiry=datetime.now(timezone.utc) + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now(timezone.utc) + timedelta(hours=11),
             level=1
         )
         db.session.add(test_user)
@@ -175,12 +175,12 @@ class TestManualLevelUp(BaseApiTest):
         self.assertEqual(len(drops), 2)
 
         # Assert level countdown has started
-        self.assertGreater(user.level_expiry, datetime.now() + timedelta(days=1,seconds=-5))
-        self.assertLess(user.level_expiry, datetime.now() + timedelta(days=1,seconds=5))
+        self.assertGreater(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=-5))
+        self.assertLess(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=5))
 
         # Assert loot drop countdown has started
-        self.assertGreater(user.loot_drop_refresh, datetime.now() + timedelta(hours=11,minutes=30,seconds=-5))
-        self.assertLess(user.loot_drop_refresh, datetime.now() + timedelta(hours=11,minutes=30,seconds=5))
+        self.assertGreater(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=11,minutes=30,seconds=-5))
+        self.assertLess(user.loot_drop_refresh, datetime.now(timezone.utc) + timedelta(hours=11,minutes=30,seconds=5))
 
     def test_valid_level_up_no_loot(self):
         """Tests that levelling up with a higher loot drop cooldown will not trigger any loot drops"""
@@ -193,8 +193,8 @@ class TestManualLevelUp(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
-            loot_drop_refresh=datetime.now() + timedelta(hours=42),
+            level_expiry=datetime.now(timezone.utc) + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now(timezone.utc) + timedelta(hours=42),
             level=1
         )
         db.session.add(test_user)
@@ -225,8 +225,8 @@ class TestManualLevelUp(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
-            loot_drop_refresh=datetime.now() + timedelta(hours=20),
+            level_expiry=datetime.now(timezone.utc) + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now(timezone.utc) + timedelta(hours=20),
             level=1
         )
         db.session.add(test_user)
@@ -262,8 +262,8 @@ class TestManualLevelUp(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() + timedelta(hours=23, minutes=30),
-            loot_drop_refresh=datetime.now() + timedelta(hours=11),
+            level_expiry=datetime.now(timezone.utc) + timedelta(hours=23, minutes=30),
+            loot_drop_refresh=datetime.now(timezone.utc) + timedelta(hours=11),
         )
         db.session.add(test_user)
 
@@ -311,8 +311,8 @@ class TestAutoLevelling(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() - timedelta(seconds=5),
-            loot_drop_refresh=datetime.now() - timedelta(seconds=5),
+            level_expiry=datetime.now(timezone.utc) - timedelta(seconds=5),
+            loot_drop_refresh=datetime.now(timezone.utc) - timedelta(seconds=5),
             level=1
         )
         db.session.add(test_user)
@@ -327,9 +327,9 @@ class TestAutoLevelling(BaseApiTest):
         # Assert
         user = db.session.get(UserModel, 1)
         self.assertEqual(user.level, 2)
-        self.assertLess(user.level_expiry, datetime.now() + timedelta(days=1,seconds=15))
-        self.assertGreater(user.level_expiry, datetime.now() + timedelta(days=1,seconds=-15))
-        self.assertLess(user.loot_drop_refresh, datetime.now())
+        self.assertLess(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=15))
+        self.assertGreater(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=-15))
+        self.assertLess(user.loot_drop_refresh, datetime.now(timezone.utc))
         self.assertEqual(user.inventory.get_items(), [2, 7, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_user_auto_levelup_multiple(self):
@@ -343,8 +343,8 @@ class TestAutoLevelling(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() - timedelta(days=1, seconds=5), # triggers 2 level expiries
-            loot_drop_refresh=datetime.now() - timedelta(days=2),
+            level_expiry=datetime.now(timezone.utc) - timedelta(days=1, seconds=5), # triggers 2 level expiries
+            loot_drop_refresh=datetime.now(timezone.utc) - timedelta(days=2),
             level=1
         )
         db.session.add(test_user)
@@ -359,9 +359,9 @@ class TestAutoLevelling(BaseApiTest):
         # Assert
         user = db.session.get(UserModel, 1)
         self.assertEqual(user.level, 3)
-        self.assertLess(user.level_expiry, datetime.now() + timedelta(days=1,seconds=15))
-        self.assertGreater(user.level_expiry, datetime.now() + timedelta(days=1,seconds=-15))
-        self.assertLess(user.loot_drop_refresh, datetime.now())
+        self.assertLess(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=15))
+        self.assertGreater(user.level_expiry, datetime.now(timezone.utc) + timedelta(days=1,seconds=-15))
+        self.assertLess(user.loot_drop_refresh, datetime.now(timezone.utc))
 
     def test_user_auto_leveldown(self):
         """Tests that a user will level down if the time is up and requirements are not met"""
@@ -374,8 +374,8 @@ class TestAutoLevelling(BaseApiTest):
             authentication_token="authtest",
             security_question=3,
             security_question_answer="Purple",
-            level_expiry=datetime.now() - timedelta(seconds=5),
-            loot_drop_refresh=datetime.now() - timedelta(seconds=5),
+            level_expiry=datetime.now(timezone.utc) - timedelta(seconds=5),
+            loot_drop_refresh=datetime.now(timezone.utc) - timedelta(seconds=5),
             level=1
         )
         db.session.add(test_user)

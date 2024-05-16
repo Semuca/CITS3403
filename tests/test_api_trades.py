@@ -408,7 +408,6 @@ class TestReadMany(BaseApiTest):
 
     def test_multiple_children_types(self):
         """Tests that multiple children types can be received from the thread endpoint"""
-
         # Create a couple of comments directly with the database
         test_comment_1 = CommentModel(
             comment_text="Do you have any with rank above B? I will trade",
@@ -432,9 +431,9 @@ class TestReadMany(BaseApiTest):
         # Check that the children created before are returned with the right information
         res_json_data = json.loads(res.data)
 
-        self.assertEqual(res_json_data[0]["childType"], "offer", f"Json data sent back is {res_json_data[0]['childType']}")
-        self.assertEqual(res_json_data[1]["childType"], "comment", f"Json data sent back is {res_json_data[1]['childType']}")
-        self.assertEqual(res_json_data[2]["childType"], "comment", f"Json data sent back is {res_json_data[2]['childType']}")
+        self.assertEqual(res_json_data[0]["childType"], "offer", f"Json data sent back is {res_json_data}")
+        self.assertEqual(res_json_data[1]["childType"], "comment", f"Json data sent back is {res_json_data}")
+        self.assertEqual(res_json_data[2]["childType"], "comment", f"Json data sent back is {res_json_data}")
 
 if __name__ == '__main__':
     unittest.main()

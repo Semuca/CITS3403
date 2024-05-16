@@ -1,12 +1,11 @@
 import {CookieManager} from "./helpers/cookie_manager.js";
 
-let levelTime = Date.now() + Math.random() * 1000 * 1000
-let lootTime = Date.now() + Math.random() * 1000 * 1000
-
+let user = null;
+let levelTime = Date.now();
+let lootTime = Date.now();
 
 $(document).ready(() => {
     setInterval(everySecond, 1000)
-
 
     $("#collectLoot").on("click", e => {
         fetch("/api/loot", {
@@ -42,10 +41,8 @@ $(document).ready(() => {
         })
     })
 
-
-
-    //TODO: fix to backend (placeholder URLs)
-    fetch(`/magic/address/to/level/countdown`, {
+    // get timer values from the user object
+    fetch("/api/users", {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
             "Content-type": "application/json; charset=UTF-8"
@@ -53,22 +50,9 @@ $(document).ready(() => {
     }).then(r => {
         if (r.ok) {
             r.json().then(j => {
-                levelTime = j.timeLeft
-            })
-        } else {
-            // alert("Something has gone horribly wrong...")
-        }
-    })
-    //TODO: fix to backend (placeholder URLs)
-    fetch(`/magic/address/to/loot/countdown`, {
-        method: "GET", headers: {
-            Authorization: `Bearer ${CookieManager.getCookie("token")}`,
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    }).then(r => {
-        if (r.ok) {
-            r.json().then(j => {
-                lootTime = j.timeLeft
+                user = j;
+                levelTime = new Date(user.levelExpiry).getTime();
+                lootTime = new Date(user.lootDropRefresh).getTime();
             })
         } else {
             // alert("Something has gone horribly wrong...")
@@ -78,10 +62,40 @@ $(document).ready(() => {
 
 
 function everySecond() {
-    let diff = (levelTime - Date.now())
-    let text = new Date(diff).toISOString().slice(11, -5);
-    $("#levelTime").text(text)
-    diff = (lootTime - Date.now())
-    text = new Date(diff).toISOString().slice(11, -5);
-    $("#lootTime").text(text)
+    // if user object is not yet loaded, do nothing
+    if (!user) return;
+
+    // if level is 0, then keep timers at 00:00:00
+    let level = parseInt($("#level").text())
+    if (level === 0) return;
+
+    let timeLeft = levelExpiryToTimer(levelTime)
+    $("#levelTime").text(timeLeft)
+
+    timeLeft = lootCooldownToTimer(lootTime)
+    $("#lootTime").text(timeLeft)
+}
+
+// converts the expiry time to the amount of time left in the format HH:MM:SS
+function levelExpiryToTimer(expiry) {
+    // if time is up, reload since auto-levelling happens in the backend
+    if (expiry < Date.now()) {
+        location.reload()
+    }
+
+    // calculate time left
+    let diff = new Date(expiry - Date.now());
+    return diff.toUTCString().slice(17, 25); // HH:MM:SS
+}
+
+// converts the loot cooldown time to the amount of time left in the format HH:MM:SS
+function lootCooldownToTimer(cooldown) {
+    // if cooldown is up, time left to next collection is 00:00:00
+    if (cooldown < Date.now()) {
+        return;
+    }
+
+    // calculate time left
+    let diff = new Date(cooldown - Date.now());
+    return diff.toUTCString().slice(17, 25); // HH:MM:SS
 }

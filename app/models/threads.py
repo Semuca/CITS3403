@@ -1,6 +1,6 @@
 """Defines the thread object and provides functions to get and manipulate one"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.databases import db
 
@@ -12,7 +12,7 @@ class ThreadModel(db.Model):
 
     # Auto-initialised fields
     id = db.Column(db.Integer(), primary_key=True)
-    created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime(), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Set fields
     title = db.Column(db.String(200), nullable=False)

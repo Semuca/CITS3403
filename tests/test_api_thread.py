@@ -2,7 +2,7 @@
 
 import unittest
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.databases import db
 from app.models import UserModel, ThreadModel
@@ -106,13 +106,13 @@ class TestReadMany(BaseApiTest):
             title='hello',
             description = "Heya new here",
             user_id=1,
-            created_at=datetime.now()
+            created_at=datetime.now(timezone.utc)
         )
         test_thread_2 = ThreadModel(
             title='Theory',
             description='Just a theory a game theory',
             user_id=1,
-            created_at=datetime.now() + timedelta(hours=1)
+            created_at=datetime.now(timezone.utc) + timedelta(hours=1)
         )
         db.session.add(test_thread_1)
         db.session.add(test_thread_2)
@@ -155,7 +155,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
         db.session.commit()
@@ -188,7 +188,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
         db.session.commit()
@@ -211,7 +211,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
 
@@ -246,7 +246,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
 
@@ -270,7 +270,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
 
@@ -287,7 +287,7 @@ class TestReadMany(BaseApiTest):
                 title=f'thread{i}',
                 description=f'description{i}',
                 user_id=1,
-                created_at=datetime.now() + timedelta(hours=i)
+                created_at=datetime.now(timezone.utc) + timedelta(hours=i)
             )
             db.session.add(new_thread)
 

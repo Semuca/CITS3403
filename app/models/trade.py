@@ -1,6 +1,6 @@
 """Defines the trades object and provides functions to get and manipulate one"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 from app.databases import db
@@ -14,7 +14,7 @@ class OffersModel(db.Model):
 
     # Auto-initialised fields
     id = db.Column(db.Integer(), primary_key=True)
-    created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime(), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Set fields
     offering = db.Column(db.Text(), nullable=False)
