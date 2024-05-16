@@ -18,18 +18,8 @@ body{
     width: 100%;
 }
 
-.thread-header .thread-header-cover:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, var(--cyan) 0, var(--darkGrey) 100%);
-}
-
 .thread-header .thread-header-content {
-    color: var(--white);
+    color: var(--darkGrey);
     padding: 25px;
     position: relative;
 }
