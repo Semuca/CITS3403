@@ -43,34 +43,34 @@ $(document).ready(() => {
                     console.log(i)
                     if (i.childType === "comment") {
                         $("#comments").append(`
-                       <li>
-                           <div class="timeline-time">
-                               <span class="date">${dateFromPythonTime(i.createdAt)}</span>
-                               <span class="time">${timeFromPythonTime(i.createdAt)}</span>
-                           </div>
-                           <div class="timeline-body">
-                               <div class="timeline-content">
-                                   <h5 class="comment-username mb-1">${i.user.username}</h5>
-                                   <p>${i.commentText}</p>
-                               </div>
-                           </div>
-                       </li>`
+                        <li>
+                            <div class="timeline-time">
+                                <span class="date">${dateFromPythonTime(i.createdAt)}</span>
+                                <span class="time">${timeFromPythonTime(i.createdAt)}</span>
+                            </div>
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <h5 class="comment-username mb-1">${i.user.username}</h5>
+                                    <p>${i.commentText}</p>
+                                </div>
+                            </div>
+                        </li>`
                         )
                     } else {
                         $("#comments").append(`
-                       <li>
-                           <div class="timeline-time">
-                               <span class="date">${dateFromPythonTime(i.createdAt)}</span>
-                               <span class="time">${timeFromPythonTime(i.createdAt)}</span>
-                           </div>
-                           <div class="timeline-body">
-                               <div class="timeline-content">
-                                   <h4>Trade Request from ${i.user.username}</h4>
-                                   <p id="trade${i.id}">${i.offering} for ${i.wanting}</p>
-                                   <button class="trade" id="${i.id}">Accept</button>
-                               </div>
-                           </div>
-                       </li>`)
+                        <li>
+                            <div class="timeline-time">
+                                <span class="date">${dateFromPythonTime(i.createdAt)}</span>
+                                <span class="time">${timeFromPythonTime(i.createdAt)}</span>
+                            </div>
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <h4>Trade Request from ${i.user.username}</h4>
+                                    <p id="trade${i.id}">${i.offering} for ${i.wanting}</p>
+                                    <button class="trade" id="${i.id}">Accept</button>
+                                </div>
+                            </div>
+                        </li>`)
                     }
 
                 }
