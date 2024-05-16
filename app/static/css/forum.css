@@ -12,10 +12,6 @@ body {
     height: calc(100vh - 3.5rem);
 }
 
-.content {
-    margin-top: 80px;
-}
-
 #searchbar {
     border: none;
 }

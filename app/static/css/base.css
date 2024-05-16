@@ -17,8 +17,8 @@
     font-family: 'NicoPups', sans-serif;
 }
 
-*, p, h1, h2, h3, h4, i, a, button{
-    font-family: 'NicoPups', sans-serif;
+*{
+    font-family: 'NicoPups', sans-serif !important;
 }
 
 .content {
