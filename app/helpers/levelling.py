@@ -1,6 +1,6 @@
 """This module provides levelling helper functions for api endpoints"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask import current_app
 from app.databases import db
@@ -11,14 +11,14 @@ def auto_level(user: UserModel) -> None:
     """Check if the user's level time is up and level up/down if necessary"""
 
     # Don't do anything if user has not started playing or still has time left
-    if user.level == 0 or datetime.now() < user.level_expiry:
+    if user.level == 0 or datetime.now(timezone.utc) < user.level_expiry:
         return
 
     # Level until user is up to date, or until they cannot meet requirements
-    while user.level_expiry < datetime.now() and user.inventory.has_required_items():
+    while user.level_expiry < datetime.now(timezone.utc) and user.inventory.has_required_items():
         auto_level_up(user)
 
-    if user.level_expiry < datetime.now(): # cannot meet requirements
+    if user.level_expiry < datetime.now(timezone.utc): # cannot meet requirements
         level_down(user)
 
     db.session.add(user)
@@ -58,7 +58,7 @@ def manual_level_up(user: UserModel) -> list[list[int]]:
     user.inventory.set_items(items)
 
     # Set loot drop cooldown to now if it's in the past, to stop users from getting past drops
-    user.loot_drop_refresh = max(user.loot_drop_refresh, datetime.now())
+    user.loot_drop_refresh = max(user.loot_drop_refresh, datetime.now(timezone.utc))
 
     # Perform auto loot drops for the time left, until cooldown is higher than time to next level
     gained_values = []
@@ -72,10 +72,10 @@ def manual_level_up(user: UserModel) -> list[list[int]]:
         user.loot_drop_refresh += current_app.config['LOOT_DROP_TIMER']
 
     # Speed up loot cooldown to next expiry
-    user.loot_drop_refresh = datetime.now() + (user.loot_drop_refresh - user.level_expiry)
+    user.loot_drop_refresh = datetime.now(timezone.utc) + (user.loot_drop_refresh - user.level_expiry)
 
     # Set game attributes
-    user.level_expiry = datetime.now() + timedelta(days=1)
+    user.level_expiry = datetime.now(timezone.utc) + timedelta(days=1)
     user.level += 1
     user.inventory.set_items_required(calculate_next_level_requirements())
 

@@ -1,6 +1,6 @@
 """Defines the users object and provides functions to get and manipulate one"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.inventory import InventoryModel
 from app.databases import db
@@ -14,7 +14,7 @@ class UserModel(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200))
-    created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime(), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Authentication
     password_hash = db.Column(db.String(200), nullable=False)
@@ -27,8 +27,8 @@ class UserModel(db.Model):
 
     # Game stats
     level = db.Column(db.Integer(), default=0, nullable=False) # lv0 not playing yet, empty attributes
-    level_expiry = db.Column(db.DateTime())
-    loot_drop_refresh = db.Column(db.DateTime())
+    _level_expiry = db.Column(db.DateTime())
+    _loot_drop_refresh = db.Column(db.DateTime())
 
     # Relationships
     inventory = db.relationship("InventoryModel", backref="user", uselist=False)
@@ -38,6 +38,24 @@ class UserModel(db.Model):
         super().__init__(**kwargs)
         self.inventory = InventoryModel(user_id=self.id)
 
+    # need for timezone awareness when comparing against datetime.now(timezone.utc)
+    # all datetime objects are stored in UTC, but accessing them will get them without timezone info, causing errors
+    @property
+    def level_expiry(self):
+        return self._level_expiry.replace(tzinfo=timezone.utc) if self._level_expiry else None
+
+    @level_expiry.setter
+    def level_expiry(self, value: datetime):
+        self._level_expiry = value
+
+    @property
+    def loot_drop_refresh(self):
+        return self._loot_drop_refresh.replace(tzinfo=timezone.utc) if self._loot_drop_refresh else None
+
+    @loot_drop_refresh.setter
+    def loot_drop_refresh(self, value: datetime):
+        self._loot_drop_refresh = value
+
     def to_json(self):
         """Return json from already-created user object"""
         json_user = {
@@ -46,5 +64,7 @@ class UserModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'inventory': self.inventory.get_items(),
+            'levelExpiry': self.level_expiry,
+            'lootDropRefresh': self.loot_drop_refresh,
         }
         return json_user

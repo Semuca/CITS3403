@@ -1,6 +1,6 @@
 """Defines the users object and provides functions to get and manipulate one"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 from app.databases import db
@@ -17,7 +17,7 @@ class LogModel(db.Model):
     request_body = db.Column(db.String(200))
     response_code = db.Column(db.Integer(), nullable=False)
     error_response_body = db.Column(db.String(200))
-    created_at = db.Column(db.DateTime(), default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime(), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     def to_json(self):
         """Return json from log object"""
