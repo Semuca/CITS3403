@@ -1,6 +1,6 @@
 """This module defines endpoints for loot and level up operations"""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 from flask import current_app, make_response
 

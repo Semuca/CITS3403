@@ -1,6 +1,6 @@
 """This module provides levelling helper functions for api endpoints"""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 from flask import current_app
 from app.databases import db

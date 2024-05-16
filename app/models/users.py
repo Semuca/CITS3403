@@ -41,19 +41,23 @@ class UserModel(db.Model):
     # need for timezone awareness when comparing against datetime.now(timezone.utc)
     # all datetime objects are stored in UTC, but accessing them will get them without timezone info, causing errors
     @property
-    def level_expiry(self):
+    def level_expiry(self) -> datetime | None:
+        """Property wrapper for level expiry time with the timezone info field set to UTC"""
         return self._level_expiry.replace(tzinfo=timezone.utc) if self._level_expiry else None
 
     @level_expiry.setter
-    def level_expiry(self, value: datetime):
+    def level_expiry(self, value: datetime) -> None:
+        """Set the level expiry time through the wrapper"""
         self._level_expiry = value
 
     @property
     def loot_drop_refresh(self):
+        """Property wrapper for loot drop refresh time with the timezone info field set to UTC"""
         return self._loot_drop_refresh.replace(tzinfo=timezone.utc) if self._loot_drop_refresh else None
 
     @loot_drop_refresh.setter
     def loot_drop_refresh(self, value: datetime):
+        """Set the loot drop refresh time through the wrapper"""
         self._loot_drop_refresh = value
 
     def to_json(self):
