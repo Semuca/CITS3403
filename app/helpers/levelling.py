@@ -36,7 +36,7 @@ def auto_level_up(user: UserModel) -> None:
         items[i] -= requirement
 
     # Set game attributes
-    user.level_expiry += timedelta(days=1) # Level starts when the last one ended
+    user.level_expiry += current_app.config['LEVEL_EXPIRY_TIMER'] # Level starts when the last one ended
     user.level += 1
     user.inventory.set_items(items)
     user.inventory.set_items_required(calculate_next_level_requirements())
@@ -75,7 +75,7 @@ def manual_level_up(user: UserModel) -> list[list[int]]:
     user.loot_drop_refresh = datetime.now(timezone.utc) + (user.loot_drop_refresh - user.level_expiry)
 
     # Set game attributes
-    user.level_expiry = datetime.now(timezone.utc) + timedelta(days=1)
+    user.level_expiry = datetime.now(timezone.utc) + current_app.config['LEVEL_EXPIRY_TIMER']
     user.level += 1
     user.inventory.set_items_required(calculate_next_level_requirements())
 

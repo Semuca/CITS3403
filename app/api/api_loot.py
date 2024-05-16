@@ -37,7 +37,7 @@ def get_loot_drop():
         # If this is the first drop, start the level timer and put the user in the first level
         if queried_user.level == 0:
             queried_user.level = 1
-            queried_user.level_expiry = datetime.now(timezone.utc) + timedelta(days=1)
+            queried_user.level_expiry = datetime.now(timezone.utc) + current_app.config['LEVEL_EXPIRY_TIMER']
             queried_user.inventory.set_items_required(single_loot_drop())
 
         # Reset the loot drop timer

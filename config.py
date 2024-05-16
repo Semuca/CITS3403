@@ -23,6 +23,7 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'test.db')
 
     # Game mechanics
+    LEVEL_EXPIRY_TIMER = timedelta(days=1)
     LOOT_DROP_TIMER = timedelta(hours=12)
 
 
@@ -34,7 +35,8 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'dev.db')
 
     # Game mechanics
-    LOOT_DROP_TIMER = timedelta(hours=12)
+    LEVEL_EXPIRY_TIMER = timedelta(minutes=2)
+    LOOT_DROP_TIMER = timedelta(minutes=1)
 
 # pylint: disable=too-few-public-methods
 class ProdConfig(Config):
@@ -44,6 +46,7 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'prod.db')
 
     # Game mechanics
+    LEVEL_EXPIRY_TIMER = timedelta(days=1)
     LOOT_DROP_TIMER = timedelta(hours=12)
 
 config = {
