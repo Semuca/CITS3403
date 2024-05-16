@@ -38,7 +38,7 @@
                                     <div class="timeline-body">
                                         <div class="timeline-content">
                                             <h5 class="comment-username mb-1">{{ i.user.username }}</h5>
-                                            <p>{{ i.comment_text }}</p>
+                                            <p>{{ i.comment_text | safe }}</p>
                                         </div>
                                     </div>
                                 </li>

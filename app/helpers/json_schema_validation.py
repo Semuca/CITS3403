@@ -4,6 +4,7 @@ import re
 from typing import TypedDict
 from flask import request
 from markupsafe import escape
+import hashlib
 
 class RequestSchemaDefinition(TypedDict):
     """Defines a schema definition for a request parameter"""
@@ -56,21 +57,21 @@ def validate_request_schema(schema: dict[str, str | RequestSchemaDefinition]) ->
 
 def validate_username(value: any, _definition: RequestSchemaDefinition) -> str | None:
     """Validates a username string"""
-    if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None or len(value) == 0:
+    if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None:
         return None
     return value
 
 def validate_hash(value: any, _definition: RequestSchemaDefinition) -> str | None:
     """Validates a hash string"""
-    if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None or len(value) == 0:
+    if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None or value == "0":
         return None
-    return value
+    return hashlib.sha256(value.encode()).hexdigest()
 
 def validate_text(value: any, _definition: RequestSchemaDefinition) -> str | None:
     """Validates a general text string"""
     if not isinstance(value, str):
         return None
-    return escape(value)
+    return escape(value) # escape here and mark as safe in jinja. This is safeguard for apis
 
 def validate_int(value: any, _definition: RequestSchemaDefinition) -> int | None:
     """Validates an integer or string that represents a digit"""

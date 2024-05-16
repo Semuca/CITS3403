@@ -2,6 +2,7 @@
 
 import unittest
 import json
+import hashlib
 
 from app.databases import db
 from app.models import UserModel
@@ -99,13 +100,15 @@ class TestEditUser(BaseApiTest):
         """Tests that changing security questions returns correctly"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             description="desc",
             authentication_token="authtest",
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer
         ))
         db.session.commit()
 
@@ -122,7 +125,7 @@ class TestEditUser(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Incorrect status code with message {res.data}")
 
         self.assertEqual(user.security_question, str(body["securityQuestion"]), f"Security question is not the same as the one in the db {body}")
-        self.assertEqual(user.security_question_answer, body["securityQuestionAnswer"],
+        self.assertEqual(user.security_question_answer, hashlib.sha256(body["securityQuestionAnswer"].encode()).hexdigest(),
                          f"Security question answer is not the same as the one in the db {body}")
         self.assertEqual(user.description, "desc", f"Users description should not have changed {body}")
 
@@ -130,12 +133,14 @@ class TestEditUser(BaseApiTest):
         """Tests that changing password returns correctly"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             authentication_token="authtest",
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer
         ))
         db.session.commit()
 
@@ -150,19 +155,21 @@ class TestEditUser(BaseApiTest):
         # Assert
         self.assertEqual(res.status_code, 200, f"Incorrect status code with message {res.data}")
 
-        self.assertEqual(user.password_hash, body["password"], f"Password hash is not the same as the one in the db {body}")
+        self.assertEqual(user.password_hash, hashlib.sha256(body["password"].encode()).hexdigest(), f"Password hash is not the same as the one in the db {body}")
 
     def test_valid_change_description(self):
         """Tests that changing description returns correctly"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             description="desc",
             authentication_token="authtest",
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer
         ))
         db.session.commit()
 
