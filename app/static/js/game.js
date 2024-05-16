@@ -50,11 +50,9 @@ $(document).ready(() => {
     }).then(r => {
         if (r.ok) {
             r.json().then(j => {
-                console.log("BBBBB", j);
                 user = j;
                 levelTime = new Date(user.levelExpiry).getTime();
                 lootTime = new Date(user.lootDropRefresh).getTime();
-                console.log("AAAAA", levelTime, lootTime);
             })
         } else {
             // alert("Something has gone horribly wrong...")

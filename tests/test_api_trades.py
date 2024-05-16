@@ -431,7 +431,7 @@ class TestReadMany(BaseApiTest):
         # Check that the children created before are returned with the right information
         res_json_data = json.loads(res.data)
 
-        self.assertEqual(res_json_data[0]["childType"], "offer", f"Json data sent back is {res_json_data[0]}\n\n\n{res_json_data[1]}\n\n\n{res_json_data[2]}")
+        self.assertEqual(res_json_data[0]["childType"], "offer", f"Json data sent back is {res_json_data}")
         self.assertEqual(res_json_data[1]["childType"], "comment", f"Json data sent back is {res_json_data}")
         self.assertEqual(res_json_data[2]["childType"], "comment", f"Json data sent back is {res_json_data}")
 
