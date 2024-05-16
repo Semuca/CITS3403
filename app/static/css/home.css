@@ -1,9 +1,6 @@
-/* body{
-  background-image: url("/static/images/wood.png");
-  background-size: cover;
-  background-repeat: repeat-y;
-  background-position: center center;
-} */
+#scroll{
+  font-family: 'NicoPups', sans-serif !important;
+}
 
 .btnCustom {
   text-transform: uppercase;
@@ -29,3 +26,4 @@ header.title {
   max-width: 100%; 
   height: auto;
 }
+

@@ -8,19 +8,28 @@
     --navy: #4f5d75;
 }
 
+@font-face {
+    font-family: 'NicoPups';
+    src: url(/static/fonts/NicoPups-Regular.woff2) format('woff2'), url(/static/fonts/NicoPups-Regular.woff) format('woff');
+}
+
+.pixelFont{
+    font-family: 'NicoPups', sans-serif;
+}
+
+*, p, h1, h2, h3, h4, i, a, button{
+    font-family: 'NicoPups', sans-serif;
+}
+
 .content {
     padding-top: 80px;
-}
+} 
 
 .navbarCustom {
     background-color: var(--darkGrey);
     position: fixed;
     width: 100%;
     z-index: 999;
-}
-
-.navbarCustom .navbar-brand .fa-hat-wizard{
-    color: var(--navy)
 }
 
 .navbarCustom .navbar-brand {
