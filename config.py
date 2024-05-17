@@ -22,6 +22,12 @@ class TestConfig(Config):
     # Databases
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'test.db')
 
+    # CSRF protection
+    SECRET_KEY = os.urandom(24)
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_CHECK_DEFAULT = False
+    WTF_CSRF_HEADERS = ['X-CSRFTOKEN']
+
     # Game mechanics
     LEVEL_EXPIRY_TIMER = timedelta(days=1)
     LOOT_DROP_TIMER = timedelta(hours=12)
@@ -34,6 +40,10 @@ class DevConfig(Config):
     # Databases
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'dev.db')
 
+    # CSRF protection
+    SECRET_KEY = os.urandom(24)
+    WTF_CSRF_ENABLED = True
+
     # Game mechanics
     LEVEL_EXPIRY_TIMER = timedelta(minutes=2)
     LOOT_DROP_TIMER = timedelta(minutes=1)
@@ -44,6 +54,10 @@ class ProdConfig(Config):
 
     # Databases
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app', 'databases', 'prod.db')
+
+    # CSRF protection
+    SECRET_KEY = os.urandom(24)
+    WTF_CSRF_ENABLED = True
 
     # Game mechanics
     LEVEL_EXPIRY_TIMER = timedelta(days=1)

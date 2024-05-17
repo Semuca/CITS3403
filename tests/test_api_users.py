@@ -7,7 +7,7 @@ import hashlib
 from app.databases import db
 from app.models import UserModel
 
-from .helpers import BaseApiTest, get_api_headers
+from .helpers import BaseApiTest
 
 class TestGetUser(BaseApiTest):
     """Tests get user endpoint - GET api/users"""
@@ -27,7 +27,7 @@ class TestGetUser(BaseApiTest):
         db.session.commit()
 
         # Act
-        res = self.client.get("/api/users", headers=get_api_headers())
+        res = self.client.get("/api/users", headers=self.get_api_headers())
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -53,7 +53,7 @@ class TestCreateUser(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/users", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/users", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -86,7 +86,7 @@ class TestCreateUser(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/users", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/users", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -118,7 +118,7 @@ class TestEditUser(BaseApiTest):
         }
 
         # Act
-        res = self.client.put("/api/users", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.put("/api/users", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -149,7 +149,7 @@ class TestEditUser(BaseApiTest):
         }
 
         # Act
-        res = self.client.put("/api/users", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.put("/api/users", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -178,7 +178,7 @@ class TestEditUser(BaseApiTest):
         }
 
         # Act
-        res = self.client.put("/api/users", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.put("/api/users", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert

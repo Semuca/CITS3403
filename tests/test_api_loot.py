@@ -7,7 +7,7 @@ import json
 from app.databases import db
 from app.models import InventoryModel, INVENTORY_SIZE, UserModel
 
-from .helpers import BaseApiTest, get_api_headers
+from .helpers import BaseApiTest
 
 class TestGetLoot(BaseApiTest):
     """Tests loot drop endpoint - GET api/loot"""
@@ -27,7 +27,7 @@ class TestGetLoot(BaseApiTest):
         db.session.add(test_user)
 
         # Act
-        res = self.client.get("/api/loot", headers=get_api_headers())
+        res = self.client.get("/api/loot", headers=self.get_api_headers())
 
         # Assert
         response_body = json.loads(res.data)
@@ -65,7 +65,7 @@ class TestGetLoot(BaseApiTest):
         old_inventory_list = db.session.get(InventoryModel, 1).get_items()
 
         # Act
-        res = self.client.get("/api/loot", headers=get_api_headers())
+        res = self.client.get("/api/loot", headers=self.get_api_headers())
         user = db.session.get(UserModel, 1)
         response_body = json.loads(res.data)
 
@@ -103,7 +103,7 @@ class TestGetLoot(BaseApiTest):
         old_inventory_list = db.session.get(InventoryModel, 1).get_items()
 
         # Act
-        res = self.client.get("/api/loot", headers=get_api_headers())
+        res = self.client.get("/api/loot", headers=self.get_api_headers())
         user = db.session.get(UserModel, 1)
 
         # Assert inventory hasn't been changed
@@ -130,7 +130,7 @@ class TestManualLevelUp(BaseApiTest):
         db.session.add(test_user)
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
@@ -162,7 +162,7 @@ class TestManualLevelUp(BaseApiTest):
         # Therefore, the next loot drop should be 11.5 hours from leveling up
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         response_body = json.loads(res.data)
@@ -204,7 +204,7 @@ class TestManualLevelUp(BaseApiTest):
         db.session.commit()
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         user = db.session.get(UserModel, 1)
@@ -236,7 +236,7 @@ class TestManualLevelUp(BaseApiTest):
         db.session.commit()
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         response_body = json.loads(res.data)
@@ -272,7 +272,7 @@ class TestManualLevelUp(BaseApiTest):
         db.session.commit()
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
@@ -295,7 +295,7 @@ class TestAutoLevelling(BaseApiTest):
         db.session.add(test_user)
 
         # Act
-        res = self.client.get("/api/levelup", headers=get_api_headers())
+        res = self.client.get("/api/levelup", headers=self.get_api_headers())
 
         # Assert
         self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
@@ -321,7 +321,7 @@ class TestAutoLevelling(BaseApiTest):
         test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
 
         # Act
-        res = self.client.get("/api/users", headers=get_api_headers())
+        res = self.client.get("/api/users", headers=self.get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Assert
@@ -353,7 +353,7 @@ class TestAutoLevelling(BaseApiTest):
         test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
 
         # Act
-        res = self.client.get("/api/users", headers=get_api_headers())
+        res = self.client.get("/api/users", headers=self.get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Assert
@@ -384,7 +384,7 @@ class TestAutoLevelling(BaseApiTest):
         test_user.inventory.set_items_required([4, 2, 0, 0, 0, 0, 0, 0, 0, 0])
 
         # Act
-        res = self.client.get("/api/users", headers=get_api_headers())
+        res = self.client.get("/api/users", headers=self.get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Assert

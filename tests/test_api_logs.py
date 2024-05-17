@@ -6,7 +6,7 @@ import json
 from app.databases import db
 from app.models import UserModel
 
-from .helpers import BaseApiTest, get_api_headers
+from .helpers import BaseApiTest
 
 class TestReadMany(BaseApiTest):
     """Tests logs read-many endpoint - GET api/logs"""
@@ -39,10 +39,10 @@ class TestReadMany(BaseApiTest):
         }
 
         # Act
-        thread_response_1 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_1))
-        thread_response_2 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_2))
+        thread_response_1 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_1))
+        thread_response_2 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_2))
 
-        response = self.client.get("/api/logs", headers=get_api_headers())
+        response = self.client.get("/api/logs", headers=self.get_api_headers())
 
         # Assert
         self.assertEqual(response.status_code, 200, f"Status code is wrong with message {response.data}")

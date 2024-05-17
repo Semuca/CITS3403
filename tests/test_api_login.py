@@ -7,7 +7,7 @@ import hashlib
 from app.databases import db
 from app.models import UserModel
 
-from .helpers import BaseApiTest, get_api_headers
+from .helpers import BaseApiTest
 
 class TestLogin(BaseApiTest):
     """Tests log in endpoint - POST api/login"""
@@ -33,7 +33,7 @@ class TestLogin(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -53,7 +53,7 @@ class TestLogin(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -70,7 +70,7 @@ class TestLogin(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login", headers=self.get_api_headers(), data=json.dumps(body))
         user1 = db.session.get(UserModel, 1)
         user2 = db.session.get(UserModel, 2)
 
@@ -102,7 +102,7 @@ class TestChangePasswordWithQuestion(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login/questions", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login/questions", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -132,7 +132,7 @@ class TestChangePasswordWithQuestion(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login/questions", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login/questions", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -163,7 +163,7 @@ class TestChangePasswordUnauthenticated(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login/password", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login/password", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert
@@ -192,7 +192,7 @@ class TestChangePasswordUnauthenticated(BaseApiTest):
         }
 
         # Act
-        res = self.client.post("/api/login/password", headers=get_api_headers(), data=json.dumps(body))
+        res = self.client.post("/api/login/password", headers=self.get_api_headers(), data=json.dumps(body))
         user = db.session.get(UserModel, 1)
 
         # Assert

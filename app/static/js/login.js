@@ -1,5 +1,13 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
 
+$(document).ready(() => {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": "{{ csrf_token() }}"
+        }
+    });
+});
+
 function hash(str) {
     /**
      * COPIED DIRECTLY FROM https://stackoverflow.com/a/26057776

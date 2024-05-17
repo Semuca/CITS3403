@@ -6,7 +6,7 @@ import json
 from app.databases import db
 from app.models import UserModel, ThreadModel, CommentModel
 
-from .helpers import BaseApiTest, get_api_headers
+from .helpers import BaseApiTest
 
 class TestCreate(BaseApiTest):
     """Tests threads create endpoint - POST api/threads/{thread_id}/comments"""
@@ -44,13 +44,13 @@ class TestCreate(BaseApiTest):
         req_body_1 = {
             "commentText": "Do you have any with rank above B I will trade"
         }
-        res_1 = self.client.post("/api/threads/1/comments", headers=get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/1/comments", headers=self.get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 201, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
             "commentText": "If u like anything in my inventory I am down to trade"
         }
-        res_2 = self.client.post("/api/threads/1/comments", headers=get_api_headers(), data=json.dumps(req_body_2))
+        res_2 = self.client.post("/api/threads/1/comments", headers=self.get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 201, f"Status code is wrong with message {res_2.data}")
 
         # Check that comments are in the db and have info
@@ -82,8 +82,8 @@ class TestCreate(BaseApiTest):
         req_body = {
             "commentText": "Do you have any with rank above B I will trade"
         }
-        res_1 = self.client.post("/api/threads/3/comments", headers=get_api_headers(), data=json.dumps(req_body))
-        res_2 = self.client.post("/api/threads/awawa/comments", headers=get_api_headers(), data=json.dumps(req_body))
+        res_1 = self.client.post("/api/threads/3/comments", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res_2 = self.client.post("/api/threads/awawa/comments", headers=self.get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message {res_2.data}")
 
@@ -138,7 +138,7 @@ class TestReadMany(BaseApiTest):
         """Tests that comments can be received from the endpoint"""
 
         # Post a get request for all the comments in the test thread with two comments
-        res = self.client.get("/api/threads/1/children", headers=get_api_headers())
+        res = self.client.get("/api/threads/1/children", headers=self.get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the two comments created before are returned with the right information
@@ -157,7 +157,7 @@ class TestReadMany(BaseApiTest):
         """Tests that getting with no comments gets an empty list"""
 
         # Post a get request for all the comments in the test thread with no comments
-        res = self.client.get("/api/threads/2/children", headers=get_api_headers())
+        res = self.client.get("/api/threads/2/children", headers=self.get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         res_json_data = json.loads(res.data)
@@ -166,8 +166,8 @@ class TestReadMany(BaseApiTest):
     def test_get_from_nonexistent_thread(self):
         """Tests that getting from a nonexistent thread gets the right error response"""
 
-        res_1 = self.client.get("/api/threads/3/children", headers=get_api_headers())
-        res_2 = self.client.get("/api/threads/awawa/children", headers=get_api_headers())
+        res_1 = self.client.get("/api/threads/3/children", headers=self.get_api_headers())
+        res_2 = self.client.get("/api/threads/awawa/children", headers=self.get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message '{res_1.data}'")
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message '{res_2.data}'")
 

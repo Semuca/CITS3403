@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect # Using this to half-manually-implement CSRF protection
 from app import models
 from config import config
 
@@ -21,6 +22,10 @@ def create_app(config_name='default'):
     # Bind migration to app
     migrate = Migrate(flask_app, db, render_as_batch=True)
     migrate.init_app(flask_app, db, render_as_batch=True)
+
+    # CSRF protection
+    csrf = CSRFProtect(flask_app)
+    csrf.init_app(flask_app)
 
     # Importing blueprint endpoints
     flask_app.register_blueprint(api_bp, url_prefix='/api')
