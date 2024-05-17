@@ -24,7 +24,6 @@ $(document).ready(() => {
         loadPage(totalPages);
     });
 
-    // Event listener for page navigation links
     $(".pagination").on("click", ".page-item:not(.page-nav)", function() {
         const page = $(this).find(".page-link").text();
         loadPage(parseInt(page));
@@ -120,12 +119,11 @@ function updateNavLinks(currentPage, lastPage) {
     const pagination = $(".pagination");
     pagination.empty();
 
-    // Calculate page range based on current page and total pages - up to 5 pages
+    // Calculate page range based on current page and total pages - up to 5 pages currently
     const startPage = Math.max(currentPage - 2, 1);
     const endPage = Math.min(currentPage + 2, lastPage);
     totalPages = lastPage;
 
-    // Append first page link
     pagination.append(`
         <li class="page-item page-nav"><a id="firstPage" class="page-link" tabindex="-1">\<\<</a></li>
     `);
@@ -135,7 +133,6 @@ function updateNavLinks(currentPage, lastPage) {
         pagination.find("#firstPage").addClass("disabled");
     }
 
-    // Append previous page link
     pagination.append(`
         <li class="page-item page-nav"><a id="prevPage" class="page-link" tabindex="-1">\<</a></li>
     `);
@@ -145,7 +142,6 @@ function updateNavLinks(currentPage, lastPage) {
         pagination.find("#prevPage").addClass("disabled");
     }
 
-    // Append page links within the page range
     for (let i = startPage; i <= endPage; i++) {
         pagination.append(`
             <li class="page-item  ${i === currentPage ? 'active' : ''}">
@@ -154,7 +150,6 @@ function updateNavLinks(currentPage, lastPage) {
         `);
     }
 
-    // Append next page link
     pagination.append(`
         <li class="page-item page-nav"><a id="nextPage" class="page-link" tabindex="-1">\></a></li>
     `);
@@ -164,7 +159,6 @@ function updateNavLinks(currentPage, lastPage) {
         pagination.find("#nextPage").addClass("disabled");
     }
 
-    // Append last page link
     pagination.append(`
         <li class="page-item page-nav"><a id="lastPage" class="page-link" tabindex="-1">\>\></a></li>
     `);
