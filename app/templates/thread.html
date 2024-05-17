@@ -12,9 +12,9 @@
             <div class="thread-header-cover"></div>
             <div class="thread-header-content">
                 <div class="thread-header-info mb-4">
-                    <h1 id="title"> {{ thread.title }}</h1>
+                    <h1 id="title"> {{ thread.title | safe }}</h1>
                     <i class="poster"> Posted by {{ thread.poster.username }}</i>
-                    <p id="description"> {{ thread.description }}</p>
+                    <p id="description"> {{ thread.description | safe }}</p>
                 </div>
             </div>
         </div>

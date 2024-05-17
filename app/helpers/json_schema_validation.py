@@ -2,9 +2,10 @@
 
 import re
 from typing import TypedDict
+import hashlib
+
 from flask import request
 from markupsafe import escape
-import hashlib
 
 class RequestSchemaDefinition(TypedDict):
     """Defines a schema definition for a request parameter"""
@@ -63,7 +64,8 @@ def validate_username(value: any, _definition: RequestSchemaDefinition) -> str |
 
 def validate_hash(value: any, _definition: RequestSchemaDefinition) -> str | None:
     """Validates a hash string"""
-    if not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None or value == "0":
+    if (not isinstance(value, str) or re.fullmatch(r'[\w-]+', value) is None
+        or value == hashlib.sha256(b'').hexdigest()): # empty string on frontend
         return None
     return hashlib.sha256(value.encode()).hexdigest()
 
@@ -71,7 +73,7 @@ def validate_text(value: any, _definition: RequestSchemaDefinition) -> str | Non
     """Validates a general text string"""
     if not isinstance(value, str):
         return None
-    return escape(value) # escape here and mark as safe in jinja. This is safeguard for apis
+    return escape(value) # escape here early and mark as safe in jinja.
 
 def validate_int(value: any, _definition: RequestSchemaDefinition) -> int | None:
     """Validates an integer or string that represents a digit"""
