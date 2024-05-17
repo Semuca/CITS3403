@@ -53,10 +53,15 @@ def read_many_thread():
         sort_by_attribute = getattr(ThreadModel, sort_by)
         order_by_query = sort_by_attribute.desc() if sort_dir == 'desc' else sort_by_attribute.asc()
         query = db.select(ThreadModel).filter(ThreadModel.title.contains(search)).order_by(order_by_query)
-        queried_threads = db.paginate(query, page=page, per_page=per_page).items
+        queried_threads = db.paginate(query, page=page, per_page=per_page)
 
         # Return query result to client
-        return make_response([ThreadModel.to_json(t) for t in queried_threads], 200)
+        json_return = {
+            "total": queried_threads.pages,
+            "threads": [ThreadModel.to_json(t) for t in queried_threads.items]
+        }
+
+        return make_response(json_return, 200)
     return authenticated_endpoint_wrapper(read_many_thread_schema, func)
 
 read_many_thread_schema: dict[str, str | RequestSchemaDefinition] = {

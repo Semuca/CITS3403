@@ -3,38 +3,41 @@ import { CookieManager } from "./helpers/cookie_manager.js";
 import { showErrorBanner } from "./helpers/error_banner.js";
 import { dateFromPythonTime, timeFromPythonTime } from "./helpers/format_time.js"
 
-const threads = [];
+const perPage = 5;
 let pageNumber = 1
-const pageBefore = $("#pageBefore")
-const currentPage = $("#currentPage")
-const pageAfter = $("#pageAfter")
-const prevPage = $("#prevPage")
-const nextPage = $("#nextPage")
-let ascending = false
+let ascending = false;
+let totalPages = 0;
 
 $(document).ready(() => {
     loadPage(1)
-    nextPage.on("click", () => {
-        loadPage(pageNumber + 1)
-    })
-    prevPage.on("click", () => {
-        loadPage(pageNumber - 1)
-    })
-    pageBefore.on("click", () => {
-        loadPage(+pageBefore.text())
-    })
-    currentPage.on("click", () => {
-        loadPage(+currentPage.text())
-    })
-    pageAfter.on("click", () => {
-        loadPage(+pageAfter.text())
-    })
+
+    $(".pagination").on("click", "#firstPage", function() {
+        loadPage(1);
+    });
+    $(".pagination").on("click", "#nextPage", function() {
+        loadPage(pageNumber + 1);
+    });
+    $(".pagination").on("click", "#prevPage", function() {
+        loadPage(pageNumber - 1);
+    });
+    $(".pagination").on("click", "#lastPage", function() {
+        loadPage(totalPages);
+    });
+
+    // Event listener for page navigation links
+    $(".pagination").on("click", ".page-item:not(.page-nav)", function() {
+        const page = $(this).find(".page-link").text(); // Get page number from clicked link
+        loadPage(parseInt(page)); // Load clicked page
+    });
+
     $("#submit").on("click", () => {
         fetch("/api/threads", {
-            method: "POST", headers: {
+            method: "POST",
+            headers: {
                 Authorization: `Bearer ${CookieManager.getCookie("token")}`,
                 "Content-type": "application/json; charset=UTF-8"
-            }, body: JSON.stringify({
+            },
+            body: JSON.stringify({
                 title: $("#title").val(),
                 description: $("#description").val(),
             })
@@ -52,7 +55,8 @@ $(document).ready(() => {
         $("#ascending").text(ascending ? "Ascending" : "Descending")
         loadPage(1)
     })
-    $("#sortBy").on("change", e => {
+
+    $("#sortBy").on("change", () => {
         loadPage(1)
     })
 
@@ -65,61 +69,108 @@ $(document).ready(() => {
 
 function loadPage(page, search = "") {
     pageNumber = page
-    threads.length = 0 //empty the threads array
-    if (page === 1) {
-        prevPage.addClass("disabled")
-        pageBefore.addClass("active")
-        currentPage.removeClass("active")
-    } else {
-        prevPage.removeClass("disabled")
-        pageBefore.removeClass("active")
-        currentPage.addClass("active")
-    }
-    const smallestPageNumber = Math.max(pageNumber - 1, 1)
-    pageBefore.text(smallestPageNumber)
-    currentPage.text(smallestPageNumber + 1)
-    pageAfter.text(smallestPageNumber + 2)
-    $("#threads").empty()
+    $("#threads").empty();
+
     const direction = ascending ? "asc" : "desc"
     const sort = $("#sortBy").val()
-    let query = `/api/threads?perPage=10&page=${page}&sortBy=${sort}&sortDir=${direction}`
+    let query = `/api/threads?perPage=${perPage}&page=${page}&sortBy=${sort}&sortDir=${direction}`
     if (search) {
         query += `&search=${search}`
     }
+
     fetch(query, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,
             "Content-type": "application/json; charset=UTF-8"
         }
-    }).then(r => {
-        if (r.ok) {
-            r.json().then(
-                o => {
-                    threads.push(o);
-                    o.forEach(thread => {
-                        $("#threads").append(`
-                            <li>
-                                <div class="thread-time">
-                                    <span class="date">${dateFromPythonTime(thread.createdAt)}</span>
-                                    <span class="time">${timeFromPythonTime(thread.createdAt)}</span>
-                                </div>
-                                <div class="thread-body">
-                                    <div class="thread-header">
-                                        <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
-                                        <br>
-                                        <span class="thread-creator username"><a href="javascript:;">${thread.user.username}</a> <small></small></span>
-                                    </div>
-                                    <div class="thread-content">
-                                        <p class="text-secondary">${thread.description}</p>
-                                    </div>
-                                </div>
-                            </li>
-                        `)
-                    });
-                }
-            )
-        } else {
-            showErrorBanner(r.statusText);
-        }
     })
+    .then(res => {
+        if (!res.ok) {
+            showErrorBanner(res.statusText);
+        }
+        return res.json()
+    })
+    .then(data => {
+        updateNavLinks(page, data.total);
+
+        data.threads.forEach(thread => {
+            $("#threads").append(`
+                <li>
+                    <div class="thread-time">
+                        <span class="date">${dateFromPythonTime(thread.createdAt)}</span>
+                        <span class="time">${timeFromPythonTime(thread.createdAt)}</span>
+                    </div>
+                    <div class="thread-body">
+                        <div class="thread-header">
+                            <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
+                            <br>
+                            <span class="thread-creator username"><a href="javascript:;">${thread.user.username}</a> <small></small></span>
+                        </div>
+                        <div class="thread-content">
+                            <p class="text-secondary">${thread.description}</p>
+                        </div>
+                    </div>
+                </li>
+            `)
+        });
+    })
+}
+
+function updateNavLinks(currentPage, lastPage) {
+    const pagination = $(".pagination");
+    pagination.empty();
+
+    // Calculate page range based on current page and total pages - up to 5 pages
+    const startPage = Math.max(currentPage - 3, 1);
+    const endPage = Math.min(currentPage + 3, lastPage);
+    totalPages = lastPage;
+
+    // Append first page link
+    pagination.append(`
+        <li class="page-item page-nav"><a id="firstPage" class="page-link" tabindex="-1">\<\<</a></li>
+    `);
+    if (currentPage > 1) {
+        pagination.find("#firstPage").removeClass("disabled");
+    } else {
+        pagination.find("#firstPage").addClass("disabled");
+    }
+
+    // Append previous page link
+    pagination.append(`
+        <li class="page-item page-nav"><a id="prevPage" class="page-link" tabindex="-1">\<</a></li>
+    `);
+    if (currentPage > 1) {
+        pagination.find("#prevPage").removeClass("disabled");
+    } else {
+        pagination.find("#prevPage").addClass("disabled");
+    }
+
+    // Append page links within the page range
+    for (let i = startPage; i <= endPage; i++) {
+        pagination.append(`
+            <li class="page-item  ${i === currentPage ? 'active' : ''}">
+                <a class="page-link">${i}</a>
+            </li>
+        `);
+    }
+
+    // Append next page link
+    pagination.append(`
+        <li class="page-item page-nav"><a id="nextPage" class="page-link" tabindex="-1">\></a></li>
+    `);
+    if (currentPage < lastPage) {
+        pagination.find("#nextPage").removeClass("disabled");
+    } else {
+        pagination.find("#nextPage").addClass("disabled");
+    }
+
+    // Append last page link
+    pagination.append(`
+        <li class="page-item page-nav"><a id="lastPage" class="page-link" tabindex="-1">\>\></a></li>
+    `);
+    if (currentPage < lastPage) {
+        pagination.find("#lastPage").removeClass("disabled");
+    } else {
+        pagination.find("#lastPage").addClass("disabled");
+    }
 }
