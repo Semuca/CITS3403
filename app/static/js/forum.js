@@ -26,8 +26,8 @@ $(document).ready(() => {
 
     // Event listener for page navigation links
     $(".pagination").on("click", ".page-item:not(.page-nav)", function() {
-        const page = $(this).find(".page-link").text(); // Get page number from clicked link
-        loadPage(parseInt(page)); // Load clicked page
+        const page = $(this).find(".page-link").text();
+        loadPage(parseInt(page));
     });
 
     $("#submit").on("click", () => {
@@ -47,35 +47,35 @@ $(document).ready(() => {
             } else {
                 showErrorBanner(r.statusText);
             }
-        })
+        });
     });
 
     $("#order").on("click", () => {
-        ascending = !ascending
-        $("#ascending").text(ascending ? "Ascending" : "Descending")
-        loadPage(1)
-    })
+        ascending = !ascending;
+        $("#ascending").text(ascending ? "Ascending" : "Descending");
+        loadPage(1);
+    });
 
     $("#sortBy").on("change", () => {
-        loadPage(1)
-    })
+        loadPage(1);
+    });
 
     $("#searchbar").on('keydown', e => {
         if (e.which == 13) {
-            loadPage(1)
+            loadPage(1);
         }
-    })
+    });
 });
 
 function loadPage(page, search = "") {
     pageNumber = page
     $("#threads").empty();
 
-    const direction = ascending ? "asc" : "desc"
-    const sort = $("#sortBy").val()
-    let query = `/api/threads?perPage=${perPage}&page=${page}&sortBy=${sort}&sortDir=${direction}`
+    const direction = ascending ? "asc" : "desc";
+    const sort = $("#sortBy").val();
+    let query = `/api/threads?perPage=${perPage}&page=${page}&sortBy=${sort}&sortDir=${direction}`;
     if (search) {
-        query += `&search=${search}`
+        query += `&search=${search}`;
     }
 
     fetch(query, {
@@ -88,7 +88,7 @@ function loadPage(page, search = "") {
         if (!res.ok) {
             showErrorBanner(res.statusText);
         }
-        return res.json()
+        return res.json();
     })
     .then(data => {
         updateNavLinks(page, data.total);
@@ -111,9 +111,9 @@ function loadPage(page, search = "") {
                         </div>
                     </div>
                 </li>
-            `)
+            `);
         });
-    })
+    });
 }
 
 function updateNavLinks(currentPage, lastPage) {
@@ -121,8 +121,8 @@ function updateNavLinks(currentPage, lastPage) {
     pagination.empty();
 
     // Calculate page range based on current page and total pages - up to 5 pages
-    const startPage = Math.max(currentPage - 3, 1);
-    const endPage = Math.min(currentPage + 3, lastPage);
+    const startPage = Math.max(currentPage - 2, 1);
+    const endPage = Math.min(currentPage + 2, lastPage);
     totalPages = lastPage;
 
     // Append first page link
@@ -139,7 +139,7 @@ function updateNavLinks(currentPage, lastPage) {
     pagination.append(`
         <li class="page-item page-nav"><a id="prevPage" class="page-link" tabindex="-1">\<</a></li>
     `);
-    if (currentPage > 1) {
+    if (currentPage > Math.min(startPage, 1)) {
         pagination.find("#prevPage").removeClass("disabled");
     } else {
         pagination.find("#prevPage").addClass("disabled");
@@ -168,7 +168,7 @@ function updateNavLinks(currentPage, lastPage) {
     pagination.append(`
         <li class="page-item page-nav"><a id="lastPage" class="page-link" tabindex="-1">\>\></a></li>
     `);
-    if (currentPage < lastPage) {
+    if (currentPage < Math.min(endPage, lastPage)) {
         pagination.find("#lastPage").removeClass("disabled");
     } else {
         pagination.find("#lastPage").addClass("disabled");
