@@ -6,7 +6,7 @@ import json
 from app.databases import db
 from app.models import UserModel, ThreadModel, OffersModel, CommentModel
 
-from .helpers import BaseApiTest
+from .helpers import BaseApiTest, get_api_headers
 
 class TestCreate(BaseApiTest):
     """Tests threads create endpoint - POST api/threads/{thread_id}/offers"""
@@ -61,14 +61,14 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res_1 = self.client.post("/api/threads/2/offers", headers=self.get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 201, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
             "offeringList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             "wantingList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         }
-        res_2 = self.client.post("/api/threads/2/offers", headers=self.get_api_headers(), data=json.dumps(req_body_2))
+        res_2 = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 201, f"Status code is wrong with message {res_2.data}")
 
         # Check that trades are in the db and have info
@@ -103,7 +103,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/7/offers", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/7/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
 
     def test_create_with_wrong_length_lists(self):
@@ -114,7 +114,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/2/offers", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
     def test_create_with_negative_items(self):
@@ -125,7 +125,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, -1],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/2/offers", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
     def test_create_with_wrong_item_types(self):
@@ -136,7 +136,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0.5],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/2/offers", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/2/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message {res.data}")
 
     def test_thread_owner_creating_trade(self):
@@ -147,7 +147,7 @@ class TestCreate(BaseApiTest):
             "offeringList": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "wantingList": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         }
-        res = self.client.post("/api/threads/1/offers", headers=self.get_api_headers(), data=json.dumps(req_body))
+        res = self.client.post("/api/threads/1/offers", headers=get_api_headers(), data=json.dumps(req_body))
         self.assertEqual(res.status_code, 403, f"Status code is wrong with message {res.data}")
 
 class TestPerformTrade(BaseApiTest):
@@ -218,7 +218,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        res_1 = self.client.post("/api/threads/1/offers/1", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 204, f"Status code is wrong with message {res_1.data}")
 
         # Check that the trade has been performed
@@ -242,7 +242,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        res_1 = self.client.post("/api/threads/1/offers/1", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 400, f"Status code is wrong with message {res_1.data}")
 
         # Check that the trade has not been performed
@@ -256,7 +256,7 @@ class TestPerformTrade(BaseApiTest):
         """Tests that trades can't be performed if the trade doesn't exist"""
 
         # Posts an accept trade request
-        res_1 = self.client.post("/api/threads/1/offers/1", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/1/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
 
     def test_missing_thread(self):
@@ -273,7 +273,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        res_1 = self.client.post("/api/threads/7/offers/1", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/7/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message {res_1.data}")
 
     def test_wrong_accepting_user(self):
@@ -290,7 +290,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request (as user 1)
-        res_1 = self.client.post("/api/threads/2/offers/1", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/2/offers/1", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 403, f"Status code is wrong with message {res_1.data}")
 
     def test_trade_for_wrong_thread(self):
@@ -315,7 +315,7 @@ class TestPerformTrade(BaseApiTest):
         db.session.commit()
 
         # Posts an accept trade request
-        res_1 = self.client.post("/api/threads/1/offers/2", headers=self.get_api_headers())
+        res_1 = self.client.post("/api/threads/1/offers/2", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 403, f"Status code is wrong with message {res_1.data}")
 
 class TestReadMany(BaseApiTest):
@@ -376,7 +376,7 @@ class TestReadMany(BaseApiTest):
         """Tests that trades can be received from the endpoint"""
 
         # Post a get request for the trade in a thread
-        res = self.client.get("/api/threads/1/children", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/1/children", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Check that the trade is in the response
@@ -392,7 +392,7 @@ class TestReadMany(BaseApiTest):
         """Tests that getting with no thread children gets an empty list"""
 
         # Post a get request for the trade in a thread with no trades
-        res = self.client.get("/api/threads/2/children", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/2/children", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
 
         # Check that the trade is in the response
@@ -403,7 +403,7 @@ class TestReadMany(BaseApiTest):
         """Tests that getting from a nonexistent thread gets the right error response"""
 
         # Post a get request for the trade in a nonexistent thread
-        res = self.client.get("/api/threads/7/children", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/7/children", headers=get_api_headers())
         self.assertEqual(res.status_code, 404, f"Status code is wrong with message {res.data}")
 
     def test_multiple_children_types(self):
@@ -424,7 +424,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for all the children in the test thread with two comments
-        res = self.client.get("/api/threads/1/children", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/1/children", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message {res.data}")
         self.assertEqual(len(json.loads(res.data)), 3, f"Data sent back is {res.data}")
 

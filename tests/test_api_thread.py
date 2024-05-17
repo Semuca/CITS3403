@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from app.databases import db
 from app.models import UserModel, ThreadModel
 
-from .helpers import BaseApiTest
+from .helpers import BaseApiTest, get_api_headers
 
 class TestCreate(BaseApiTest):
     """Tests threads create endpoint - POST api/threads"""
@@ -33,14 +33,14 @@ class TestCreate(BaseApiTest):
             "title": "hello",
             "description": "Heya new here"
         }
-        res_1 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 201, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
             "title": "Theory",
             "description": "Just a theory a game theory"
         }
-        res_2 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_2))
+        res_2 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 201, f"Status code is wrong with message {res_2.data}")
 
         # Check that threads are in the db and have info
@@ -65,13 +65,13 @@ class TestCreate(BaseApiTest):
         req_body_1 = {
             "title": "hello",
         }
-        res_1 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 400, f"Status code is wrong with message {res_1.data}")
 
         req_body_2 = {
             "description": "Just a theory a game theory"
         }
-        res_2 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_2))
+        res_2 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_2))
         self.assertEqual(res_2.status_code, 400, f"Status code is wrong with message {res_2.data}")
 
     def test_create_too_many_headers(self):
@@ -82,7 +82,7 @@ class TestCreate(BaseApiTest):
             "description": "Heya new here",
             "aaaaa": "AAAAA"
         }
-        res_1 = self.client.post("/api/threads", headers=self.get_api_headers(), data=json.dumps(req_body_1))
+        res_1 = self.client.post("/api/threads", headers=get_api_headers(), data=json.dumps(req_body_1))
         self.assertEqual(res_1.status_code, 400, f"Status code is wrong with message {res_1.data}")
 
 class TestReadMany(BaseApiTest):
@@ -121,7 +121,7 @@ class TestReadMany(BaseApiTest):
 
     def test_valid_read_many(self):
         # Post a get request for all the threads
-        res = self.client.get("/api/threads", headers=self.get_api_headers())
+        res = self.client.get("/api/threads", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the two threads created before are returned with the right information, sorted by created_at
@@ -141,7 +141,7 @@ class TestReadMany(BaseApiTest):
         db.session.query(ThreadModel).delete()
 
         # Post a get request for all the threads
-        res = self.client.get("/api/threads", headers=self.get_api_headers())
+        res = self.client.get("/api/threads", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that there only an empty list sent back
@@ -161,7 +161,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for first 8 threads
-        res = self.client.get("/api/threads?page=1&perPage=8", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?page=1&perPage=8", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the first 8 threads are returned with the right information
@@ -172,7 +172,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res_json_data[0]["title"], 'thread11', f"Json data sent back is '{res_json_data[7]["title"]}'")
 
         # Post a get request for last 4 threads
-        res = self.client.get("/api/threads?page=2&perPage=8", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?page=2&perPage=8", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the last 4 threads are returned with the right information
@@ -194,7 +194,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for first 10 threads
-        res = self.client.get("/api/threads", headers=self.get_api_headers())
+        res = self.client.get("/api/threads", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the first 10 threads are returned with the right information
@@ -220,7 +220,7 @@ class TestReadMany(BaseApiTest):
         # The endpoint curently only supports searches for the title of the threads
 
         # Post a get request for threads with 'thread' in the title
-        res = self.client.get("/api/threads?search=thread", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?search=thread", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the threads with 'thread' in the title are returned with the right information
@@ -231,7 +231,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res_json_data[0]["title"], 'thread11', f"Json data sent back is '{res_json_data[8]["title"]}'")
 
         # Post a get request for threads with '5' in the description
-        res = self.client.get("/api/threads?search=5", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?search=5", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the thread with '5' in the title is returned with the right information
@@ -253,7 +253,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for threads sorted by title
-        res = self.client.get("/api/threads?sortBy=title&sortDir=asc", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?sortBy=title&sortDir=asc", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the threads with 'thread' in the title are returned with the right information
@@ -277,7 +277,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for threads sorted by title with an incorrect sort direction
-        res = self.client.get("/api/threads?sortBy=title&sortDir=SOMETHINGELSE", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?sortBy=title&sortDir=SOMETHINGELSE", headers=get_api_headers())
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message '{res.data}'")
 
     def test_get_with_invalid_attribute(self):
@@ -294,7 +294,7 @@ class TestReadMany(BaseApiTest):
         db.session.commit()
 
         # Post a get request for threads sorted by title with an incorrect sort direction
-        res = self.client.get("/api/threads?sortBy=INVALID&sortDir=asc", headers=self.get_api_headers())
+        res = self.client.get("/api/threads?sortBy=INVALID&sortDir=asc", headers=get_api_headers())
 
         self.assertEqual(res.status_code, 400, f"Status code is wrong with message '{res.data}'")
 
@@ -334,7 +334,7 @@ class TestReadById(BaseApiTest):
         """Test that threads can be received from the endpoint"""
 
         # Post a get request for first thread
-        res = self.client.get("/api/threads/1", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/1", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the thread is the right one
@@ -344,7 +344,7 @@ class TestReadById(BaseApiTest):
         self.assertEqual(res_json_data["user"]["id"], 1, f"Json data sent back is '{res_json_data["user"]}'")
 
         # Post a get request for second thread
-        res = self.client.get("/api/threads/2", headers=self.get_api_headers())
+        res = self.client.get("/api/threads/2", headers=get_api_headers())
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the thread is the right one
@@ -356,8 +356,8 @@ class TestReadById(BaseApiTest):
     def test_get_nonexistent_thread(self):
         """Tests that getting with a nonexistent thread ids gets the right error response"""
 
-        res_1 = self.client.get("/api/threads/3", headers=self.get_api_headers())
-        res_2 = self.client.get("/api/threads/awawa", headers=self.get_api_headers())
+        res_1 = self.client.get("/api/threads/3", headers=get_api_headers())
+        res_2 = self.client.get("/api/threads/awawa", headers=get_api_headers())
         self.assertEqual(res_1.status_code, 404, f"Status code is wrong with message '{res_1.data}'")
         self.assertEqual(res_2.status_code, 404, f"Status code is wrong with message '{res_2.data}'")
 

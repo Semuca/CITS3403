@@ -11,17 +11,7 @@ const prevPage = $("#prevPage")
 const nextPage = $("#nextPage")
 let ascending = false
 
-const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
 $(document).ready(() => {
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrf_token);
-            }
-        }
-    });
-
     loadPage(1)
     nextPage.on("click", () => {
         loadPage(pageNumber + 1)

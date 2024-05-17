@@ -1,12 +1,7 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
 
-$(document).ready(() => {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRFToken": "{{ csrf_token() }}"
-        }
-    });
 
+$(document).ready(() => {
     const threadId = $("#threadScript").data().threadId;
     console.log($("#threadScript").data());
 

@@ -5,12 +5,6 @@ let levelTime = Date.now();
 let lootTime = Date.now();
 
 $(document).ready(() => {
-    $.ajaxSetup({
-        headers: {
-            "X-CSRFToken": "{{ csrf_token() }}"
-        }
-    });
-
     setInterval(everySecond, 1000)
 
     $("#collectLoot").on("click", e => {

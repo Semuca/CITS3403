@@ -1,6 +1,5 @@
 
 import unittest
-from flask_wtf.csrf import generate_csrf
 
 from app import create_app
 from app.databases import db
@@ -16,21 +15,16 @@ class BaseApiTest(unittest.TestCase):
         # create all tables in the db
         db.create_all()
 
-        # csrf token for testing
-        with self.app.test_request_context():
-            self.csrf_token = generate_csrf()
-
     def tearDown(self):
         # stop db session and clear out all data
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
 
-    def get_api_headers(self):
-        """Gets basic headers for testing api requests"""
-        return {
-            'Authorization': 'Bearer ' + "authtest",
-            'Accept': '*/*',
-            'Content-Type': 'application/json',
-            'X-CSRFTOKEN': self.csrf_token
-        }
+def get_api_headers():
+    """Gets basic headers for testing api requests"""
+    return {
+        'Authorization': 'Bearer ' + "authtest",
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+    }
