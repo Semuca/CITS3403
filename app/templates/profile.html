@@ -21,7 +21,7 @@
                             </div>
                         <div class="mb-5" id="profile-username">
                             <h2>{{ user.username }}</h2>
-                            <small>{{ user.description }}</small>
+                            <small>{{ user.description | safe }}</small>
                         </div>
                     </div>
                 </div>
