@@ -28,19 +28,23 @@
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-dark navbarCustom fixed-top">
-            <p id="errorBanner" class="d-none bg-primary text-white text-center w-100">One of your requests has failed. Please reload the page.</p>
-            <div class="container px-5">
-                <a class="navbar-brand pixelFont" href="{{ url_for('main_bp.home_page')}}"><i class="fa-solid fa-gem me-3"></i>Loot Legends</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.home_page') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.signup_page') }}">Sign Up</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.login_page') }}">Log In</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Forum</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.game_page') }}">Game</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.profile_page') }}">Profile</a></li>
-                    </ul>
+            <div class="w-100">
+                <p id="errorBanner" class="d-none bg-primary text-white text-center"></p>
+                <div class="row justify-content-between px-5">
+                    <a class="navbar-brand pixelFont w-auto" href="{{ url_for('main_bp.home_page')}}"><i class="fa-solid fa-gem me-3"></i>Loot Legends</a>
+                    <button class="navbar-toggler justify-content-end w-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end w-auto" id="navbarResponsive">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.home_page') }}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.signup_page') }}">Sign Up</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.login_page') }}">Log In</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Forum</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.game_page') }}">Game</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.profile_page') }}">Profile</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
