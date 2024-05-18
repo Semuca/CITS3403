@@ -1,9 +1,5 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
-
-const CryptoJS = window.CryptoJS;
-const hash = function(text) {
-    return CryptoJS.SHA256(text).toString(CryptoJS.enc.Hex);
-}
+import { hash } from "./helpers/crypto.js";
 
 jQuery(() => {
     $("#pressLogin").on("click",() => {
