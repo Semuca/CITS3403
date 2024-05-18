@@ -11,9 +11,9 @@
         <div class="thread-header bg-white shadow rounded overflow-hidden">
             <div class="thread-header-content">
                 <div class="thread-header-info mb-4">
-                    <h1 id="title"> {{ thread.title }}</h1>
+                    <h1 id="title"> {{ thread.title | safe }}</h1>
                     <i class="poster"> Posted by {{ thread.poster.username }}</i>
-                    <p id="description"> {{ thread.description }}</p>
+                    <p id="description"> {{ thread.description | safe }}</p>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                                     <div class="timeline-body">
                                         <div class="timeline-content">
                                             <h5 class="comment-username mb-1">{{ i.user.username }}</h5>
-                                            <p>{{ i.comment_text }}</p>
+                                            <p>{{ i.comment_text | safe }}</p>
                                         </div>
                                     </div>
                                 </li>

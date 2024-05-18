@@ -2,6 +2,7 @@
 
 import unittest
 import json
+import hashlib
 
 from app.databases import db
 from app.models import UserModel
@@ -13,9 +14,10 @@ class TestLogin(BaseApiTest):
     def setUp(self):
         super().setUp()
 
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             security_question=3,
             security_question_answer="Purple"
         ))
@@ -84,11 +86,13 @@ class TestChangePasswordWithQuestion(BaseApiTest):
         """Tests that getting a password change token returns the right token"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer
         ))
         db.session.commit()
 
@@ -112,11 +116,13 @@ class TestChangePasswordWithQuestion(BaseApiTest):
         """Tests that changing a password incorrectly results in an error"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer,
         ))
         db.session.commit()
 
@@ -140,12 +146,14 @@ class TestChangePasswordUnauthenticated(BaseApiTest):
         """Tests that getting a password change token returns the right token"""
 
         # Assemble
+        hashed_password = hashlib.sha256("Password123".encode()).hexdigest()
+        hashed_sec_answer = hashlib.sha256("Purple".encode()).hexdigest()
         db.session.add(UserModel(
             username="PurpleGuy",
-            password_hash="Password123",
+            password_hash=hashed_password,
             change_password_token="token",
             security_question=1,
-            security_question_answer="Purple"
+            security_question_answer=hashed_sec_answer,
         ))
         db.session.commit()
 

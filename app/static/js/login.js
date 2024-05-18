@@ -1,26 +1,15 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
 
-function hash(str) {
-    /**
-     * COPIED DIRECTLY FROM https://stackoverflow.com/a/26057776
-     * TODO (James): Possibly do hashing on the backend side- need to check with lecturer if it's allowed.
-     * Jared 14/04/2024: this seems like a bad idea? I don't think we want to be sending passwords as plaintext...
-     */
-    let hash = 0;
-    if (str.length === 0) return hash;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash;
+const CryptoJS = window.CryptoJS;
+const hash = function(text) {
+    return CryptoJS.SHA256(text).toString(CryptoJS.enc.Hex);
 }
 
 jQuery(() => {
     $("#pressLogin").on("click",() => {
         const body = JSON.stringify({
                 username: $("#username").val(),
-                password: (hash($("#password").val())).toString()
+                password: (hash($("#password").val()))
             }
         )
 
@@ -43,7 +32,7 @@ jQuery(() => {
     $("#pressCreate").on("click",() => {
         const body = JSON.stringify({
                 username: $("#username").val(),
-                password: (hash($("#password").val())).toString(),
+                password: (hash($("#password").val())),
                 securityQuestion: 1,
                 securityQuestionAnswer: "test"
             }
