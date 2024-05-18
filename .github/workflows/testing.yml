@@ -21,6 +21,9 @@ jobs:
                   pip install pylint
                   pip install Flask-SQLAlchemy
                   pip install Flask-Migrate
+                  pip install selenium
+              env:
+                DISPLAY: :99
             - name: Analysing the code with pylint
               run: |
                   pylint --rcfile=.pylintrc $(git ls-files 'app/*.py')

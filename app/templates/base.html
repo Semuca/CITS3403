@@ -23,7 +23,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
-
         {% block headBlock %}{% endblock %}
     </head>
     <body id="page-top">
@@ -37,12 +36,12 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end w-auto" id="navbarResponsive">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.home_page') }}">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.signup_page') }}">Sign Up</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.login_page') }}">Log In</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Forum</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.game_page') }}">Game</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.profile_page') }}">Profile</a></li>
+                            <li class="nav-item"><a id="home-nav-link" class="nav-link" href="{{ url_for('main_bp.home_page') }}">Home</a></li>
+                            <li class="nav-item"><a id="sign-up-nav-link" class="nav-link" href="{{ url_for('main_bp.signup_page') }}">Sign Up</a></li>
+                            <li class="nav-item"><a id="log-in-nav-link" class="nav-link" href="{{ url_for('main_bp.login_page') }}">Log In</a></li>
+                            <li class="nav-item"><a id="forum-nav-link" class="nav-link" href="{{ url_for('main_bp.forum_page') }}">Forum</a></li>
+                            <li class="nav-item"><a id="game-nav-link" class="nav-link" href="{{ url_for('main_bp.game_page') }}">Game</a></li>
+                            <li class="nav-item"><a id="profile-nav-link" class="nav-link" href="{{ url_for('main_bp.profile_page') }}">Profile</a></li>
                         </ul>
                     </div>
                 </div>
