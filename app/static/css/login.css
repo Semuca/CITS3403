@@ -17,8 +17,6 @@ body {
 #pressLogin {
     width: 100%;
     padding: 10px;
-    background-color: var(--cyan);
-    color: var(--white);
     border: none;
     border-radius: 3px;
     cursor: pointer;
