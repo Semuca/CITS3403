@@ -15,6 +15,10 @@ debug: 		## Runs the main app in debug mode
 test: 		## Runs all unit tests
 	python3 -m unittest -v
 
+coverage: 	## Generates code coverage from unit tests
+	coverage run -m unittest
+	coverage report -m
+
 lint:		## Runs pylint recursively for the app directory
 	pylint --rcfile=.pylintrc app
 
