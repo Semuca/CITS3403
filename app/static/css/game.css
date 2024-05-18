@@ -56,10 +56,16 @@ div.gallery img {
     box-sizing: border-box;
 }
 
+.responsive-labels {
+    padding: 0 6px;
+    width: 10%;
+    height: 100%;
+}
+
 .responsive {
     padding: 0 6px;
     float: left;
-    width: 10%;
+    width: 9%;
 }
 
 @media only screen and (max-width: 700px) {

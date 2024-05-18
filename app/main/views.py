@@ -40,6 +40,10 @@ def forum_page():
 def thread_page(thread_id):
     """The single thread page"""
     thread = database_manager.get_thread_by_id(thread_id)
+
+    if thread is None:
+        return redirect("/forum")
+
     thread.poster = database_manager.get_user_by_id(thread.user_id)
     comments = database_manager.get_comments_by_thread_id(thread_id)
     for i in comments:
@@ -62,7 +66,7 @@ def game_page():
     """The game page"""
     user = get_user_by_token(request.cookies.get('token'))
 
-    if get_user_by_token(request.cookies.get('token')) is None: # needs to be done first since the game template uses user attributes
+    if user is None: # needs to be done first since the game template uses user attributes
         return redirect("/login")
 
     # using [*enumerate(items)] so that we can use the iterator more than once
