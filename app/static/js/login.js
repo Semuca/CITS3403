@@ -30,7 +30,7 @@ jQuery(() => {
         const body = JSON.stringify({
                 username: $("#username").val(),
                 password: (hash($("#password").val())).toString(),
-                securityQuestion: $("#question").val(),
+                securityQuestion: +$("#question").val(),
                 securityQuestionAnswer: (hash($("#answer").val())).toString()
             }
         )
