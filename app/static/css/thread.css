@@ -4,8 +4,12 @@
 } */
 
 body{
-    margin-top:80px;
-    background:var(--white);
+    min-height: 100vh;
+    overflow-x:hidden;
+    background-image: url("/static/images/wood.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center center;
 }
 
 .thread-header {
@@ -14,18 +18,8 @@ body{
     width: 100%;
 }
 
-.thread-header .thread-header-cover:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, var(--cyan) 0, var(--darkGrey) 100%);
-}
-
 .thread-header .thread-header-content {
-    color: var(--white);
+    color: var(--darkGrey);
     padding: 25px;
     position: relative;
 }
@@ -37,14 +31,8 @@ body{
 
 .thread-content:after,
 .thread-content:before {
-    content: '';
     display: table;
     clear: both;
-}
-
-.thread-content .tab-content,
-.thread-content .tab-pane {
-    background: 0 0;
 }
 
 .poster {
@@ -58,14 +46,6 @@ body{
 .comment-username{
     color: var(--darkGrey);
 }
-
-/* hr {
-    color: var(--white);
-} */
-
-/* label {
-    color: var(--darkGrey);
-} */
 
 .post-comment {
     margin: auto;
@@ -87,7 +67,7 @@ body{
     top: 5px;
     bottom: 5px;
     width: 5px;
-    background: var(--lightGrey);
+    background: var(--navy);
     left: 20%;
     margin-left: -2.5px
 }
@@ -111,7 +91,7 @@ body{
     font-size: 12px;
     font-weight: 600;
     display: block;
-    color: var(--orange);
+    color: var(--white);
 }
 
 .timeline .timeline-time .time {
@@ -119,7 +99,7 @@ body{
     font-size: 20px;
     font-weight: 600;
     display: block;
-    color: var(--orange);
+    color: var(--white);
 }
 
 .timeline .timeline-body {
@@ -167,7 +147,6 @@ body{
 
 .timeline-content:after,
 .timeline-content:before {
-    content: '';
     display: table;
     clear: both;
 }

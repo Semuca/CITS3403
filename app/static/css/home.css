@@ -1,3 +1,7 @@
+#scroll{
+  font-family: 'NicoPups', sans-serif !important;
+}
+
 .btnCustom {
   text-transform: uppercase;
   padding: 1.5rem 3rem;
@@ -7,11 +11,19 @@
 header.title {
   padding-top: calc(8.2rem);
   padding-bottom: 7rem;
-  background: linear-gradient(0deg, var(--orange) 0%, var(--cyan) 100%);
+  background-image: url("/static/images/wood.png");
+  background-size: cover;
+  background-repeat: repeat-y;
+  background-position: center center;
 }
 
 #homeTitleIcon {
-  color: #4f5d75;
+  color: var(--white);
   padding-left: 1rem;
+}
+
+.icon {
+  max-width: 100%; 
+  height: auto;
 }
 

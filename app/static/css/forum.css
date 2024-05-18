@@ -1,8 +1,10 @@
 body {
-    background: var(--navy);
-    background: linear-gradient(to right, var(--orange), var(--cyan));
     min-height: 100vh;
     overflow-x:hidden;
+    background-image: url("/static/images/wood.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center center;
 }
 
 .inner-wrapper {
@@ -11,15 +13,11 @@ body {
 }
 
 #searchbar {
-    background-color: var(--cyan);
+    border: none;
 }
 
 #newDiscussion {
-    background-color: var(--cyan);
-}
-
-#newDiscussion:hover {
-    background-color: var(--navy);
+    border: none;
 }
 
 .forum-content {
@@ -29,14 +27,8 @@ body {
 
 .forum-content:after,
 .forum-content:before {
-    content: '';
     display: table;
     clear: both
-}
-
-.forum-content .tab-content,
-.forum-content .tab-pane {
-    background: 0 0
 }
 
 .thread {
@@ -81,7 +73,7 @@ body {
 .thread .thread-time .time {
     line-height: 24px;
     font-size: 20px;
-    color: var(--navy);
+    color: var(--white);
     display: block;
     font-weight: 600;
 }
@@ -96,7 +88,6 @@ body {
 }
 
 .thread .thread-body:before {
-    content: '';
     display: block;
     position: absolute;
     border: 10px solid transparent;
@@ -116,7 +107,6 @@ body {
 
 .thread-header {
     padding-bottom: 10px;
-    /* border-bottom: 1px solid var(--white); */
     line-height: 30px
 }
 
@@ -145,7 +135,6 @@ body {
 
 .thread-content:after,
 .thread-content:before {
-    content: '';
     display: table;
     clear: both;
 }

@@ -1,3 +1,16 @@
+body{
+    min-height: 100vh;
+    overflow-x:hidden;
+    background-image: url("/static/images/wood.png");
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center center;
+}
+
+.card {
+    border-radius: 15px;
+    background-color:var(--white);
+}
 
 #username, #password {
     background-color: var(--white);
@@ -6,23 +19,13 @@
 #pressRegister {
     width: 100%;
     padding: 10px;
-    background-color: var(--cyan);
-    color: var(--white);
     border: none;
     border-radius: 3px;
     cursor: pointer;
 }
 
-#pressRegister:hover {
+/* #pressRegister:hover {
     background-color: var(--navy);
-}
+} */
 
-.card {
-    border-radius: 15px;
-    background-color:var(--white);
-}
 
-#main {
-    padding-top: 60px;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1200px-The_Great_Wave_off_Kanagawa.jpg?20070829004226');
-}

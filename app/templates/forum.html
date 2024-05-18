@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block bodyBlock %}
-    <div class="container content">
+    <div class="container content ">
         <div class="main-body p-0">
-            <div class="justify-content-center">
-                <button id="newDiscussion" class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#threadCreationModal">
+            <div class="d-flex justify-content-center w-100">
+                <button id="newDiscussion" class="bg-white shadow rounded overflow-hidden w-100" type="button" data-toggle="modal" data-target="#threadCreationModal">
                     <i class="fa-solid fa-plus me-3"></i>
                     NEW DISCUSSION
                 </button>
@@ -19,10 +19,9 @@
             <div class="inner-wrapper">
                 <!-- Search Forum -->
                 <div class="searchHeader">
-                    <input type="text" id="searchbar" class="form-control form-control-sm shadow-none mb-4 mt-4"
-                           placeholder="Search forum"/>
-                    <label for="sortBy">Sort By:</label>
-                    <select id="sortBy">
+                    <input type="text" id="searchbar" class=" mb-4 mt-4 form-control form-control-sm bg-white shadow rounded overflow-hidden" placeholder="Search forum"/>
+                    <label for="sortBy" class="text-white">Sort By:</label>
+                    <select id="sortBy" class="pixelFont">
                         <option value="created_at">Date Created</option>
                         <option value="title">Title</option>
                         <option value="description">Description</option>
@@ -32,8 +31,8 @@
 
                 <!-- Forum List -->
                 <div class="forum-content">
-                    <div class="tab-content p-0">
-                        <div class="tab-pane fade active show">
+                    <div class="p-0">
+                        <div class="fade active show">
                             <!-- Threads added here-->
                             <ul class="thread" id="threads"></ul>
                         </div>
@@ -51,8 +50,7 @@
             </div>
 
             <!-- New Thread Modal -->
-            <div class="modal fade" id="threadCreationModal" tabindex="-1" role="dialog"
-                 aria-labelledby="threadModalLabel" aria-hidden="true">
+            <div class="modal fade" id="threadCreationModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <form>
@@ -65,13 +63,11 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" placeholder="Enter title"
-                                           autofocus="" required/>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter title" autofocus="" required/>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description*</label>
-                                    <input type="text" class="form-control" id="description"
-                                           placeholder="Enter description" autofocus="" required/>
+                                    <input type="text" class="form-control" id="description" placeholder="Enter description" autofocus="" required/>
                                 </div>
                             </div>
 
