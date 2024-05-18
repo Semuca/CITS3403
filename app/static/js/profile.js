@@ -23,7 +23,7 @@ jQuery(() => {
         }
 
         if (securityQuestionAnswer) {
-            body.securityQuestionAnswer = securityQuestionAnswer;
+            body.securityQuestionAnswer = hash(securityQuestionAnswer);
         }
 
         fetch("/api/users", {
