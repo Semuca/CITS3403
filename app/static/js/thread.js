@@ -1,6 +1,8 @@
 import {CookieManager} from "./helpers/cookie_manager.js";
 import {dateFromPythonTime, timeFromPythonTime} from "./helpers/format_time.js";
-import { showErrorBanner } from "./helpers/error_banner.js";
+import {showErrorBanner} from "./helpers/error_banner.js";
+
+const ITEMS = ["Boar", "Cheese", "Emerald", "Feather", "Horn", "Ink", "Meat", "Mushroom", "Orb", "Scroll"]
 
 const threadId = $("#threadScript").data().threadId;
 
@@ -11,7 +13,7 @@ function acceptTrade(id) {
             "Content-type": "application/json; charset=UTF-8"
         }
     }).then(o => {
-        if (!o.ok){
+        if (!o.ok) {
             switch (o.status) {
                 case 400: {
                     alert("You do not have the correct amount of items for this trade!")
@@ -27,6 +29,7 @@ function acceptTrade(id) {
         }
     })
 }
+
 
 $(document).ready(() => {
 
@@ -66,8 +69,12 @@ $(document).ready(() => {
                             <div class="timeline-body">
                                 <div class="timeline-content">
                                     <h4>Trade Request from ${i.user.username}</h4>
-                                    <p id="trade${i.id}">${i.offering} for ${i.wanting}</p>
-                                    <button class="trade" id="${i.id}">Accept</button>
+                                    <h5>You Give:</h5>
+                                    ${displayItems(i.offering)}
+                                    <h5>You Get:</h5>
+                                    ${displayItems(i.wanting)}
+                                    <br>
+                                    <button class="trade btn btn-primary" id="${i.id}">Accept</button>
                                 </div>
                             </div>
                         </li>`)
@@ -128,5 +135,16 @@ $(document).ready(() => {
         })
     });
 })
-;
 
+
+
+function displayItems(wanting) {
+    let out = ""
+    for (const i in wanting) {
+        if (wanting[i] === 0) {
+            continue;
+        }
+        out += `${wanting[i]} <img src="/static/images/${i}${ITEMS[i]}.png" class="baby-image">, &nbsp&nbsp`
+    }
+    return out
+}

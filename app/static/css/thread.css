@@ -3,9 +3,9 @@
     width: 100%
 } */
 
-body{
+body {
     min-height: 100vh;
-    overflow-x:hidden;
+    overflow-x: hidden;
     background-image: url("/static/images/wood.png");
     background-size: cover;
     background-repeat: repeat-y;
@@ -57,7 +57,7 @@ body{
     width: 80%;
 }
 
-.comment-username{
+.comment-username {
     color: var(--darkGrey);
 }
 
@@ -86,7 +86,7 @@ body{
     margin-left: -2.5px
 }
 
-.timeline>li {
+.timeline > li {
     position: relative;
     min-height: 50px;
     padding: 20px 0
@@ -135,7 +135,7 @@ body{
     top: 20px
 }
 
-.timeline .timeline-body>div+div:last-child {
+.timeline .timeline-body > div + div:last-child {
     margin-bottom: -20px;
     padding-bottom: 20px;
     border-radius: 0 0 6px 6px
@@ -184,14 +184,22 @@ div.gallery img {
     width: 9%;
 }
 
-@media only screen and (max-width: 700px) {
-.responsive {
-    width: 18%;
-    margin: 6px 0;
+
+.baby-image {
+    width: 50px;
+    height: 50px;
 }
+
+@media only screen and (max-width: 700px) {
+    .responsive {
+        width: 18%;
+        margin: 6px 0;
+    }
 }
 
 @media only screen and (max-width: 500px) {
-.responsive {
-    width: 18%;
+    .responsive {
+        width: 18%;
+    }
 }
+
