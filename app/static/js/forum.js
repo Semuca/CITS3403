@@ -58,7 +58,7 @@ $(document).ready(() => {
 
     $("#searchbar").on('keydown', e => {
         if (e.which == 13) {
-            loadPage(1)
+            loadPage(1, $("#searchbar").val())
         }
     })
 });
