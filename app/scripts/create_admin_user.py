@@ -21,7 +21,7 @@ def main():
         db.session.add(UserModel(
             id=500,
             username="admin",
-            password_hash="1216985755", # Hash for 'password'
+            password_hash="113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3", # Hash for 'password'
             security_question=1,
             security_question_answer="Test",
             admin=True
