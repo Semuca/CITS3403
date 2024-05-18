@@ -1,4 +1,5 @@
 import { CookieManager } from "./helpers/cookie_manager.js";
+import { showErrorBanner } from "./helpers/error_banner.js";
 
 
 $(document).ready(() => {
@@ -21,7 +22,7 @@ $(document).ready(() => {
                     location.reload()
                 });
             } else {
-                alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
+                showErrorBanner();
             }
         })
     });
