@@ -1,4 +1,5 @@
 import {CookieManager} from "./helpers/cookie_manager.js";
+import { showErrorBanner } from "./helpers/error_banner.js";
 
 let user = null;
 let levelTime = Date.now();
@@ -55,7 +56,7 @@ $(document).ready(() => {
                 lootTime = new Date(user.lootDropRefresh).getTime();
             })
         } else {
-            // alert("Something has gone horribly wrong...")
+            showErrorBanner(r.statusText);
         }
     })
 });
