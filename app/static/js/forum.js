@@ -49,7 +49,7 @@ $(document).ready(() => {
 
     $("#order").on("click", () => {
         ascending = !ascending
-        $("#ascending").text(ascending ? "Ascending" : "Descending")
+        $("#order").text(ascending ? "Ascending" : "Descending")
         loadPage(1)
     })
     $("#sortBy").on("change", e => {
