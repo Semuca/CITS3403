@@ -22,7 +22,7 @@ $(document).ready(() => {
                     location.reload()
                 });
             } else {
-                showErrorBanner();
+                showErrorBanner(r.statusText);
             }
         })
     });

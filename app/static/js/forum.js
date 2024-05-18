@@ -42,7 +42,7 @@ $(document).ready(() => {
             if (r.ok) {
                 location.reload()
             } else {
-                showErrorBanner();
+                showErrorBanner(r.statusText);
             }
         })
     });
@@ -119,7 +119,7 @@ function loadPage(page, search = "") {
                 }
             )
         } else {
-            showErrorBanner();
+            showErrorBanner(r.statusText);
         }
     })
 }

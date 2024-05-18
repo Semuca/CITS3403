@@ -36,7 +36,7 @@ jQuery(() => {
             if (r.ok) {
                 window.location.reload();
             } else {
-                showErrorBanner();
+                showErrorBanner(r.statusText);
             }
         })
     })

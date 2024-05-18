@@ -56,7 +56,7 @@ $(document).ready(() => {
                 lootTime = new Date(user.lootDropRefresh).getTime();
             })
         } else {
-            showErrorBanner();
+            showErrorBanner(r.statusText);
         }
     })
 });

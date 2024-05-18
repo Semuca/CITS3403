@@ -21,7 +21,7 @@ jQuery(() => {
                     window.location = "/forum"
                 })
             } else {
-                showErrorBanner();
+                showErrorBanner(r.statusText);
             }
         })
     })
@@ -45,7 +45,7 @@ jQuery(() => {
                     window.location = "/forum"
                 });
             } else {
-                showErrorBanner();
+                showErrorBanner(r.statusText);
             }
         })
 
