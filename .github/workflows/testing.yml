@@ -21,9 +21,12 @@ jobs:
                   pip install pylint
                   pip install Flask-SQLAlchemy
                   pip install Flask-Migrate
+                  pip install selenium
             - name: Analysing the code with pylint
               run: |
                   pylint --rcfile=.pylintrc $(git ls-files 'app/*.py')
             - name: Running unit tests
               run: |
                   python3 -m unittest -v
+              env:
+                SKIP_PAGE_TESTS: true
