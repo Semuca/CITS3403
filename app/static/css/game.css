@@ -15,7 +15,7 @@ body{
     min-height: 100vh;
     overflow-x:hidden;
     background-image: url("/static/images/wood.png");
-    background-size: cover;
+    background-size: contain;
     background-repeat: repeat-y;
     background-position: center center;
 }
@@ -29,7 +29,6 @@ body{
 }
 
 .card-title {
-    /* padding: 15px; */
     text-align: center;
     width: auto;
 }
@@ -84,7 +83,3 @@ div.gallery img {
     width: 20%;
 }
 }
-
-/* .count-translate {
-    transform: translateY(1rem)
-} */

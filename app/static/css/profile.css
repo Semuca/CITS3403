@@ -2,8 +2,10 @@ body{
     min-height: 100vh;
     overflow-x:hidden;
     background-image: url("/static/images/wood.png");
+    background-size: contain;
     background-repeat: repeat-y;
     background-position: center center;
+    background-attachment: fixed;
 }
 
 .white-text {
