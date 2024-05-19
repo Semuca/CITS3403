@@ -61,7 +61,9 @@ def profile_page():
     threads = []
     if user is not None:
         threads = database_manager.get_threads_by_user(user)
-    return redirect_wrapper(render_template('profile.html', posts=threads, user=user))
+    comments = database_manager.get_comment_count_by_user(user)
+    trades = database_manager.get_trade_request_count_by_user(user)
+    return redirect_wrapper(render_template('profile.html', posts=threads, user=user, comments=comments, trades=trades))
 
 
 @main_bp.route("/game")

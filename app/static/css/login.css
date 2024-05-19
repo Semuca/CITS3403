@@ -26,3 +26,7 @@ body {
     border-radius: 3px;
     cursor: pointer;
 }
+
+#forgot{
+    cursor: pointer;
+}
