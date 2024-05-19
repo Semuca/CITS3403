@@ -26,9 +26,9 @@ Whenever a dependency has been added, it must be exported using `pip freeze > re
 
 ## Running the project
 
-After setting up the virtual environment and installing the dependencies, run `flask --app main run`
+After setting up the virtual environment and installing the dependencies, run `flask db upgrade` then `flask --app main run`
 
--   This command will also be run with `make run`.
+-   The run command will also be run with `make run`.
 
 -   Alternatively, Visual Studio Code's launch.json the project can be run from the 'Run and Debug' tool (F5)
 
