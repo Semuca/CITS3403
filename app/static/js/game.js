@@ -52,7 +52,9 @@ $(document).ready(() => {
                 levelTime = new Date(user.levelExpiry).getTime();
                 lootTime = new Date(user.lootDropRefresh).getTime();
 
-                if (!user.requiredInventory.find((requiredItem, index) => user.inventory[index] < requiredItem)) {
+                const level = parseInt($("#level").text());
+
+                if (level != 0 && !user.requiredInventory.find((requiredItem, index) => user.inventory[index] < requiredItem)) {
                     $("#levelImmediately").prop("disabled", false);
                 }
             })
@@ -88,6 +90,7 @@ function levelExpiryToTimer(expiry) {
 
 // converts the loot cooldown time to the amount of time left in the format HH:MM:SS
 function lootCooldownToTimer(cooldown) {
+    const level = parseInt($("#level").text());
 
     // if cooldown is up, time left to next collection is 00:00:00
     if (level === 0 || cooldown < Date.now()) {
