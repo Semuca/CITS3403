@@ -144,7 +144,7 @@ function displayItems(wanting) {
         if (wanting[i] === 0) {
             continue;
         }
-        out += `${wanting[i]} <img src="/static/images/${i}${ITEMS[i]}.png" class="baby-image">, &nbsp&nbsp`
+        out += `${wanting[i]} <img src="/static/images/${i}${ITEMS[i]}.png" class="baby-image"> &nbsp&nbsp`
     }
     return out
 }
