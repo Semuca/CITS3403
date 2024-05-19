@@ -48,8 +48,8 @@
                         {% for i in posts %}
                             <li>
                                 <div class="timeline-time">
-                                    <span class="date">{{ i.created_at.date() }}</span>
-                                    <span class="time">{{ i.created_at.time().hour }}:{{ "0" if i.created_at.time().minute <=10 else "" }}{{ i.created_at.time().minute }}</span>
+                                    <span class="date">{{ i.created_at | date_from_iso }}</span>
+                                    <span class="time">{{ i.created_at | time_from_iso }}</span>
                                 </div>
                                 <div class="timeline-body">
                                     <div class="timeline-header">

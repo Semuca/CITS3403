@@ -30,8 +30,8 @@
                             {% for i in comments %}
                                 <li>
                                     <div class="timeline-time">
-                                        <span class="date">{{ i.created_at.date() }}</span>
-                                        <span class="time">{{ i.created_at.time().hour.__str__().zfill(2) }}:{{ i.created_at.time().minute.__str__().zfill(2) }}</span>
+                                        <span class="date">{{ i.created_at | date_from_iso }}</span>
+                                        <span class="time">{{ i.created_at | time_from_iso }}</span>
                                     </div>
                                     <div class="timeline-body">
                                         <div class="timeline-content">
