@@ -1,5 +1,6 @@
 """System tests for home page"""
 
+import os
 import unittest
 
 from app.databases import db
@@ -7,6 +8,7 @@ from app.models import UserModel
 
 from .helpers import BaseSeleniumTest, getPath
 
+@unittest.skipIf(os.environ['SKIP_PAGE_TESTS'] == "true", "SKIP_PAGE_TESTS is flagged")
 class TestBasePage(BaseSeleniumTest):
     """Tests the base page wrapper"""
 
