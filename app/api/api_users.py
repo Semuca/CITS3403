@@ -75,7 +75,7 @@ def create_user():
         db.session.commit()
 
         # Return with the token
-        return make_response({"token": token})
+        return make_response({"id": user.id, "token": token})
 
     return unauthenticated_endpoint_wrapper(create_user_schema, func)
 

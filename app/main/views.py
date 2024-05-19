@@ -38,6 +38,8 @@ def forum_page():
 @main_bp.route("/thread/<int:thread_id>")
 def thread_page(thread_id):
     """The single thread page"""
+    user = get_user_by_token(request.cookies.get('token'))
+
     thread = database_manager.get_thread_by_id(thread_id)
 
     if thread is None:
@@ -47,7 +49,8 @@ def thread_page(thread_id):
     comments = database_manager.get_comments_by_thread_id(thread_id)
     for i in comments:
         i.user = database_manager.get_user_by_id(i.user_id)
-    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments,
+    return redirect_wrapper(render_template('thread.html', user_id=user.id, thread_id=thread_id, thread=thread,
+                                            comments=comments,
                                             items=[*enumerate(INVENTORY_CATEGORIES)]))
 
 
