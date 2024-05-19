@@ -17,9 +17,10 @@ def login():
         # Find a user by that username and password hash
         res = UserModel.query.filter_by(username=data["username"],
                                         password_hash=data["password"])
+        user = res.first()
 
         # If the user is not found, return a 404
-        if res.first() is None:
+        if user is None:
             return make_response({"error": "Request validation error",
                                 "errorMessage": "User not found"},
                                 404)
@@ -32,7 +33,7 @@ def login():
         db.session.commit()
 
         # Return with the token
-        return make_response({"token": token})
+        return make_response({"id": user.id, "token": token})
 
     return unauthenticated_endpoint_wrapper(login_schema, func)
 
@@ -82,8 +83,10 @@ def change_password_unauthenticated():
         # Find a user by that username and security question hash
         res = UserModel.query.filter_by(change_password_token=data["changePasswordToken"])
 
+        user = res.first()
+
         # If the user is not found, return a 404
-        if res.first() is None:
+        if user is None:
             return make_response({"error": "Request validation error",
                                 "errorMessage": "User not found"},
                                 404)
@@ -96,7 +99,7 @@ def change_password_unauthenticated():
         db.session.commit()
 
         # Return with the token
-        return make_response({"token": token})
+        return make_response({"id": user.id, "token": token})
 
     return unauthenticated_endpoint_wrapper(change_password_unauthenticated_schema, func)
 

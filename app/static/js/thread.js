@@ -6,6 +6,9 @@ const ITEMS = ["Boar", "Cheese", "Emerald", "Feather", "Horn", "Ink", "Meat", "M
 
 const threadId = $("#threadScript").data().threadId;
 
+const threadPosterId = $("#threadScript").data().posterId;
+const isThreadOwner = threadPosterId.toString() === CookieManager.getCookie("id");
+
 function acceptTrade(id) {
     fetch(`/api/threads/${threadId}/offers/${id}`, {
         method: "POST", headers: {
@@ -19,12 +22,8 @@ function acceptTrade(id) {
                     alert("You do not have the correct amount of items for this trade!")
                     break
                 }
-                case 403: {
-                    alert("Only the user who made the thread can accept the trade!")
-                    break
-                }
                 default:
-                    alert(`An unexpected error occured (${o.errorMessage})`)
+                    showErrorBanner(o.statusText);
             }
         }
     })
@@ -41,7 +40,6 @@ $(document).ready(() => {
         if (r.ok) {
             r.json().then(j => {
                 for (const i of j) {
-                    console.log(i)
                     if (i.childType === "comment") {
                         $("#comments").append(`
                         <li>
@@ -58,6 +56,7 @@ $(document).ready(() => {
                         </li>`
                         )
                     } else {
+                        const isOfferOwner = i.user.id.toString() === CookieManager.getCookie("id");
                         $("#comments").append(`
                         <li>
                             <div class="timeline-time">
@@ -66,13 +65,13 @@ $(document).ready(() => {
                             </div>
                             <div class="timeline-body">
                                 <div class="timeline-content">
-                                    <h4>Trade Request from ${i.user.username}</h4>
-                                    <h5>You Give:</h5>
+                                    <h4>Trade Request from ${isOfferOwner ? 'you' : i.user.username}</h4>
+                                    <h5>${isOfferOwner ? 'You give' : `${i.user.username} gives`}:</h5>
                                     ${displayItems(i.offering)}
-                                    <h5>You Get:</h5>
+                                    <h5>${isThreadOwner ? 'You give' : 'Thread owner gives'}:</h5>
                                     ${displayItems(i.wanting)}
                                     <br>
-                                    <button class="trade btn btn-primary mt-2" id="${i.id}">Accept</button>
+                                    ${isThreadOwner ? `<button class="trade btn btn-primary mt-2" id="${i.id}">Accept</button>` : ''}
                                 </div>
                             </div>
                         </li>`)

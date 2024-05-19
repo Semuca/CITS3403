@@ -2,7 +2,7 @@
 
 {% block headBlock %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/thread.css') }}"/>
-    <script id="threadScript" type="module" src="{{ url_for('static', filename='js/thread.js') }}" data-thread-id="{{ thread_id }}"></script>
+    <script id="threadScript" type="module" src="{{ url_for('static', filename='js/thread.js') }}" data-thread-id="{{ thread_id }}" data-poster-id="{{ thread.poster.id }}"></script>
     <title>Thread</title>
 {% endblock %}
 
@@ -22,6 +22,7 @@
             <div class="tab-content p-0">
                 <div class="tab-pane fade active show" id="thread-post">
                     <div class="list-group mt-3" id="children">
+                        {% if thread.poster.id != user_id %}
                         <div class="m-2 pt-2 post-comment">
                             <h3 class="text-white">Submit a trade request</h3>
                             <div class="row">
@@ -40,6 +41,7 @@
                             <br>
                             <input id="newTrade" type="submit" value="Create Trade"/>
                         </div>
+                        {% endif %}
                         <div class="m-2 post-comment">
                             <input type="text" id="commentText" placeholder="Type a comment here" class="pixelFont" required>
                             <input id="submit" type="submit" value="Post comment" class="pixelFont">

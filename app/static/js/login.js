@@ -42,6 +42,7 @@ jQuery(() => {
         }).then(r => {
             if (r.ok) {
                 r.json().then(o => {
+                    CookieManager.setCookie("id", o.id)
                     CookieManager.setCookie("token", o.token)
                     window.location = "/forum"
                 });
@@ -95,6 +96,7 @@ function handleNewPassword() {
     }).then(r => {
         if (r.ok) {
             r.json().then(o => {
+                CookieManager.setCookie("id", o.id)
                 CookieManager.setCookie("token", o.token)
                 CookieManager.deleteCookie("changePasswordToken")
                 location = "/forum"
@@ -149,6 +151,7 @@ function handleLogin() {
     }).then(r => {
         if (r.ok) {
             r.json().then(o => {
+                CookieManager.setCookie("id", o.id)
                 CookieManager.setCookie("token", o.token)
                 location = "/forum"
             })
