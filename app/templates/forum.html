@@ -21,12 +21,12 @@
                 <div class="searchHeader">
                     <input type="text" id="searchbar" class=" mb-4 mt-4 form-control form-control-sm bg-white shadow rounded overflow-hidden" placeholder="Search forum"/>
                     <label for="sortBy" class="text-white">Sort By:</label>
-                    <select id="sortBy" class="pixelFont">
+                    <select id="sortBy" class="pixelFont form-select w-25">
                         <option value="created_at">Date Created</option>
                         <option value="title">Title</option>
                         <option value="description">Description</option>
                     </select>
-                    <button id="order">Descending</button>
+                    <button id="order" class="btn btn-primary">Descending</button>
                 </div>
 
                 <!-- Forum List -->
@@ -41,11 +41,6 @@
 
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center pb-3">
-                    <li class="page-item"><a id="prevPage" class="page-link" tabindex="-1">Previous</a></li>
-                    <li class="page-item"><a id="pageBefore" class="page-link">1</a></li>
-                    <li class="page-item"><a id="currentPage" class="page-link">2</a></li>
-                    <li class="page-item"><a id="pageAfter" class="page-link">3</a></li>
-                    <li class="page-item"><a id="nextPage" class="page-link">Next</a></li>
                 </ul>
             </div>
 

@@ -125,7 +125,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the two threads created before are returned with the right information, sorted by created_at
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 2, f"Data sent back is '{res.data}'")
 
         self.assertEqual(res_json_data[0]["title"], 'Theory', f"Json data sent back is '{res_json_data[0]["title"]}'")
@@ -145,7 +145,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that there only an empty list sent back
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 0, f"Data sent back is '{res.data}'")
 
     def test_get_with_pagination(self):
@@ -165,7 +165,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the first 8 threads are returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 8, f"Data sent back is of length '{len(res_json_data)}'")
         self.assertEqual(res_json_data[7]["title"], 'thread4', f"Json data sent back is '{res_json_data[0]["title"]}'")
         self.assertEqual(res_json_data[4]["description"], 'description7', f"Json data sent back is '{res_json_data[4]["description"]}'")
@@ -176,7 +176,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the last 4 threads are returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 3, f"Data sent back is of length '{len(res_json_data)}'")
         self.assertEqual(res_json_data[0]["title"], 'thread3', f"Json data sent back is '{res_json_data[0]["title"]}'")
         self.assertEqual(res_json_data[1]["description"], 'Just a theory a game theory', f"Json data sent back is '{res_json_data[1]["description"]}'")
@@ -198,7 +198,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the first 10 threads are returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 10, f"Data sent back is of length '{len(res_json_data)}")
         self.assertEqual(res_json_data[0]["title"], 'thread11', f"Json data sent back is '{res_json_data[0]["title"]}'")
         self.assertEqual(res_json_data[4]["description"], 'description7', f"Json data sent back is '{res_json_data[4]["description"]}'")
@@ -224,7 +224,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the threads with 'thread' in the title are returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
 
         self.assertEqual(len(res_json_data), 9, f"Data sent back is of length '{len(res_json_data)}")
         self.assertEqual(res_json_data[8]["title"], 'thread3', f"Json data sent back is '{res_json_data[0]["title"]}'")
@@ -235,7 +235,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the thread with '5' in the title is returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
         self.assertEqual(len(res_json_data), 1, f"Data sent back is of length '{len(res_json_data)}")
         self.assertEqual(res_json_data[0]["title"], 'thread5', f"Json data sent back is '{res_json_data[0]["title"]}'")
 
@@ -257,7 +257,7 @@ class TestReadMany(BaseApiTest):
         self.assertEqual(res.status_code, 200, f"Status code is wrong with message '{res.data}'")
 
         # Check that the threads with 'thread' in the title are returned with the right information
-        res_json_data = json.loads(res.data)
+        res_json_data = json.loads(res.data)["threads"]
 
         self.assertEqual(len(res_json_data), 10, f"Data sent back is of length '{len(res_json_data)}")
         self.assertEqual(res_json_data[9]["title"], 'thread9', f"Json data sent back is '{res_json_data[9]["title"]}'")

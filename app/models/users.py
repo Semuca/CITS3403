@@ -71,6 +71,7 @@ class UserModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'inventory': self.inventory.get_items(),
+            'requiredInventory': self.inventory.get_items_required(),
             'levelExpiry': self.level_expiry,
             'lootDropRefresh': self.loot_drop_refresh,
         }

@@ -1,9 +1,9 @@
 import {CookieManager} from "./helpers/cookie_manager.js";
 import { showErrorBanner } from "./helpers/error_banner.js";
 
-let user = null;
-let levelTime = Date.now();
-let lootTime = Date.now();
+let user = undefined;
+let levelTime = undefined;
+let lootTime = undefined;
 
 $(document).ready(() => {
     setInterval(everySecond, 1000)
@@ -18,9 +18,7 @@ $(document).ready(() => {
             if (r.ok) {
                 location.reload()
             } else {
-                r.json().then(o => {
-                    alert(o.errorMessage)
-                })
+                showErrorBanner(r.statusText);
             }
         })
     })
@@ -35,9 +33,7 @@ $(document).ready(() => {
             if (r.ok) {
                 location.reload()
             } else {
-                r.json().then(o => {
-                    alert(o.errorMessage)
-                })
+                showErrorBanner(r.statusText);
             }
         })
     })
@@ -52,8 +48,13 @@ $(document).ready(() => {
         if (r.ok) {
             r.json().then(j => {
                 user = j;
+
                 levelTime = new Date(user.levelExpiry).getTime();
                 lootTime = new Date(user.lootDropRefresh).getTime();
+
+                if (!user.requiredInventory.find((requiredItem, index) => user.inventory[index] < requiredItem)) {
+                    $("#levelImmediately").prop("disabled", false);
+                }
             })
         } else {
             showErrorBanner(r.statusText);
@@ -66,37 +67,35 @@ function everySecond() {
     // if user object is not yet loaded, do nothing
     if (!user) return;
 
-    // if level is 0, then keep timers at 00:00:00
-    let level = parseInt($("#level").text())
-    if (level === 0) return;
-
-    let timeLeft = levelExpiryToTimer(levelTime)
-    $("#levelTime").text(timeLeft)
-
-    timeLeft = lootCooldownToTimer(lootTime)
-    $("#lootTime").text(timeLeft)
+    $("#levelTime").text(levelExpiryToTimer(levelTime));
+    $("#lootTime").text(lootCooldownToTimer(lootTime));
 }
 
 // converts the expiry time to the amount of time left in the format HH:MM:SS
 function levelExpiryToTimer(expiry) {
+    const level = parseInt($("#level").text());
+    if (level === 0) return "00:00:00";
+
     // if time is up, reload since auto-levelling happens in the backend
     if (expiry < Date.now()) {
         location.reload()
     }
 
     // calculate time left
-    let diff = new Date(expiry - Date.now());
+    const diff = new Date(expiry - Date.now());
     return diff.toUTCString().slice(17, 25); // HH:MM:SS
 }
 
 // converts the loot cooldown time to the amount of time left in the format HH:MM:SS
 function lootCooldownToTimer(cooldown) {
+
     // if cooldown is up, time left to next collection is 00:00:00
-    if (cooldown < Date.now()) {
-        return;
+    if (level === 0 || cooldown < Date.now()) {
+        $("#collectLoot").prop("disabled", false);
+        return "00:00:00";
     }
 
     // calculate time left
-    let diff = new Date(cooldown - Date.now());
+    const diff = new Date(cooldown - Date.now());
     return diff.toUTCString().slice(17, 25); // HH:MM:SS
 }

@@ -32,8 +32,6 @@ function acceptTrade(id) {
 
 
 $(document).ready(() => {
-
-
     fetch(`/api/threads/${threadId}/children`, {
         method: "GET", headers: {
             Authorization: `Bearer ${CookieManager.getCookie("token")}`,

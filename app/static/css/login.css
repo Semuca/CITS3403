@@ -7,7 +7,12 @@ body {
 
 .card {
     border-radius: 15px;
-    background-color:var(--white);
+    background-color: var(--white);
+}
+
+.disabled {
+    /*TODO: FIX THIS TO BE CONSISTENT*/
+    background: var(--gray) !important;
 }
 
 #username, #password {
