@@ -42,7 +42,7 @@ def thread_page(thread_id):
 
     thread = database_manager.get_thread_by_id(thread_id)
 
-    if thread is None:
+    if user is None or thread is None:
         return redirect("/forum")
 
     thread.poster = database_manager.get_user_by_id(thread.user_id)
@@ -58,9 +58,10 @@ def thread_page(thread_id):
 def profile_page():
     """The profile page"""
     user = get_user_by_token(request.cookies.get('token'))
-    threads = []
-    if user is not None:
-        threads = database_manager.get_threads_by_user(user)
+    if user is None:
+        return redirect("/login")
+
+    threads = database_manager.get_threads_by_user(user)
     comments = database_manager.get_comment_count_by_user(user)
     trades = database_manager.get_trade_request_count_by_user(user)
     return redirect_wrapper(render_template('profile.html', posts=threads, user=user, comments=comments, trades=trades))
