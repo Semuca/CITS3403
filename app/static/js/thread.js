@@ -135,7 +135,6 @@ $(document).ready(() => {
 })
 
 
-
 function displayItems(wanting) {
     let out = ""
     for (const i in wanting) {
@@ -144,5 +143,5 @@ function displayItems(wanting) {
         }
         out += `${wanting[i]} <img src="/static/images/${i}${ITEMS[i]}.png" class="baby-image"> &nbsp&nbsp`
     }
-    return out
+    return out.substring(0, out.length - 12) // removes the trailing comma
 }
