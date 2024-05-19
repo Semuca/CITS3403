@@ -1,10 +1,91 @@
-import { CookieManager } from "./helpers/cookie_manager.js";
-import { showErrorBanner } from "./helpers/error_banner.js";
+import {CookieManager} from "./helpers/cookie_manager.js";
+import {dateFromPythonTime, timeFromPythonTime} from "./helpers/format_time.js";
+import {showErrorBanner} from "./helpers/error_banner.js";
+
+const ITEMS = ["Boar", "Cheese", "Emerald", "Feather", "Horn", "Ink", "Meat", "Mushroom", "Orb", "Scroll"]
+
+const threadId = $("#threadScript").data().threadId;
+
+function acceptTrade(id) {
+    fetch(`/api/threads/${threadId}/offers/${id}`, {
+        method: "POST", headers: {
+            Authorization: `Bearer ${CookieManager.getCookie("token")}`,
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    }).then(o => {
+        if (!o.ok) {
+            switch (o.status) {
+                case 400: {
+                    alert("You do not have the correct amount of items for this trade!")
+                    break
+                }
+                case 403: {
+                    alert("Only the user who made the thread can accept the trade!")
+                    break
+                }
+                default:
+                    alert(`An unexpected error occured (${o.errorMessage})`)
+            }
+        }
+    })
+}
 
 
 $(document).ready(() => {
-    const threadId = $("#threadScript").data().threadId;
-    console.log($("#threadScript").data());
+    fetch(`/api/threads/${threadId}/children`, {
+        method: "GET", headers: {
+            Authorization: `Bearer ${CookieManager.getCookie("token")}`,
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    }).then(r => {
+        if (r.ok) {
+            r.json().then(j => {
+                for (const i of j) {
+                    console.log(i)
+                    if (i.childType === "comment") {
+                        $("#comments").append(`
+                        <li>
+                            <div class="timeline-time">
+                                <span class="date">${dateFromPythonTime(i.createdAt)}</span>
+                                <span class="time">${timeFromPythonTime(i.createdAt)}</span>
+                            </div>
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <h5 class="comment-username mb-1">${i.user.username}</h5>
+                                    <p>${i.commentText}</p>
+                                </div>
+                            </div>
+                        </li>`
+                        )
+                    } else {
+                        $("#comments").append(`
+                        <li>
+                            <div class="timeline-time">
+                                <span class="date">${dateFromPythonTime(i.createdAt)}</span>
+                                <span class="time">${timeFromPythonTime(i.createdAt)}</span>
+                            </div>
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <h4>Trade Request from ${i.user.username}</h4>
+                                    <h5>You Give:</h5>
+                                    ${displayItems(i.offering)}
+                                    <h5>You Get:</h5>
+                                    ${displayItems(i.wanting)}
+                                    <br>
+                                    <button class="trade btn btn-primary mt-2" id="${i.id}">Accept</button>
+                                </div>
+                            </div>
+                        </li>`)
+                    }
+
+                }
+                $(".trade").on("click", (e) => {
+                    acceptTrade(e.target.id)
+                })
+
+            })
+        }
+    })
 
     // Submitting comment
     $("#submit").on("click", () => {
@@ -18,7 +99,32 @@ $(document).ready(() => {
         }).then(r => {
             if (r.ok) {
                 r.json().then(o => {
-                    //easier to reload the page and let the server deal with adding a new comment...
+                    location.reload()
+                });
+            } else {
+                alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
+            }
+        })
+    });
+
+    $("#newTrade").on("click", () => {
+        let offer = []
+        let want = []
+        for (let i = 0; i < 10; i++) {
+            offer.push(+$(`#give${i}`).val())
+            want.push(+$(`#get${i}`).val())
+        }
+        fetch(`/api/threads/${threadId}/offers`, {
+            method: "POST", headers: {
+                Authorization: `Bearer ${CookieManager.getCookie("token")}`,
+                "Content-type": "application/json; charset=UTF-8"
+            }, body: JSON.stringify({
+                offeringList: offer,
+                wantingList: want
+            })
+        }).then(r => {
+            if (r.ok) {
+                r.json().then(o => {
                     location.reload()
                 });
             } else {
@@ -26,4 +132,17 @@ $(document).ready(() => {
             }
         })
     });
-});
+})
+
+
+
+function displayItems(wanting) {
+    let out = ""
+    for (const i in wanting) {
+        if (wanting[i] === 0) {
+            continue;
+        }
+        out += `${wanting[i]} <img src="/static/images/${i}${ITEMS[i]}.png" class="baby-image"> &nbsp&nbsp`
+    }
+    return out
+}

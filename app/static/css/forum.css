@@ -145,8 +145,5 @@ body {
 }
 
 .active {
-    /*
-        TODO (bridge): uncurse my css please
-     */
     color: white !important;
 }
