@@ -8,36 +8,20 @@
 
 {% block bodyBlock %}
     <div class="container content">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <div class="mx-auto">
-                <div class="shadow rounded overflow-hidden">
-                    <div class="px-4 pt-0 pb-4 cover">
-                        <div class="media align-items-end profile-head">
-                            <div class="profile">
-                                <img src="{{ url_for('static', filename='images/jsMug.png') }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                <button id="editProfile" class="btn btn-outline-dark btn-sm btn-block" type="button" data-toggle="modal" data-target="#editProfileModal">
-                                    Edit Profile
-                                </button>
-                            </div>
-                        <div class="mb-5" id="profile-username">
-                            <h2>{{ user.username }}</h2>
-                            <small>{{ user.description | safe }}</small>
-                        </div>
+                <div class="shadow rounded overflow-hidden mb-2 text-center">
+                    <div class="pt-2 pb-1 bg-primary" id="profile-username">
+                        <h2 class="text-center">{{ user.username }}</h2>    
+                    </div>
+                    <div class="bg-white p-4 text-center text-black">
+                        <small>{{ user.description | safe }}</small>
                     </div>
                 </div>
-                <div class="bg-white p-4 d-flex justify-content-end text-center">
-                    <ul class="list-inline mb-0 align-items-end">
-                        <li class="list-inline-item">
-                            <p class="mb-0 d-block">[TODO: #TRs]</p>
-                            <small class="text-muted"> <i class="fas fa-arrows-rotate mr-1"></i>Trade Requests</small>
-                        </li>
-                        <li class="list-inline-item">
-                            <p class="mb-0 d-block">[TODO: #comments]</p>
-                            <small class="text-muted"> <i class="fas fa-comment mr-1"></i>Comments</small>
-                        </li>
-                    </ul>
-                </div>
             </div>
+            <button id="editProfile" class="bg-white text-center shadow rounded overflow-hidden w-25" type="button" data-toggle="modal" data-target="#editProfileModal">
+                Edit Profile
+            </button>
         </div>
 
         <div class="profile-content">
