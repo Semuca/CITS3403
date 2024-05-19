@@ -74,7 +74,7 @@ $(document).ready(() => {
                                     <h5>You Get:</h5>
                                     ${displayItems(i.wanting)}
                                     <br>
-                                    <button class="trade btn btn-primary" id="${i.id}">Accept</button>
+                                    <button class="trade btn btn-primary mt-2" id="${i.id}">Accept</button>
                                 </div>
                             </div>
                         </li>`)
