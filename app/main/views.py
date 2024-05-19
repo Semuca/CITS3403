@@ -7,7 +7,6 @@ from app.models.inventory import INVENTORY_CATEGORIES
 
 main_bp = Blueprint('main_bp', __name__)
 
-
 @main_bp.route("/")
 def home_page():
     """The home page"""

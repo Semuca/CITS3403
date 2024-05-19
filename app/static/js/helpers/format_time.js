@@ -1,7 +1,7 @@
 export function dateFromPythonTime(time) {
-    return time.split(" 202")[0]
+    return new Date(time).toDateString().split(" ").slice(0, 3).join(" ");
 }
 
 export function timeFromPythonTime(time) {
-    return time.split(" 202")[1].substring(1).split(" GMT")[0]
+    return new Date(time).toTimeString().split(" ").at(0);
 }
