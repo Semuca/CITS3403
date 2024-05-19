@@ -56,10 +56,14 @@ div.gallery img {
     box-sizing: border-box;
 }
 
+.align-bottom {
+    justify-content: flex-end;
+    display: flex;
+}
+
 .responsive-labels {
     padding: 0 6px;
     width: 10%;
-    height: 100%;
 }
 
 .responsive {
