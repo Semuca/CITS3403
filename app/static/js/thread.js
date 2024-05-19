@@ -4,7 +4,6 @@ import { showErrorBanner } from "./helpers/error_banner.js";
 
 $(document).ready(() => {
     const threadId = $("#threadScript").data().threadId;
-    console.log($("#threadScript").data());
 
     // Submitting comment
     $("#submit").on("click", () => {
