@@ -28,11 +28,10 @@ jQuery(() => {
     })
 
     $("#pressCreate").on("click", () => {
-        console.log($("#password").val())
         const body = JSON.stringify({
                 username: $("#username").val(),
                 password: hash($("#password").val()),
-                securityQuestion: +$("#question").val(),
+                securityQuestion: $("#question").val(),
                 securityQuestionAnswer: hash($("#answer").val())
             }
         )
@@ -66,7 +65,6 @@ jQuery(() => {
                     const username = $("#username")
                     username.prop('disabled', true);
                     username.addClass("disabled");
-                    console.log(j.question)
                     box.empty()
                     box.append(`
                         <input type="text" id="recoveryQuestion" class="form-control form-control-lg"/>
@@ -98,6 +96,7 @@ function handleNewPassword() {
         if (r.ok) {
             r.json().then(o => {
                 CookieManager.setCookie("token", o.token)
+                CookieManager.deleteCookie("changePasswordToken")
                 location = "/forum"
             })
         } else {

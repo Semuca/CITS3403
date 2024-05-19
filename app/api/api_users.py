@@ -2,7 +2,6 @@
 
 import secrets
 
-import flask
 from flask import make_response
 
 from app.databases import db
@@ -48,7 +47,6 @@ def get_user_question(username):
 @api_bp.route('/users', methods=['POST'])
 def create_user():
     """Endpoint to register a user"""
-    print(flask.request.json)
 
     def func(data):
         # Find if a user by that username already exists
