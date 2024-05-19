@@ -26,7 +26,6 @@ def get_thread_by_id(thread_id) -> ThreadModel | None:
 
 def get_user_by_id(user_id) -> UserModel | None:
     """Gets a user's name by their ID"""
-    # JARED: hook this into the user endpoint when it exists (I can't write the T word without pylint failing me)
     user = db.session.scalars(
         db.select(UserModel)
         .where(UserModel.id == user_id)
@@ -36,7 +35,6 @@ def get_user_by_id(user_id) -> UserModel | None:
 
 def get_threads_by_user(user):
     """gets all threads that a user has posted"""
-    # FUTURE: This is still tempoary, will be changed later
     threads = db.session.scalars(
         db.select(ThreadModel)
         .where(ThreadModel.user_id == user.id)
