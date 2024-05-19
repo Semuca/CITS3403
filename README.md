@@ -60,11 +60,11 @@ There is no need to run the main app for testing.
 | 23643117       | Heidi Leow        | sellsol          |
 
 ## References
-Font: Emhuo (https://emhuo.itch.io/nico-pixel-fonts-pack)
-Loot Icons: Craftpix (https://craftpix.net/freebies/free-40-loot-icons-pixel-art)
-FontAwesome: https://fontawesome.com
-Bootstrap: https://getbootstrap.com
-Bootstrap Theme: Thomas Park (https://bootswatch.com/united/)
-jQuery: https://jquery.com
-Popper.js: https://popper.js.org/docs/v2/
-CryptoJs: https://cryptojs.gitbook.io/docs
+-   Font: Emhuo (https://emhuo.itch.io/nico-pixel-fonts-pack)
+-   Loot Icons: Craftpix (https://craftpix.net/freebies/free-40-loot-icons-pixel-art)
+-   FontAwesome: https://fontawesome.com
+-   Bootstrap: https://getbootstrap.com
+-   Bootstrap Theme: Thomas Park (https://bootswatch.com/united/)
+-   jQuery: https://jquery.com
+-   Popper.js: https://popper.js.org/docs/v2/
+-   CryptoJs: https://cryptojs.gitbook.io/docs
