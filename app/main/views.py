@@ -48,7 +48,8 @@ def thread_page(thread_id):
     comments = database_manager.get_comments_by_thread_id(thread_id)
     for i in comments:
         i.user = database_manager.get_user_by_id(i.user_id)
-    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments))
+    return redirect_wrapper(render_template('thread.html', thread_id=thread_id, thread=thread, comments=comments,
+                                            items=[*enumerate(INVENTORY_CATEGORIES)]))
 
 
 @main_bp.route("/profile")
