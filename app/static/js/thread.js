@@ -19,7 +19,8 @@ function acceptTrade(id) {
         if (!o.ok) {
             switch (o.status) {
                 case 400: {
-                    alert("You do not have the correct amount of items for this trade!")
+                    $(`#offer-error-${id}`).text("The trade can not be completed. One or both of the parties involved does not have enough items!");
+                    $(`#offer-error-${id}`).removeClass("d-none");
                     break
                 }
                 default:
@@ -65,6 +66,7 @@ $(document).ready(() => {
                             </div>
                             <div class="timeline-body">
                                 <div class="timeline-content">
+                                    <p id="offer-error-${i.id}" class="d-none bg-primary text-white p-2"></p>
                                     <h4>Trade Request from ${isOfferOwner ? 'you' : i.user.username}</h4>
                                     <h5>${isOfferOwner ? 'You give' : `${i.user.username} gives`}:</h5>
                                     ${displayItems(i.offering)}
@@ -101,7 +103,7 @@ $(document).ready(() => {
                     location.reload()
                 });
             } else {
-                alert(`The server did not return a valid response! HTTP error code is ${r.status} (${r.statusText})`)
+                showErrorBanner(r.statusText);
             }
         })
     });
