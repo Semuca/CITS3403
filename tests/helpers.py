@@ -5,6 +5,7 @@ import unittest
 from urllib.parse import urlparse
 
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 
 from app import create_app
 from app.databases import db
@@ -57,6 +58,8 @@ class BaseSeleniumTest(unittest.TestCase):
 
         self.driver = webdriver.Chrome()
         self.driver.get(LOCALHOST)
+
+        WebDriverWait(self.driver, 1)
 
     def tearDown(self):
         # stop db session and clear out all data

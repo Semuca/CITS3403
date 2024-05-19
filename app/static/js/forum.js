@@ -101,7 +101,7 @@ function loadPage(page, search = "") {
                     </div>
                     <div class="thread-body">
                         <div class="thread-header">
-                            <span class="thread-name"><a href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
+                            <span class="thread-name"><a id="thread-${thread.id}" href="/thread/${thread.id}">${thread.title}</a> <small></small></span>
                             <br>
                             <span class="thread-creator username"><a href="javascript:;">${thread.user.username}</a> <small></small></span>
                         </div>
