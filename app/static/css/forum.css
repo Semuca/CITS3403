@@ -2,9 +2,10 @@ body {
     min-height: 100vh;
     overflow-x:hidden;
     background-image: url("/static/images/wood.png");
-    background-size: cover;
+    background-size: contain;
     background-repeat: repeat-y;
     background-position: center center;
+    background-attachment: fixed;
 }
 
 .inner-wrapper {
@@ -144,8 +145,5 @@ body {
 }
 
 .active {
-    /*
-        TODO (bridge): uncurse my css please
-     */
     color: white !important;
 }

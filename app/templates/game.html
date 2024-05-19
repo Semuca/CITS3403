@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block bodyBlock %}
-    <div class="container content d-flex">
+    <div class="container content h-100">
         <div class="row">
             <div class="d-flex justify-content-center">
                 <div class="col-md-3 ml-1 pt-1 align-items-center ">
                     <div class="mb-1 pt-4 pb-3 text-center h-70 bg-white align-items-start align-content-center shadow rounded overflow-hidden">
                         <h2>LEVEL <span id=level>{{ user.level }}</span></h2>
                     </div>
-                    <button id="levelImmediately" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
+                    <button id="levelImmediately" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden" disabled>
                         LEVEL IMMEDIATELY
                     </button>
                 </div>
@@ -32,41 +32,35 @@
                         <h4 id="lootTimerTitle">LOOT COOLDOWN</h4>
                         <h3 id="lootTime">00:00:00</h3>
                     </div>
-                    <button id="collectLoot" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden">
+                    <button id="collectLoot" type="button" class="w-100 text-center h-30 bg-white align-items-end align-content-center shadow rounded overflow-hidden" disabled>
                         COLLECT LOOT
                     </button>
                 </div>
             </div>
             <div class="mt-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center">
                 <div class="w-95">
-                    <h2>Needed Items</h2>
+                    <h2>Inventory</h2>
                     <div class="row">
+                        <div class="mb-2 responsive-labels align-bottom">
+                            <div class="card gallery align-bottom">
+                                <div class="text-center">
+                                    <p class="count text-nowrap">Required</p>
+                                    <p class="count">Current</p>
+                                </div>
+                            </div>
+                        </div>
                         {% for i, item in items %}
                             <div class="mb-2 responsive">
                                 <div class="card h-100 gallery">
                                     <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/' + i.__str__() + item +'.png') }}" alt=""></a>
                                     <div class="text-center">
                                         <p class="count">{{ user.inventory.get_items_required()[i] }}</p>
+                                        <p class="count">{{ user.inventory.get_items()[i] }}</p>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                </div>
-            </div>
-            <div class="mt-4 mb-4 bg-white shadow rounded overflow-hidden d-flex justify-content-center">
-                <div class="w-95">
-                    <h2>Inventory</h2>
-                    {% for i, item in items %}
-                        <div class="mb-2 responsive">
-                            <div class="card h-100 gallery">
-                                <a href="#"><img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/' + i.__str__() + item + '.png') }}" alt=""></a>
-                                <div class="text-center">
-                                    <p class="count">{{ user.inventory.get_items()[i] }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
         </div>

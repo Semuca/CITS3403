@@ -1,13 +1,18 @@
 body {
     background-image: url("/static/images/wood.png");
-    background-size: cover;
+    background-size: contain;
     background-repeat: repeat-y;
     background-position: center center;
 }
 
 .card {
     border-radius: 15px;
-    background-color:var(--white);
+    background-color: var(--white);
+}
+
+.disabled {
+    /*TODO: FIX THIS TO BE CONSISTENT*/
+    background: var(--gray) !important;
 }
 
 #username, #password {
@@ -21,7 +26,3 @@ body {
     border-radius: 3px;
     cursor: pointer;
 }
-
-/* #pressLogin:hover {
-    background-color: var(--navy);
-} */

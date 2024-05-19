@@ -5,6 +5,9 @@ from datetime import datetime, timezone
 from app.models.inventory import InventoryModel
 from app.databases import db
 
+INVENTORY_CATEGORIES = ["Boar", "Cheese", "Emerald", "Feather", "Horn", "Ink", "Meat", "Mushroom", "Orb", "Scroll"]
+
+
 # pylint: disable=too-few-public-methods
 class UserModel(db.Model):
     """Stores all users on the forum"""
@@ -68,6 +71,7 @@ class UserModel(db.Model):
             'description': self.description,
             'createdAt': self.created_at,
             'inventory': self.inventory.get_items(),
+            'requiredInventory': self.inventory.get_items_required(),
             'levelExpiry': self.level_expiry,
             'lootDropRefresh': self.loot_drop_refresh,
         }

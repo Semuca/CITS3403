@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block bodyBlock %}
-    <div class="container content ">
+    <div class="container content h-100">
         <div class="main-body p-0">
             <div class="d-flex justify-content-center w-100">
                 <button id="newDiscussion" class="bg-white shadow rounded overflow-hidden w-100" type="button" data-toggle="modal" data-target="#threadCreationModal">
@@ -19,14 +19,14 @@
             <div class="inner-wrapper">
                 <!-- Search Forum -->
                 <div class="searchHeader">
-                    <input type="text" id="searchbar" class=" mb-4 mt-4 form-control form-control-sm bg-white shadow rounded overflow-hidden" placeholder="Search forum"/>
+                    <input type="text" id="searchbar" class=" mb-4 mt-4 form-control form-control-sm bg-white shadow rounded overflow-hidden" placeholder="Search forum">
                     <label for="sortBy" class="text-white">Sort By:</label>
-                    <select id="sortBy" class="pixelFont">
+                    <select id="sortBy" class="pixelFont form-select w-25">
                         <option value="created_at">Date Created</option>
                         <option value="title">Title</option>
                         <option value="description">Description</option>
                     </select>
-                    <button id="order">Descending</button>
+                    <button id="order" class="btn btn-primary">Descending</button>
                 </div>
 
                 <!-- Forum List -->
@@ -41,11 +41,6 @@
 
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center pb-3">
-                    <li class="page-item"><a id="prevPage" class="page-link" tabindex="-1">Previous</a></li>
-                    <li class="page-item"><a id="pageBefore" class="page-link">1</a></li>
-                    <li class="page-item"><a id="currentPage" class="page-link">2</a></li>
-                    <li class="page-item"><a id="pageAfter" class="page-link">3</a></li>
-                    <li class="page-item"><a id="nextPage" class="page-link">Next</a></li>
                 </ul>
             </div>
 
@@ -63,11 +58,11 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" placeholder="Enter title" autofocus="" required/>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter title" autofocus="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">Description*</label>
-                                    <input type="text" class="form-control" id="description" placeholder="Enter description" autofocus="" required/>
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description" placeholder="Enter description">
                                 </div>
                             </div>
 

@@ -7,4 +7,8 @@ export class CookieManager {
         const expiry = new Date(Date.now() + (25 * 60 * 60));
         document.cookie = `${name}=${value}; expiry=${expiry} Secure`;
     }
+
+    static deleteCookie(name) {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure`;
+    }
 }

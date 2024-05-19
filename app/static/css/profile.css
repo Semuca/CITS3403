@@ -2,26 +2,22 @@ body{
     min-height: 100vh;
     overflow-x:hidden;
     background-image: url("/static/images/wood.png");
+    background-size: contain;
     background-repeat: repeat-y;
     background-position: center center;
+    background-attachment: fixed;
 }
 
 .white-text {
     color: var(--white);
 }
 
-.profile-head {
-    transform: translateY(5rem)
-}
-
-.cover {
-    background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
-    background-size: 100% auto;
-    background-repeat: no-repeat
-}
-
 #profile-username{
     color: var(--white);
+}
+
+#editProfile{
+    border: none;
 }
 
 .profile-content {

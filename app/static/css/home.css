@@ -12,7 +12,7 @@ header.title {
   padding-top: calc(8.2rem);
   padding-bottom: 7rem;
   background-image: url("/static/images/wood.png");
-  background-size: cover;
+  background-size: contain;
   background-repeat: repeat-y;
   background-position: center center;
 }
