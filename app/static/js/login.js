@@ -5,6 +5,7 @@ import {showErrorBanner} from "./helpers/error_banner.js";
 let inRecoveryMode = false;
 let passwordToken = undefined
 
+const loginErrorMessage = $("#loginErrorMessage")
 const loginButton = $("#pressLogin")
 const box = $("#passwordBox")
 
@@ -28,11 +29,32 @@ jQuery(() => {
     })
 
     $("#pressCreate").on("click", () => {
+
+        const username = $("#username").val();
+        const password = $("#password").val();
+        const question = $("#question").val();
+        const answer = $("#answer").val();
+
+        if (!username) {
+            loginErrorMessage.text("Username cannot be empty");
+            return;
+        }
+
+        if (!password) {
+            loginErrorMessage.text("Password cannot be empty");
+            return;
+        }
+
+        if (!answer) {
+            loginErrorMessage.text("Answer cannot be empty");
+            return;
+        }
+
         const body = JSON.stringify({
-                username: $("#username").val(),
-                password: hash($("#password").val()),
-                securityQuestion: $("#question").val(),
-                securityQuestionAnswer: hash($("#answer").val())
+                username: username,
+                password: hash(password),
+                securityQuestion: question,
+                securityQuestionAnswer: hash(answer)
             }
         )
         fetch("/api/users", {
@@ -46,13 +68,19 @@ jQuery(() => {
                     window.location = "/forum"
                 });
             } else {
-                showErrorBanner(r.statusText);
+                loginErrorMessage.text("Username already exists");
             }
         })
 
     })
 
     $("#forgot").on("click", () => {
+        const username = $("#username").val();
+        if (!username) {
+            loginErrorMessage.text("Please enter a username to recover your account");
+            return;
+        }
+
         fetch(`/api/users/${$("#username").val()}/question`, {
             method: "GET", headers: {
                 Authorization: `Bearer ${CookieManager.getCookie("token")}`,
@@ -81,10 +109,16 @@ jQuery(() => {
 
 
 function handleNewPassword() {
+    const password = $("#newPassword").val();
+
+    if (!password) {
+        loginErrorMessage.text("New password cannot be empty");
+        return;
+    }
+
     const body = JSON.stringify({
             changePasswordToken: passwordToken,
-            password: (hash($("#newPassword").val()))
-
+            password: hash(password)
         }
     )
 
@@ -106,10 +140,16 @@ function handleNewPassword() {
 }
 
 function handleRecovery() {
+    const securityQuestionAnswer = $("#recoveryQuestion").val();
+
+    if (!securityQuestionAnswer) {
+        loginErrorMessage.text("Answer cannot be empty");
+        return;
+    }
+
     const body = JSON.stringify({
             username: $("#username").val(),
-            securityQuestionAnswer: (hash($("#recoveryQuestion").val()))
-
+            securityQuestionAnswer: hash(securityQuestionAnswer)
         }
     )
 
@@ -129,15 +169,28 @@ function handleRecovery() {
                 loginButton.text("Change Password")
             })
         } else {
-            showErrorBanner(r.statusText);
+            loginErrorMessage.text("Incorrect answer");
         }
     })
 }
 
 function handleLogin() {
+    const username = $("#username").val();
+    const password = $("#password").val();
+
+    if (!username) {
+        loginErrorMessage.text("Username cannot be empty");
+        return;
+    }
+
+    if (!password) {
+        loginErrorMessage.text("Password cannot be empty");
+        return;
+    }
+
     const body = JSON.stringify({
-            username: $("#username").val(),
-            password: (hash($("#password").val()))
+            username: username,
+            password: hash(password)
         }
     )
 
@@ -153,7 +206,7 @@ function handleLogin() {
                 location = "/forum"
             })
         } else {
-            showErrorBanner(r.statusText);
+            loginErrorMessage.text("Invalid username or password");
         }
     })
 }
