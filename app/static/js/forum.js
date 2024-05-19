@@ -144,8 +144,8 @@ function updateNavLinks(currentPage, lastPage) {
 
     for (let i = startPage; i <= endPage; i++) {
         pagination.append(`
-            <li class="page-item  ${i === currentPage ? 'active' : ''}">
-                <a class="page-link">${i}</a>
+            <li class="page-item">
+                <a class="${i === currentPage ? 'active' : ''} page-link">${i}</a>
             </li>
         `);
     }
@@ -168,3 +168,4 @@ function updateNavLinks(currentPage, lastPage) {
         pagination.find("#lastPage").addClass("disabled");
     }
 }
+
