@@ -29,6 +29,7 @@ def get_user():
 
     return authenticated_endpoint_wrapper(None, func)
 
+
 @api_bp.route('/users/<username>/question', methods=['GET'])
 def get_user_question(username):
     """Endpoint to get the current user's choice in security question"""
@@ -42,6 +43,7 @@ def get_user_question(username):
         return make_response({"question": queried_user.security_question}, 200)
 
     return unauthenticated_endpoint_wrapper(None, func)
+
 
 
 @api_bp.route('/users', methods=['POST'])
